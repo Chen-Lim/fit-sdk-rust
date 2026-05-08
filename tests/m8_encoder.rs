@@ -61,7 +61,11 @@ fn roundtrip_activity_message_names() {
     // Each message's name must survive the round-trip.
     for (a, b) in messages.iter().zip(messages2.iter()) {
         assert_eq!(a.global_mesg_num, b.global_mesg_num, "mesg_num mismatch");
-        assert_eq!(a.name, b.name, "name mismatch for mesg_num {}", a.global_mesg_num);
+        assert_eq!(
+            a.name, b.name,
+            "name mismatch for mesg_num {}",
+            a.global_mesg_num
+        );
     }
 }
 
@@ -93,7 +97,10 @@ fn roundtrip_activity_is_valid_fit() {
     let encoded = enc.encode(&messages).unwrap();
 
     // Basic FIT validation.
-    assert!(fit::is_fit(&encoded), "encoded bytes must be a valid FIT file");
+    assert!(
+        fit::is_fit(&encoded),
+        "encoded bytes must be a valid FIT file"
+    );
     fit::check_integrity(&encoded).expect("CRC must be valid");
 }
 
@@ -216,7 +223,10 @@ fn encode_with_uint_fields() {
     // manufacturer is an enum-typed field (uint16); the default typed-decoder
     // converts UInt(1) → Enum("garmin"). The encoder's job is to preserve
     // the wire bytes — which it does, as evidenced by the round-trip naming.
-    assert_eq!(msg.field("manufacturer").unwrap().value, Value::Enum("garmin"));
+    assert_eq!(
+        msg.field("manufacturer").unwrap().value,
+        Value::Enum("garmin")
+    );
     // product activates the `garmin_product` SubField (because manufacturer ==
     // garmin); 3415 is not a named garmin_product value, so it stays a UInt.
     assert_eq!(
@@ -331,7 +341,9 @@ fn roundtrip_activity_field_values_full() {
             if !matches!(fa.kind, FieldKind::Standard { .. }) {
                 continue;
             }
-            let Some(fb) = b.field(&fa.name) else { continue };
+            let Some(fb) = b.field(&fa.name) else {
+                continue;
+            };
             assert!(
                 values_roughly_equal(&fa.value, &fb.value),
                 "{}.{}: {:?} vs {:?}",

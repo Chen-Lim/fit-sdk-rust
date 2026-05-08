@@ -265,11 +265,11 @@ fn dev_field_round_trip_on_activity() {
 fn arb_file_id() -> impl Strategy<Value = Message> {
     use chrono::{TimeZone, Utc};
     (
-        any::<bool>(),    // include type?
-        0u32..16,         // file enum value (0..15 are valid)
-        any::<bool>(),    // include serial_number?
-        any::<u32>(),     // serial_number value (uint32z)
-        any::<bool>(),    // include time_created?
+        any::<bool>(),                                  // include type?
+        0u32..16,                                       // file enum value (0..15 are valid)
+        any::<bool>(),                                  // include serial_number?
+        any::<u32>(),                                   // serial_number value (uint32z)
+        any::<bool>(),                                  // include time_created?
         631_065_600_i64..631_065_600_i64 + 100_000_000, // valid FIT epoch range
     )
         .prop_map(|(has_type, type_val, has_serial, serial, has_time, secs)| {

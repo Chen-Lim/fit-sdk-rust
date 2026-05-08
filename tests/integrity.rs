@@ -26,7 +26,11 @@ fn read_fixture(name: &str) -> Vec<u8> {
 
 #[test]
 fn fixture_paths_resolve() {
-    for name in ["Activity.fit", "HrmPluginTestActivity.fit", "WithGearChangeData.fit"] {
+    for name in [
+        "Activity.fit",
+        "HrmPluginTestActivity.fit",
+        "WithGearChangeData.fit",
+    ] {
         let path = fixture_path(name);
         assert!(
             Path::new(&path).exists(),

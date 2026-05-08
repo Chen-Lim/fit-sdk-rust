@@ -3308,7 +3308,9 @@ impl BacklightMode {
             BacklightMode::AutoBrightness => "auto_brightness",
             BacklightMode::SmartNotifications => "smart_notifications",
             BacklightMode::KeyAndMessagesNight => "key_and_messages_night",
-            BacklightMode::KeyAndMessagesAndSmartNotifications => "key_and_messages_and_smart_notifications",
+            BacklightMode::KeyAndMessagesAndSmartNotifications => {
+                "key_and_messages_and_smart_notifications"
+            }
         }
     }
 
@@ -3335,7 +3337,9 @@ impl BacklightMode {
             "auto_brightness" => Some(BacklightMode::AutoBrightness),
             "smart_notifications" => Some(BacklightMode::SmartNotifications),
             "key_and_messages_night" => Some(BacklightMode::KeyAndMessagesNight),
-            "key_and_messages_and_smart_notifications" => Some(BacklightMode::KeyAndMessagesAndSmartNotifications),
+            "key_and_messages_and_smart_notifications" => {
+                Some(BacklightMode::KeyAndMessagesAndSmartNotifications)
+            }
             _ => None,
         }
     }
@@ -4039,8 +4043,12 @@ impl WktStepDuration {
             WktStepDuration::PowerLessThan => "power_less_than",
             WktStepDuration::PowerGreaterThan => "power_greater_than",
             WktStepDuration::TrainingPeaksTss => "training_peaks_tss",
-            WktStepDuration::RepeatUntilPowerLastLapLessThan => "repeat_until_power_last_lap_less_than",
-            WktStepDuration::RepeatUntilMaxPowerLastLapLessThan => "repeat_until_max_power_last_lap_less_than",
+            WktStepDuration::RepeatUntilPowerLastLapLessThan => {
+                "repeat_until_power_last_lap_less_than"
+            }
+            WktStepDuration::RepeatUntilMaxPowerLastLapLessThan => {
+                "repeat_until_max_power_last_lap_less_than"
+            }
             WktStepDuration::Power3sLessThan => "power_3s_less_than",
             WktStepDuration::Power10sLessThan => "power_10s_less_than",
             WktStepDuration::Power30sLessThan => "power_30s_less_than",
@@ -4114,8 +4122,12 @@ impl WktStepDuration {
             "power_less_than" => Some(WktStepDuration::PowerLessThan),
             "power_greater_than" => Some(WktStepDuration::PowerGreaterThan),
             "training_peaks_tss" => Some(WktStepDuration::TrainingPeaksTss),
-            "repeat_until_power_last_lap_less_than" => Some(WktStepDuration::RepeatUntilPowerLastLapLessThan),
-            "repeat_until_max_power_last_lap_less_than" => Some(WktStepDuration::RepeatUntilMaxPowerLastLapLessThan),
+            "repeat_until_power_last_lap_less_than" => {
+                Some(WktStepDuration::RepeatUntilPowerLastLapLessThan)
+            }
+            "repeat_until_max_power_last_lap_less_than" => {
+                Some(WktStepDuration::RepeatUntilMaxPowerLastLapLessThan)
+            }
             "power_3s_less_than" => Some(WktStepDuration::Power3sLessThan),
             "power_10s_less_than" => Some(WktStepDuration::Power10sLessThan),
             "power_30s_less_than" => Some(WktStepDuration::Power30sLessThan),
@@ -8715,14 +8727,20 @@ impl ConnectivityCapabilities {
             ConnectivityCapabilities::GpsEphemerisDownload => "gps_ephemeris_download",
             ConnectivityCapabilities::ExplicitArchive => "explicit_archive",
             ConnectivityCapabilities::SetupIncomplete => "setup_incomplete",
-            ConnectivityCapabilities::ContinueSyncAfterSoftwareUpdate => "continue_sync_after_software_update",
+            ConnectivityCapabilities::ContinueSyncAfterSoftwareUpdate => {
+                "continue_sync_after_software_update"
+            }
             ConnectivityCapabilities::ConnectIqAppDownload => "connect_iq_app_download",
             ConnectivityCapabilities::GolfCourseDownload => "golf_course_download",
             ConnectivityCapabilities::DeviceInitiatesSync => "device_initiates_sync",
             ConnectivityCapabilities::ConnectIqWatchAppDownload => "connect_iq_watch_app_download",
             ConnectivityCapabilities::ConnectIqWidgetDownload => "connect_iq_widget_download",
-            ConnectivityCapabilities::ConnectIqWatchFaceDownload => "connect_iq_watch_face_download",
-            ConnectivityCapabilities::ConnectIqDataFieldDownload => "connect_iq_data_field_download",
+            ConnectivityCapabilities::ConnectIqWatchFaceDownload => {
+                "connect_iq_watch_face_download"
+            }
+            ConnectivityCapabilities::ConnectIqDataFieldDownload => {
+                "connect_iq_data_field_download"
+            }
             ConnectivityCapabilities::ConnectIqAppManagment => "connect_iq_app_managment",
             ConnectivityCapabilities::SwingSensor => "swing_sensor",
             ConnectivityCapabilities::SwingSensorRemote => "swing_sensor_remote",
@@ -8792,14 +8810,22 @@ impl ConnectivityCapabilities {
             "gps_ephemeris_download" => Some(ConnectivityCapabilities::GpsEphemerisDownload),
             "explicit_archive" => Some(ConnectivityCapabilities::ExplicitArchive),
             "setup_incomplete" => Some(ConnectivityCapabilities::SetupIncomplete),
-            "continue_sync_after_software_update" => Some(ConnectivityCapabilities::ContinueSyncAfterSoftwareUpdate),
+            "continue_sync_after_software_update" => {
+                Some(ConnectivityCapabilities::ContinueSyncAfterSoftwareUpdate)
+            }
             "connect_iq_app_download" => Some(ConnectivityCapabilities::ConnectIqAppDownload),
             "golf_course_download" => Some(ConnectivityCapabilities::GolfCourseDownload),
             "device_initiates_sync" => Some(ConnectivityCapabilities::DeviceInitiatesSync),
-            "connect_iq_watch_app_download" => Some(ConnectivityCapabilities::ConnectIqWatchAppDownload),
+            "connect_iq_watch_app_download" => {
+                Some(ConnectivityCapabilities::ConnectIqWatchAppDownload)
+            }
             "connect_iq_widget_download" => Some(ConnectivityCapabilities::ConnectIqWidgetDownload),
-            "connect_iq_watch_face_download" => Some(ConnectivityCapabilities::ConnectIqWatchFaceDownload),
-            "connect_iq_data_field_download" => Some(ConnectivityCapabilities::ConnectIqDataFieldDownload),
+            "connect_iq_watch_face_download" => {
+                Some(ConnectivityCapabilities::ConnectIqWatchFaceDownload)
+            }
+            "connect_iq_data_field_download" => {
+                Some(ConnectivityCapabilities::ConnectIqDataFieldDownload)
+            }
             "connect_iq_app_managment" => Some(ConnectivityCapabilities::ConnectIqAppManagment),
             "swing_sensor" => Some(ConnectivityCapabilities::SwingSensor),
             "swing_sensor_remote" => Some(ConnectivityCapabilities::SwingSensorRemote),
@@ -10011,7 +10037,9 @@ impl AntChannelId {
     /// Snake-case canonical name from Profile.xlsx.
     pub fn as_str(&self) -> &'static str {
         match self {
-            AntChannelId::AntExtendedDeviceNumberUpperNibble => "ant_extended_device_number_upper_nibble",
+            AntChannelId::AntExtendedDeviceNumberUpperNibble => {
+                "ant_extended_device_number_upper_nibble"
+            }
             AntChannelId::AntTransmissionTypeLowerNibble => "ant_transmission_type_lower_nibble",
             AntChannelId::AntDeviceType => "ant_device_type",
             AntChannelId::AntDeviceNumber => "ant_device_number",
@@ -10032,8 +10060,12 @@ impl AntChannelId {
     /// Try to construct from the snake-case canonical name.
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
-            "ant_extended_device_number_upper_nibble" => Some(AntChannelId::AntExtendedDeviceNumberUpperNibble),
-            "ant_transmission_type_lower_nibble" => Some(AntChannelId::AntTransmissionTypeLowerNibble),
+            "ant_extended_device_number_upper_nibble" => {
+                Some(AntChannelId::AntExtendedDeviceNumberUpperNibble)
+            }
+            "ant_transmission_type_lower_nibble" => {
+                Some(AntChannelId::AntTransmissionTypeLowerNibble)
+            }
             "ant_device_type" => Some(AntChannelId::AntDeviceType),
             "ant_device_number" => Some(AntChannelId::AntDeviceNumber),
             _ => None,
@@ -11118,7 +11150,9 @@ impl ExdDataUnits {
             "enum_battery_status" => Some(ExdDataUnits::EnumBatteryStatus),
             "enum_bike_light_beam_angle_mode" => Some(ExdDataUnits::EnumBikeLightBeamAngleMode),
             "enum_bike_light_battery_status" => Some(ExdDataUnits::EnumBikeLightBatteryStatus),
-            "enum_bike_light_network_config_type" => Some(ExdDataUnits::EnumBikeLightNetworkConfigType),
+            "enum_bike_light_network_config_type" => {
+                Some(ExdDataUnits::EnumBikeLightNetworkConfigType)
+            }
             "lights" => Some(ExdDataUnits::Lights),
             "seconds" => Some(ExdDataUnits::Seconds),
             "minutes" => Some(ExdDataUnits::Minutes),
@@ -11506,7 +11540,9 @@ impl ExdDescriptors {
             ExdDescriptors::CourseDistance => "course_distance",
             ExdDescriptors::NavigationDistance => "navigation_distance",
             ExdDescriptors::CourseEstimatedTimeOfArrival => "course_estimated_time_of_arrival",
-            ExdDescriptors::NavigationEstimatedTimeOfArrival => "navigation_estimated_time_of_arrival",
+            ExdDescriptors::NavigationEstimatedTimeOfArrival => {
+                "navigation_estimated_time_of_arrival"
+            }
             ExdDescriptors::CourseTime => "course_time",
             ExdDescriptors::NavigationTime => "navigation_time",
             ExdDescriptors::CourseHeading => "course_heading",
@@ -11712,8 +11748,12 @@ impl ExdDescriptors {
             "workout_step" => Some(ExdDescriptors::WorkoutStep),
             "course_distance" => Some(ExdDescriptors::CourseDistance),
             "navigation_distance" => Some(ExdDescriptors::NavigationDistance),
-            "course_estimated_time_of_arrival" => Some(ExdDescriptors::CourseEstimatedTimeOfArrival),
-            "navigation_estimated_time_of_arrival" => Some(ExdDescriptors::NavigationEstimatedTimeOfArrival),
+            "course_estimated_time_of_arrival" => {
+                Some(ExdDescriptors::CourseEstimatedTimeOfArrival)
+            }
+            "navigation_estimated_time_of_arrival" => {
+                Some(ExdDescriptors::NavigationEstimatedTimeOfArrival)
+            }
             "course_time" => Some(ExdDescriptors::CourseTime),
             "navigation_time" => Some(ExdDescriptors::NavigationTime),
             "course_heading" => Some(ExdDescriptors::CourseHeading),
@@ -11734,8 +11774,12 @@ impl ExdDescriptors {
             "vertical_oscillation" => Some(ExdDescriptors::VerticalOscillation),
             "vertical_ratio" => Some(ExdDescriptors::VerticalRatio),
             "ground_contact_time" => Some(ExdDescriptors::GroundContactTime),
-            "left_ground_contact_time_balance" => Some(ExdDescriptors::LeftGroundContactTimeBalance),
-            "right_ground_contact_time_balance" => Some(ExdDescriptors::RightGroundContactTimeBalance),
+            "left_ground_contact_time_balance" => {
+                Some(ExdDescriptors::LeftGroundContactTimeBalance)
+            }
+            "right_ground_contact_time_balance" => {
+                Some(ExdDescriptors::RightGroundContactTimeBalance)
+            }
             "stride_length" => Some(ExdDescriptors::StrideLength),
             "running_cadence" => Some(ExdDescriptors::RunningCadence),
             "performance_condition" => Some(ExdDescriptors::PerformanceCondition),
@@ -11872,7 +11916,9 @@ impl SupportedExdScreenLayouts {
             "half_vertical" => Some(SupportedExdScreenLayouts::HalfVertical),
             "half_horizontal" => Some(SupportedExdScreenLayouts::HalfHorizontal),
             "half_vertical_right_split" => Some(SupportedExdScreenLayouts::HalfVerticalRightSplit),
-            "half_horizontal_bottom_split" => Some(SupportedExdScreenLayouts::HalfHorizontalBottomSplit),
+            "half_horizontal_bottom_split" => {
+                Some(SupportedExdScreenLayouts::HalfHorizontalBottomSplit)
+            }
             "full_quarter_split" => Some(SupportedExdScreenLayouts::FullQuarterSplit),
             "half_vertical_left_split" => Some(SupportedExdScreenLayouts::HalfVerticalLeftSplit),
             "half_horizontal_top_split" => Some(SupportedExdScreenLayouts::HalfHorizontalTopSplit),
@@ -12582,7 +12628,9 @@ impl BenchPressExerciseName {
     /// Snake-case canonical name from Profile.xlsx.
     pub fn as_str(&self) -> &'static str {
         match self {
-            BenchPressExerciseName::AlternatingDumbbellChestPressOnSwissBall => "alternating_dumbbell_chest_press_on_swiss_ball",
+            BenchPressExerciseName::AlternatingDumbbellChestPressOnSwissBall => {
+                "alternating_dumbbell_chest_press_on_swiss_ball"
+            }
             BenchPressExerciseName::BarbellBenchPress => "barbell_bench_press",
             BenchPressExerciseName::BarbellBoardBenchPress => "barbell_board_bench_press",
             BenchPressExerciseName::BarbellFloorPress => "barbell_floor_press",
@@ -12592,23 +12640,41 @@ impl BenchPressExerciseName {
             BenchPressExerciseName::DumbbellFloorPress => "dumbbell_floor_press",
             BenchPressExerciseName::InclineBarbellBenchPress => "incline_barbell_bench_press",
             BenchPressExerciseName::InclineDumbbellBenchPress => "incline_dumbbell_bench_press",
-            BenchPressExerciseName::InclineSmithMachineBenchPress => "incline_smith_machine_bench_press",
+            BenchPressExerciseName::InclineSmithMachineBenchPress => {
+                "incline_smith_machine_bench_press"
+            }
             BenchPressExerciseName::IsometricBarbellBenchPress => "isometric_barbell_bench_press",
             BenchPressExerciseName::KettlebellChestPress => "kettlebell_chest_press",
-            BenchPressExerciseName::NeutralGripDumbbellBenchPress => "neutral_grip_dumbbell_bench_press",
-            BenchPressExerciseName::NeutralGripDumbbellInclineBenchPress => "neutral_grip_dumbbell_incline_bench_press",
+            BenchPressExerciseName::NeutralGripDumbbellBenchPress => {
+                "neutral_grip_dumbbell_bench_press"
+            }
+            BenchPressExerciseName::NeutralGripDumbbellInclineBenchPress => {
+                "neutral_grip_dumbbell_incline_bench_press"
+            }
             BenchPressExerciseName::OneArmFloorPress => "one_arm_floor_press",
             BenchPressExerciseName::WeightedOneArmFloorPress => "weighted_one_arm_floor_press",
             BenchPressExerciseName::PartialLockout => "partial_lockout",
-            BenchPressExerciseName::ReverseGripBarbellBenchPress => "reverse_grip_barbell_bench_press",
-            BenchPressExerciseName::ReverseGripInclineBenchPress => "reverse_grip_incline_bench_press",
+            BenchPressExerciseName::ReverseGripBarbellBenchPress => {
+                "reverse_grip_barbell_bench_press"
+            }
+            BenchPressExerciseName::ReverseGripInclineBenchPress => {
+                "reverse_grip_incline_bench_press"
+            }
             BenchPressExerciseName::SingleArmCableChestPress => "single_arm_cable_chest_press",
-            BenchPressExerciseName::SingleArmDumbbellBenchPress => "single_arm_dumbbell_bench_press",
+            BenchPressExerciseName::SingleArmDumbbellBenchPress => {
+                "single_arm_dumbbell_bench_press"
+            }
             BenchPressExerciseName::SmithMachineBenchPress => "smith_machine_bench_press",
-            BenchPressExerciseName::SwissBallDumbbellChestPress => "swiss_ball_dumbbell_chest_press",
-            BenchPressExerciseName::TripleStopBarbellBenchPress => "triple_stop_barbell_bench_press",
+            BenchPressExerciseName::SwissBallDumbbellChestPress => {
+                "swiss_ball_dumbbell_chest_press"
+            }
+            BenchPressExerciseName::TripleStopBarbellBenchPress => {
+                "triple_stop_barbell_bench_press"
+            }
             BenchPressExerciseName::WideGripBarbellBenchPress => "wide_grip_barbell_bench_press",
-            BenchPressExerciseName::AlternatingDumbbellChestPress => "alternating_dumbbell_chest_press",
+            BenchPressExerciseName::AlternatingDumbbellChestPress => {
+                "alternating_dumbbell_chest_press"
+            }
         }
     }
 
@@ -12649,33 +12715,67 @@ impl BenchPressExerciseName {
     /// Try to construct from the snake-case canonical name.
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
-            "alternating_dumbbell_chest_press_on_swiss_ball" => Some(BenchPressExerciseName::AlternatingDumbbellChestPressOnSwissBall),
+            "alternating_dumbbell_chest_press_on_swiss_ball" => {
+                Some(BenchPressExerciseName::AlternatingDumbbellChestPressOnSwissBall)
+            }
             "barbell_bench_press" => Some(BenchPressExerciseName::BarbellBenchPress),
             "barbell_board_bench_press" => Some(BenchPressExerciseName::BarbellBoardBenchPress),
             "barbell_floor_press" => Some(BenchPressExerciseName::BarbellFloorPress),
-            "close_grip_barbell_bench_press" => Some(BenchPressExerciseName::CloseGripBarbellBenchPress),
-            "decline_dumbbell_bench_press" => Some(BenchPressExerciseName::DeclineDumbbellBenchPress),
+            "close_grip_barbell_bench_press" => {
+                Some(BenchPressExerciseName::CloseGripBarbellBenchPress)
+            }
+            "decline_dumbbell_bench_press" => {
+                Some(BenchPressExerciseName::DeclineDumbbellBenchPress)
+            }
             "dumbbell_bench_press" => Some(BenchPressExerciseName::DumbbellBenchPress),
             "dumbbell_floor_press" => Some(BenchPressExerciseName::DumbbellFloorPress),
             "incline_barbell_bench_press" => Some(BenchPressExerciseName::InclineBarbellBenchPress),
-            "incline_dumbbell_bench_press" => Some(BenchPressExerciseName::InclineDumbbellBenchPress),
-            "incline_smith_machine_bench_press" => Some(BenchPressExerciseName::InclineSmithMachineBenchPress),
-            "isometric_barbell_bench_press" => Some(BenchPressExerciseName::IsometricBarbellBenchPress),
+            "incline_dumbbell_bench_press" => {
+                Some(BenchPressExerciseName::InclineDumbbellBenchPress)
+            }
+            "incline_smith_machine_bench_press" => {
+                Some(BenchPressExerciseName::InclineSmithMachineBenchPress)
+            }
+            "isometric_barbell_bench_press" => {
+                Some(BenchPressExerciseName::IsometricBarbellBenchPress)
+            }
             "kettlebell_chest_press" => Some(BenchPressExerciseName::KettlebellChestPress),
-            "neutral_grip_dumbbell_bench_press" => Some(BenchPressExerciseName::NeutralGripDumbbellBenchPress),
-            "neutral_grip_dumbbell_incline_bench_press" => Some(BenchPressExerciseName::NeutralGripDumbbellInclineBenchPress),
+            "neutral_grip_dumbbell_bench_press" => {
+                Some(BenchPressExerciseName::NeutralGripDumbbellBenchPress)
+            }
+            "neutral_grip_dumbbell_incline_bench_press" => {
+                Some(BenchPressExerciseName::NeutralGripDumbbellInclineBenchPress)
+            }
             "one_arm_floor_press" => Some(BenchPressExerciseName::OneArmFloorPress),
-            "weighted_one_arm_floor_press" => Some(BenchPressExerciseName::WeightedOneArmFloorPress),
+            "weighted_one_arm_floor_press" => {
+                Some(BenchPressExerciseName::WeightedOneArmFloorPress)
+            }
             "partial_lockout" => Some(BenchPressExerciseName::PartialLockout),
-            "reverse_grip_barbell_bench_press" => Some(BenchPressExerciseName::ReverseGripBarbellBenchPress),
-            "reverse_grip_incline_bench_press" => Some(BenchPressExerciseName::ReverseGripInclineBenchPress),
-            "single_arm_cable_chest_press" => Some(BenchPressExerciseName::SingleArmCableChestPress),
-            "single_arm_dumbbell_bench_press" => Some(BenchPressExerciseName::SingleArmDumbbellBenchPress),
+            "reverse_grip_barbell_bench_press" => {
+                Some(BenchPressExerciseName::ReverseGripBarbellBenchPress)
+            }
+            "reverse_grip_incline_bench_press" => {
+                Some(BenchPressExerciseName::ReverseGripInclineBenchPress)
+            }
+            "single_arm_cable_chest_press" => {
+                Some(BenchPressExerciseName::SingleArmCableChestPress)
+            }
+            "single_arm_dumbbell_bench_press" => {
+                Some(BenchPressExerciseName::SingleArmDumbbellBenchPress)
+            }
             "smith_machine_bench_press" => Some(BenchPressExerciseName::SmithMachineBenchPress),
-            "swiss_ball_dumbbell_chest_press" => Some(BenchPressExerciseName::SwissBallDumbbellChestPress),
-            "triple_stop_barbell_bench_press" => Some(BenchPressExerciseName::TripleStopBarbellBenchPress),
-            "wide_grip_barbell_bench_press" => Some(BenchPressExerciseName::WideGripBarbellBenchPress),
-            "alternating_dumbbell_chest_press" => Some(BenchPressExerciseName::AlternatingDumbbellChestPress),
+            "swiss_ball_dumbbell_chest_press" => {
+                Some(BenchPressExerciseName::SwissBallDumbbellChestPress)
+            }
+            "triple_stop_barbell_bench_press" => {
+                Some(BenchPressExerciseName::TripleStopBarbellBenchPress)
+            }
+            "wide_grip_barbell_bench_press" => {
+                Some(BenchPressExerciseName::WideGripBarbellBenchPress)
+            }
+            "alternating_dumbbell_chest_press" => {
+                Some(BenchPressExerciseName::AlternatingDumbbellChestPress)
+            }
             _ => None,
         }
     }
@@ -12715,20 +12815,30 @@ impl CalfRaiseExerciseName {
             CalfRaiseExerciseName::_3WayCalfRaise => "3_way_calf_raise",
             CalfRaiseExerciseName::_3WayWeightedCalfRaise => "3_way_weighted_calf_raise",
             CalfRaiseExerciseName::_3WaySingleLegCalfRaise => "3_way_single_leg_calf_raise",
-            CalfRaiseExerciseName::_3WayWeightedSingleLegCalfRaise => "3_way_weighted_single_leg_calf_raise",
+            CalfRaiseExerciseName::_3WayWeightedSingleLegCalfRaise => {
+                "3_way_weighted_single_leg_calf_raise"
+            }
             CalfRaiseExerciseName::DonkeyCalfRaise => "donkey_calf_raise",
             CalfRaiseExerciseName::WeightedDonkeyCalfRaise => "weighted_donkey_calf_raise",
             CalfRaiseExerciseName::SeatedCalfRaise => "seated_calf_raise",
             CalfRaiseExerciseName::WeightedSeatedCalfRaise => "weighted_seated_calf_raise",
             CalfRaiseExerciseName::SeatedDumbbellToeRaise => "seated_dumbbell_toe_raise",
             CalfRaiseExerciseName::SingleLegBentKneeCalfRaise => "single_leg_bent_knee_calf_raise",
-            CalfRaiseExerciseName::WeightedSingleLegBentKneeCalfRaise => "weighted_single_leg_bent_knee_calf_raise",
+            CalfRaiseExerciseName::WeightedSingleLegBentKneeCalfRaise => {
+                "weighted_single_leg_bent_knee_calf_raise"
+            }
             CalfRaiseExerciseName::SingleLegDeclinePushUp => "single_leg_decline_push_up",
             CalfRaiseExerciseName::SingleLegDonkeyCalfRaise => "single_leg_donkey_calf_raise",
-            CalfRaiseExerciseName::WeightedSingleLegDonkeyCalfRaise => "weighted_single_leg_donkey_calf_raise",
-            CalfRaiseExerciseName::SingleLegHipRaiseWithKneeHold => "single_leg_hip_raise_with_knee_hold",
+            CalfRaiseExerciseName::WeightedSingleLegDonkeyCalfRaise => {
+                "weighted_single_leg_donkey_calf_raise"
+            }
+            CalfRaiseExerciseName::SingleLegHipRaiseWithKneeHold => {
+                "single_leg_hip_raise_with_knee_hold"
+            }
             CalfRaiseExerciseName::SingleLegStandingCalfRaise => "single_leg_standing_calf_raise",
-            CalfRaiseExerciseName::SingleLegStandingDumbbellCalfRaise => "single_leg_standing_dumbbell_calf_raise",
+            CalfRaiseExerciseName::SingleLegStandingDumbbellCalfRaise => {
+                "single_leg_standing_dumbbell_calf_raise"
+            }
             CalfRaiseExerciseName::StandingBarbellCalfRaise => "standing_barbell_calf_raise",
             CalfRaiseExerciseName::StandingCalfRaise => "standing_calf_raise",
             CalfRaiseExerciseName::WeightedStandingCalfRaise => "weighted_standing_calf_raise",
@@ -12770,24 +12880,42 @@ impl CalfRaiseExerciseName {
             "3_way_calf_raise" => Some(CalfRaiseExerciseName::_3WayCalfRaise),
             "3_way_weighted_calf_raise" => Some(CalfRaiseExerciseName::_3WayWeightedCalfRaise),
             "3_way_single_leg_calf_raise" => Some(CalfRaiseExerciseName::_3WaySingleLegCalfRaise),
-            "3_way_weighted_single_leg_calf_raise" => Some(CalfRaiseExerciseName::_3WayWeightedSingleLegCalfRaise),
+            "3_way_weighted_single_leg_calf_raise" => {
+                Some(CalfRaiseExerciseName::_3WayWeightedSingleLegCalfRaise)
+            }
             "donkey_calf_raise" => Some(CalfRaiseExerciseName::DonkeyCalfRaise),
             "weighted_donkey_calf_raise" => Some(CalfRaiseExerciseName::WeightedDonkeyCalfRaise),
             "seated_calf_raise" => Some(CalfRaiseExerciseName::SeatedCalfRaise),
             "weighted_seated_calf_raise" => Some(CalfRaiseExerciseName::WeightedSeatedCalfRaise),
             "seated_dumbbell_toe_raise" => Some(CalfRaiseExerciseName::SeatedDumbbellToeRaise),
-            "single_leg_bent_knee_calf_raise" => Some(CalfRaiseExerciseName::SingleLegBentKneeCalfRaise),
-            "weighted_single_leg_bent_knee_calf_raise" => Some(CalfRaiseExerciseName::WeightedSingleLegBentKneeCalfRaise),
+            "single_leg_bent_knee_calf_raise" => {
+                Some(CalfRaiseExerciseName::SingleLegBentKneeCalfRaise)
+            }
+            "weighted_single_leg_bent_knee_calf_raise" => {
+                Some(CalfRaiseExerciseName::WeightedSingleLegBentKneeCalfRaise)
+            }
             "single_leg_decline_push_up" => Some(CalfRaiseExerciseName::SingleLegDeclinePushUp),
             "single_leg_donkey_calf_raise" => Some(CalfRaiseExerciseName::SingleLegDonkeyCalfRaise),
-            "weighted_single_leg_donkey_calf_raise" => Some(CalfRaiseExerciseName::WeightedSingleLegDonkeyCalfRaise),
-            "single_leg_hip_raise_with_knee_hold" => Some(CalfRaiseExerciseName::SingleLegHipRaiseWithKneeHold),
-            "single_leg_standing_calf_raise" => Some(CalfRaiseExerciseName::SingleLegStandingCalfRaise),
-            "single_leg_standing_dumbbell_calf_raise" => Some(CalfRaiseExerciseName::SingleLegStandingDumbbellCalfRaise),
+            "weighted_single_leg_donkey_calf_raise" => {
+                Some(CalfRaiseExerciseName::WeightedSingleLegDonkeyCalfRaise)
+            }
+            "single_leg_hip_raise_with_knee_hold" => {
+                Some(CalfRaiseExerciseName::SingleLegHipRaiseWithKneeHold)
+            }
+            "single_leg_standing_calf_raise" => {
+                Some(CalfRaiseExerciseName::SingleLegStandingCalfRaise)
+            }
+            "single_leg_standing_dumbbell_calf_raise" => {
+                Some(CalfRaiseExerciseName::SingleLegStandingDumbbellCalfRaise)
+            }
             "standing_barbell_calf_raise" => Some(CalfRaiseExerciseName::StandingBarbellCalfRaise),
             "standing_calf_raise" => Some(CalfRaiseExerciseName::StandingCalfRaise),
-            "weighted_standing_calf_raise" => Some(CalfRaiseExerciseName::WeightedStandingCalfRaise),
-            "standing_dumbbell_calf_raise" => Some(CalfRaiseExerciseName::StandingDumbbellCalfRaise),
+            "weighted_standing_calf_raise" => {
+                Some(CalfRaiseExerciseName::WeightedStandingCalfRaise)
+            }
+            "standing_dumbbell_calf_raise" => {
+                Some(CalfRaiseExerciseName::StandingDumbbellCalfRaise)
+            }
             _ => None,
         }
     }
@@ -12872,8 +13000,12 @@ impl CardioExerciseName {
             CardioExerciseName::Spinning => "spinning",
             CardioExerciseName::PolePaddleForwardWheelchair => "pole_paddle_forward_wheelchair",
             CardioExerciseName::PolePaddleBackwardWheelchair => "pole_paddle_backward_wheelchair",
-            CardioExerciseName::PoleHandcycleForwardWheelchair => "pole_handcycle_forward_wheelchair",
-            CardioExerciseName::PoleHandcycleBackwardWheelchair => "pole_handcycle_backward_wheelchair",
+            CardioExerciseName::PoleHandcycleForwardWheelchair => {
+                "pole_handcycle_forward_wheelchair"
+            }
+            CardioExerciseName::PoleHandcycleBackwardWheelchair => {
+                "pole_handcycle_backward_wheelchair"
+            }
             CardioExerciseName::PoleRainbowWheelchair => "pole_rainbow_wheelchair",
             CardioExerciseName::DoublePunchForwardWheelchair => "double_punch_forward_wheelchair",
             CardioExerciseName::DoublePunchDownWheelchair => "double_punch_down_wheelchair",
@@ -12969,14 +13101,26 @@ impl CardioExerciseName {
             "weighted_triple_under" => Some(CardioExerciseName::WeightedTripleUnder),
             "elliptical" => Some(CardioExerciseName::Elliptical),
             "spinning" => Some(CardioExerciseName::Spinning),
-            "pole_paddle_forward_wheelchair" => Some(CardioExerciseName::PolePaddleForwardWheelchair),
-            "pole_paddle_backward_wheelchair" => Some(CardioExerciseName::PolePaddleBackwardWheelchair),
-            "pole_handcycle_forward_wheelchair" => Some(CardioExerciseName::PoleHandcycleForwardWheelchair),
-            "pole_handcycle_backward_wheelchair" => Some(CardioExerciseName::PoleHandcycleBackwardWheelchair),
+            "pole_paddle_forward_wheelchair" => {
+                Some(CardioExerciseName::PolePaddleForwardWheelchair)
+            }
+            "pole_paddle_backward_wheelchair" => {
+                Some(CardioExerciseName::PolePaddleBackwardWheelchair)
+            }
+            "pole_handcycle_forward_wheelchair" => {
+                Some(CardioExerciseName::PoleHandcycleForwardWheelchair)
+            }
+            "pole_handcycle_backward_wheelchair" => {
+                Some(CardioExerciseName::PoleHandcycleBackwardWheelchair)
+            }
             "pole_rainbow_wheelchair" => Some(CardioExerciseName::PoleRainbowWheelchair),
-            "double_punch_forward_wheelchair" => Some(CardioExerciseName::DoublePunchForwardWheelchair),
+            "double_punch_forward_wheelchair" => {
+                Some(CardioExerciseName::DoublePunchForwardWheelchair)
+            }
             "double_punch_down_wheelchair" => Some(CardioExerciseName::DoublePunchDownWheelchair),
-            "double_punch_sideways_wheelchair" => Some(CardioExerciseName::DoublePunchSidewaysWheelchair),
+            "double_punch_sideways_wheelchair" => {
+                Some(CardioExerciseName::DoublePunchSidewaysWheelchair)
+            }
             "double_punch_up_wheelchair" => Some(CardioExerciseName::DoublePunchUpWheelchair),
             "sit_ski_wheelchair" => Some(CardioExerciseName::SitSkiWheelchair),
             "sitting_jacks_wheelchair" => Some(CardioExerciseName::SittingJacksWheelchair),
@@ -13099,9 +13243,13 @@ impl ChopExerciseName {
             ChopExerciseName::HalfKneelingRotation => "half_kneeling_rotation",
             ChopExerciseName::WeightedHalfKneelingRotation => "weighted_half_kneeling_rotation",
             ChopExerciseName::HalfKneelingRotationalChop => "half_kneeling_rotational_chop",
-            ChopExerciseName::HalfKneelingRotationalReverseChop => "half_kneeling_rotational_reverse_chop",
+            ChopExerciseName::HalfKneelingRotationalReverseChop => {
+                "half_kneeling_rotational_reverse_chop"
+            }
             ChopExerciseName::HalfKneelingStabilityChop => "half_kneeling_stability_chop",
-            ChopExerciseName::HalfKneelingStabilityReverseChop => "half_kneeling_stability_reverse_chop",
+            ChopExerciseName::HalfKneelingStabilityReverseChop => {
+                "half_kneeling_stability_reverse_chop"
+            }
             ChopExerciseName::KneelingRotationalChop => "kneeling_rotational_chop",
             ChopExerciseName::KneelingRotationalReverseChop => "kneeling_rotational_reverse_chop",
             ChopExerciseName::KneelingStabilityChop => "kneeling_stability_chop",
@@ -13111,7 +13259,9 @@ impl ChopExerciseName {
             ChopExerciseName::WeightedPowerSquatChops => "weighted_power_squat_chops",
             ChopExerciseName::StandingRotationalChop => "standing_rotational_chop",
             ChopExerciseName::StandingSplitRotationalChop => "standing_split_rotational_chop",
-            ChopExerciseName::StandingSplitRotationalReverseChop => "standing_split_rotational_reverse_chop",
+            ChopExerciseName::StandingSplitRotationalReverseChop => {
+                "standing_split_rotational_reverse_chop"
+            }
             ChopExerciseName::StandingStabilityReverseChop => "standing_stability_reverse_chop",
         }
     }
@@ -13156,13 +13306,21 @@ impl ChopExerciseName {
             "weighted_cross_chop_to_knee" => Some(ChopExerciseName::WeightedCrossChopToKnee),
             "dumbbell_chop" => Some(ChopExerciseName::DumbbellChop),
             "half_kneeling_rotation" => Some(ChopExerciseName::HalfKneelingRotation),
-            "weighted_half_kneeling_rotation" => Some(ChopExerciseName::WeightedHalfKneelingRotation),
+            "weighted_half_kneeling_rotation" => {
+                Some(ChopExerciseName::WeightedHalfKneelingRotation)
+            }
             "half_kneeling_rotational_chop" => Some(ChopExerciseName::HalfKneelingRotationalChop),
-            "half_kneeling_rotational_reverse_chop" => Some(ChopExerciseName::HalfKneelingRotationalReverseChop),
+            "half_kneeling_rotational_reverse_chop" => {
+                Some(ChopExerciseName::HalfKneelingRotationalReverseChop)
+            }
             "half_kneeling_stability_chop" => Some(ChopExerciseName::HalfKneelingStabilityChop),
-            "half_kneeling_stability_reverse_chop" => Some(ChopExerciseName::HalfKneelingStabilityReverseChop),
+            "half_kneeling_stability_reverse_chop" => {
+                Some(ChopExerciseName::HalfKneelingStabilityReverseChop)
+            }
             "kneeling_rotational_chop" => Some(ChopExerciseName::KneelingRotationalChop),
-            "kneeling_rotational_reverse_chop" => Some(ChopExerciseName::KneelingRotationalReverseChop),
+            "kneeling_rotational_reverse_chop" => {
+                Some(ChopExerciseName::KneelingRotationalReverseChop)
+            }
             "kneeling_stability_chop" => Some(ChopExerciseName::KneelingStabilityChop),
             "kneeling_woodchopper" => Some(ChopExerciseName::KneelingWoodchopper),
             "medicine_ball_wood_chops" => Some(ChopExerciseName::MedicineBallWoodChops),
@@ -13170,8 +13328,12 @@ impl ChopExerciseName {
             "weighted_power_squat_chops" => Some(ChopExerciseName::WeightedPowerSquatChops),
             "standing_rotational_chop" => Some(ChopExerciseName::StandingRotationalChop),
             "standing_split_rotational_chop" => Some(ChopExerciseName::StandingSplitRotationalChop),
-            "standing_split_rotational_reverse_chop" => Some(ChopExerciseName::StandingSplitRotationalReverseChop),
-            "standing_stability_reverse_chop" => Some(ChopExerciseName::StandingStabilityReverseChop),
+            "standing_split_rotational_reverse_chop" => {
+                Some(ChopExerciseName::StandingSplitRotationalReverseChop)
+            }
+            "standing_stability_reverse_chop" => {
+                Some(ChopExerciseName::StandingStabilityReverseChop)
+            }
             _ => None,
         }
     }
@@ -13296,7 +13458,9 @@ impl CoreExerciseName {
             CoreExerciseName::CyclingRussianTwist => "cycling_russian_twist",
             CoreExerciseName::WeightedCyclingRussianTwist => "weighted_cycling_russian_twist",
             CoreExerciseName::ElevatedFeetRussianTwist => "elevated_feet_russian_twist",
-            CoreExerciseName::WeightedElevatedFeetRussianTwist => "weighted_elevated_feet_russian_twist",
+            CoreExerciseName::WeightedElevatedFeetRussianTwist => {
+                "weighted_elevated_feet_russian_twist"
+            }
             CoreExerciseName::HalfTurkishGetUp => "half_turkish_get_up",
             CoreExerciseName::KettlebellWindmill => "kettlebell_windmill",
             CoreExerciseName::KneelingAbWheel => "kneeling_ab_wheel",
@@ -13354,7 +13518,9 @@ impl CoreExerciseName {
             CoreExerciseName::Swimming => "swimming",
             CoreExerciseName::Teaser => "teaser",
             CoreExerciseName::TheHundred => "the_hundred",
-            CoreExerciseName::BicepCurlWithLegExtensionWithWeights => "bicep_curl_with_leg_extension_with_weights",
+            CoreExerciseName::BicepCurlWithLegExtensionWithWeights => {
+                "bicep_curl_with_leg_extension_with_weights"
+            }
             CoreExerciseName::HangingLSit => "hanging_l_sit",
             CoreExerciseName::LowerLiftWithWeights => "lower_lift_with_weights",
             CoreExerciseName::RingLSit => "ring_l_sit",
@@ -13497,7 +13663,9 @@ impl CoreExerciseName {
             "cycling_russian_twist" => Some(CoreExerciseName::CyclingRussianTwist),
             "weighted_cycling_russian_twist" => Some(CoreExerciseName::WeightedCyclingRussianTwist),
             "elevated_feet_russian_twist" => Some(CoreExerciseName::ElevatedFeetRussianTwist),
-            "weighted_elevated_feet_russian_twist" => Some(CoreExerciseName::WeightedElevatedFeetRussianTwist),
+            "weighted_elevated_feet_russian_twist" => {
+                Some(CoreExerciseName::WeightedElevatedFeetRussianTwist)
+            }
             "half_turkish_get_up" => Some(CoreExerciseName::HalfTurkishGetUp),
             "kettlebell_windmill" => Some(CoreExerciseName::KettlebellWindmill),
             "kneeling_ab_wheel" => Some(CoreExerciseName::KneelingAbWheel),
@@ -13516,7 +13684,9 @@ impl CoreExerciseName {
             "triangle_hip_press" => Some(CoreExerciseName::TriangleHipPress),
             "weighted_triangle_hip_press" => Some(CoreExerciseName::WeightedTriangleHipPress),
             "trx_suspended_jackknife" => Some(CoreExerciseName::TrxSuspendedJackknife),
-            "weighted_trx_suspended_jackknife" => Some(CoreExerciseName::WeightedTrxSuspendedJackknife),
+            "weighted_trx_suspended_jackknife" => {
+                Some(CoreExerciseName::WeightedTrxSuspendedJackknife)
+            }
             "u_boat" => Some(CoreExerciseName::UBoat),
             "weighted_u_boat" => Some(CoreExerciseName::WeightedUBoat),
             "windmill_switches" => Some(CoreExerciseName::WindmillSwitches),
@@ -13555,14 +13725,18 @@ impl CoreExerciseName {
             "swimming" => Some(CoreExerciseName::Swimming),
             "teaser" => Some(CoreExerciseName::Teaser),
             "the_hundred" => Some(CoreExerciseName::TheHundred),
-            "bicep_curl_with_leg_extension_with_weights" => Some(CoreExerciseName::BicepCurlWithLegExtensionWithWeights),
+            "bicep_curl_with_leg_extension_with_weights" => {
+                Some(CoreExerciseName::BicepCurlWithLegExtensionWithWeights)
+            }
             "hanging_l_sit" => Some(CoreExerciseName::HangingLSit),
             "lower_lift_with_weights" => Some(CoreExerciseName::LowerLiftWithWeights),
             "ring_l_sit" => Some(CoreExerciseName::RingLSit),
             "rowing_1_with_weights" => Some(CoreExerciseName::Rowing1WithWeights),
             "rowing_2_with_weights" => Some(CoreExerciseName::Rowing2WithWeights),
             "scissors_with_weights" => Some(CoreExerciseName::ScissorsWithWeights),
-            "single_leg_stretch_with_weights" => Some(CoreExerciseName::SingleLegStretchWithWeights),
+            "single_leg_stretch_with_weights" => {
+                Some(CoreExerciseName::SingleLegStretchWithWeights)
+            }
             "toes_to_elbows" => Some(CoreExerciseName::ToesToElbows),
             "weighted_criss_cross" => Some(CoreExerciseName::WeightedCrissCross),
             "weighted_double_leg_stretch" => Some(CoreExerciseName::WeightedDoubleLegStretch),
@@ -13683,7 +13857,9 @@ impl CrunchExerciseName {
             CrunchExerciseName::CrossedArmsCrunch => "crossed_arms_crunch",
             CrunchExerciseName::WeightedCrossedArmsCrunch => "weighted_crossed_arms_crunch",
             CrunchExerciseName::CrossLegReverseCrunch => "cross_leg_reverse_crunch",
-            CrunchExerciseName::WeightedCrossLegReverseCrunch => "weighted_cross_leg_reverse_crunch",
+            CrunchExerciseName::WeightedCrossLegReverseCrunch => {
+                "weighted_cross_leg_reverse_crunch"
+            }
             CrunchExerciseName::CrunchChop => "crunch_chop",
             CrunchExerciseName::WeightedCrunchChop => "weighted_crunch_chop",
             CrunchExerciseName::DoubleCrunch => "double_crunch",
@@ -13692,13 +13868,25 @@ impl CrunchExerciseName {
             CrunchExerciseName::WeightedElbowToKneeCrunch => "weighted_elbow_to_knee_crunch",
             CrunchExerciseName::FlutterKicks => "flutter_kicks",
             CrunchExerciseName::WeightedFlutterKicks => "weighted_flutter_kicks",
-            CrunchExerciseName::FoamRollerReverseCrunchOnBench => "foam_roller_reverse_crunch_on_bench",
-            CrunchExerciseName::WeightedFoamRollerReverseCrunchOnBench => "weighted_foam_roller_reverse_crunch_on_bench",
-            CrunchExerciseName::FoamRollerReverseCrunchWithDumbbell => "foam_roller_reverse_crunch_with_dumbbell",
-            CrunchExerciseName::FoamRollerReverseCrunchWithMedicineBall => "foam_roller_reverse_crunch_with_medicine_ball",
+            CrunchExerciseName::FoamRollerReverseCrunchOnBench => {
+                "foam_roller_reverse_crunch_on_bench"
+            }
+            CrunchExerciseName::WeightedFoamRollerReverseCrunchOnBench => {
+                "weighted_foam_roller_reverse_crunch_on_bench"
+            }
+            CrunchExerciseName::FoamRollerReverseCrunchWithDumbbell => {
+                "foam_roller_reverse_crunch_with_dumbbell"
+            }
+            CrunchExerciseName::FoamRollerReverseCrunchWithMedicineBall => {
+                "foam_roller_reverse_crunch_with_medicine_ball"
+            }
             CrunchExerciseName::FrogPress => "frog_press",
-            CrunchExerciseName::HangingKneeRaiseObliqueCrunch => "hanging_knee_raise_oblique_crunch",
-            CrunchExerciseName::WeightedHangingKneeRaiseObliqueCrunch => "weighted_hanging_knee_raise_oblique_crunch",
+            CrunchExerciseName::HangingKneeRaiseObliqueCrunch => {
+                "hanging_knee_raise_oblique_crunch"
+            }
+            CrunchExerciseName::WeightedHangingKneeRaiseObliqueCrunch => {
+                "weighted_hanging_knee_raise_oblique_crunch"
+            }
             CrunchExerciseName::HipCrossover => "hip_crossover",
             CrunchExerciseName::WeightedHipCrossover => "weighted_hip_crossover",
             CrunchExerciseName::HollowRock => "hollow_rock",
@@ -13715,30 +13903,46 @@ impl CrunchExerciseName {
             CrunchExerciseName::LegLevers => "leg_levers",
             CrunchExerciseName::McgillCurlUp => "mcgill_curl_up",
             CrunchExerciseName::WeightedMcgillCurlUp => "weighted_mcgill_curl_up",
-            CrunchExerciseName::ModifiedPilatesRollUpWithBall => "modified_pilates_roll_up_with_ball",
-            CrunchExerciseName::WeightedModifiedPilatesRollUpWithBall => "weighted_modified_pilates_roll_up_with_ball",
+            CrunchExerciseName::ModifiedPilatesRollUpWithBall => {
+                "modified_pilates_roll_up_with_ball"
+            }
+            CrunchExerciseName::WeightedModifiedPilatesRollUpWithBall => {
+                "weighted_modified_pilates_roll_up_with_ball"
+            }
             CrunchExerciseName::PilatesCrunch => "pilates_crunch",
             CrunchExerciseName::WeightedPilatesCrunch => "weighted_pilates_crunch",
             CrunchExerciseName::PilatesRollUpWithBall => "pilates_roll_up_with_ball",
-            CrunchExerciseName::WeightedPilatesRollUpWithBall => "weighted_pilates_roll_up_with_ball",
+            CrunchExerciseName::WeightedPilatesRollUpWithBall => {
+                "weighted_pilates_roll_up_with_ball"
+            }
             CrunchExerciseName::RaisedLegsCrunch => "raised_legs_crunch",
             CrunchExerciseName::WeightedRaisedLegsCrunch => "weighted_raised_legs_crunch",
             CrunchExerciseName::ReverseCrunch => "reverse_crunch",
             CrunchExerciseName::WeightedReverseCrunch => "weighted_reverse_crunch",
             CrunchExerciseName::ReverseCrunchOnABench => "reverse_crunch_on_a_bench",
-            CrunchExerciseName::WeightedReverseCrunchOnABench => "weighted_reverse_crunch_on_a_bench",
+            CrunchExerciseName::WeightedReverseCrunchOnABench => {
+                "weighted_reverse_crunch_on_a_bench"
+            }
             CrunchExerciseName::ReverseCurlAndLift => "reverse_curl_and_lift",
             CrunchExerciseName::WeightedReverseCurlAndLift => "weighted_reverse_curl_and_lift",
             CrunchExerciseName::RotationalLift => "rotational_lift",
             CrunchExerciseName::WeightedRotationalLift => "weighted_rotational_lift",
-            CrunchExerciseName::SeatedAlternatingReverseCrunch => "seated_alternating_reverse_crunch",
-            CrunchExerciseName::WeightedSeatedAlternatingReverseCrunch => "weighted_seated_alternating_reverse_crunch",
+            CrunchExerciseName::SeatedAlternatingReverseCrunch => {
+                "seated_alternating_reverse_crunch"
+            }
+            CrunchExerciseName::WeightedSeatedAlternatingReverseCrunch => {
+                "weighted_seated_alternating_reverse_crunch"
+            }
             CrunchExerciseName::SeatedLegU => "seated_leg_u",
             CrunchExerciseName::WeightedSeatedLegU => "weighted_seated_leg_u",
             CrunchExerciseName::SideToSideCrunchAndWeave => "side_to_side_crunch_and_weave",
-            CrunchExerciseName::WeightedSideToSideCrunchAndWeave => "weighted_side_to_side_crunch_and_weave",
+            CrunchExerciseName::WeightedSideToSideCrunchAndWeave => {
+                "weighted_side_to_side_crunch_and_weave"
+            }
             CrunchExerciseName::SingleLegReverseCrunch => "single_leg_reverse_crunch",
-            CrunchExerciseName::WeightedSingleLegReverseCrunch => "weighted_single_leg_reverse_crunch",
+            CrunchExerciseName::WeightedSingleLegReverseCrunch => {
+                "weighted_single_leg_reverse_crunch"
+            }
             CrunchExerciseName::SkaterCrunchCross => "skater_crunch_cross",
             CrunchExerciseName::WeightedSkaterCrunchCross => "weighted_skater_crunch_cross",
             CrunchExerciseName::StandingCableCrunch => "standing_cable_crunch",
@@ -13747,13 +13951,19 @@ impl CrunchExerciseName {
             CrunchExerciseName::WeightedStepClimb => "weighted_step_climb",
             CrunchExerciseName::SwissBallCrunch => "swiss_ball_crunch",
             CrunchExerciseName::SwissBallReverseCrunch => "swiss_ball_reverse_crunch",
-            CrunchExerciseName::WeightedSwissBallReverseCrunch => "weighted_swiss_ball_reverse_crunch",
+            CrunchExerciseName::WeightedSwissBallReverseCrunch => {
+                "weighted_swiss_ball_reverse_crunch"
+            }
             CrunchExerciseName::SwissBallRussianTwist => "swiss_ball_russian_twist",
-            CrunchExerciseName::WeightedSwissBallRussianTwist => "weighted_swiss_ball_russian_twist",
+            CrunchExerciseName::WeightedSwissBallRussianTwist => {
+                "weighted_swiss_ball_russian_twist"
+            }
             CrunchExerciseName::SwissBallSideCrunch => "swiss_ball_side_crunch",
             CrunchExerciseName::WeightedSwissBallSideCrunch => "weighted_swiss_ball_side_crunch",
             CrunchExerciseName::ThoracicCrunchesOnFoamRoller => "thoracic_crunches_on_foam_roller",
-            CrunchExerciseName::WeightedThoracicCrunchesOnFoamRoller => "weighted_thoracic_crunches_on_foam_roller",
+            CrunchExerciseName::WeightedThoracicCrunchesOnFoamRoller => {
+                "weighted_thoracic_crunches_on_foam_roller"
+            }
             CrunchExerciseName::TricepsCrunch => "triceps_crunch",
             CrunchExerciseName::WeightedBicycleCrunch => "weighted_bicycle_crunch",
             CrunchExerciseName::WeightedCrunch => "weighted_crunch",
@@ -13868,7 +14078,9 @@ impl CrunchExerciseName {
             "crossed_arms_crunch" => Some(CrunchExerciseName::CrossedArmsCrunch),
             "weighted_crossed_arms_crunch" => Some(CrunchExerciseName::WeightedCrossedArmsCrunch),
             "cross_leg_reverse_crunch" => Some(CrunchExerciseName::CrossLegReverseCrunch),
-            "weighted_cross_leg_reverse_crunch" => Some(CrunchExerciseName::WeightedCrossLegReverseCrunch),
+            "weighted_cross_leg_reverse_crunch" => {
+                Some(CrunchExerciseName::WeightedCrossLegReverseCrunch)
+            }
             "crunch_chop" => Some(CrunchExerciseName::CrunchChop),
             "weighted_crunch_chop" => Some(CrunchExerciseName::WeightedCrunchChop),
             "double_crunch" => Some(CrunchExerciseName::DoubleCrunch),
@@ -13877,22 +14089,38 @@ impl CrunchExerciseName {
             "weighted_elbow_to_knee_crunch" => Some(CrunchExerciseName::WeightedElbowToKneeCrunch),
             "flutter_kicks" => Some(CrunchExerciseName::FlutterKicks),
             "weighted_flutter_kicks" => Some(CrunchExerciseName::WeightedFlutterKicks),
-            "foam_roller_reverse_crunch_on_bench" => Some(CrunchExerciseName::FoamRollerReverseCrunchOnBench),
-            "weighted_foam_roller_reverse_crunch_on_bench" => Some(CrunchExerciseName::WeightedFoamRollerReverseCrunchOnBench),
-            "foam_roller_reverse_crunch_with_dumbbell" => Some(CrunchExerciseName::FoamRollerReverseCrunchWithDumbbell),
-            "foam_roller_reverse_crunch_with_medicine_ball" => Some(CrunchExerciseName::FoamRollerReverseCrunchWithMedicineBall),
+            "foam_roller_reverse_crunch_on_bench" => {
+                Some(CrunchExerciseName::FoamRollerReverseCrunchOnBench)
+            }
+            "weighted_foam_roller_reverse_crunch_on_bench" => {
+                Some(CrunchExerciseName::WeightedFoamRollerReverseCrunchOnBench)
+            }
+            "foam_roller_reverse_crunch_with_dumbbell" => {
+                Some(CrunchExerciseName::FoamRollerReverseCrunchWithDumbbell)
+            }
+            "foam_roller_reverse_crunch_with_medicine_ball" => {
+                Some(CrunchExerciseName::FoamRollerReverseCrunchWithMedicineBall)
+            }
             "frog_press" => Some(CrunchExerciseName::FrogPress),
-            "hanging_knee_raise_oblique_crunch" => Some(CrunchExerciseName::HangingKneeRaiseObliqueCrunch),
-            "weighted_hanging_knee_raise_oblique_crunch" => Some(CrunchExerciseName::WeightedHangingKneeRaiseObliqueCrunch),
+            "hanging_knee_raise_oblique_crunch" => {
+                Some(CrunchExerciseName::HangingKneeRaiseObliqueCrunch)
+            }
+            "weighted_hanging_knee_raise_oblique_crunch" => {
+                Some(CrunchExerciseName::WeightedHangingKneeRaiseObliqueCrunch)
+            }
             "hip_crossover" => Some(CrunchExerciseName::HipCrossover),
             "weighted_hip_crossover" => Some(CrunchExerciseName::WeightedHipCrossover),
             "hollow_rock" => Some(CrunchExerciseName::HollowRock),
             "weighted_hollow_rock" => Some(CrunchExerciseName::WeightedHollowRock),
             "incline_reverse_crunch" => Some(CrunchExerciseName::InclineReverseCrunch),
-            "weighted_incline_reverse_crunch" => Some(CrunchExerciseName::WeightedInclineReverseCrunch),
+            "weighted_incline_reverse_crunch" => {
+                Some(CrunchExerciseName::WeightedInclineReverseCrunch)
+            }
             "kneeling_cable_crunch" => Some(CrunchExerciseName::KneelingCableCrunch),
             "kneeling_cross_crunch" => Some(CrunchExerciseName::KneelingCrossCrunch),
-            "weighted_kneeling_cross_crunch" => Some(CrunchExerciseName::WeightedKneelingCrossCrunch),
+            "weighted_kneeling_cross_crunch" => {
+                Some(CrunchExerciseName::WeightedKneelingCrossCrunch)
+            }
             "kneeling_oblique_cable_crunch" => Some(CrunchExerciseName::KneelingObliqueCableCrunch),
             "knees_to_elbow" => Some(CrunchExerciseName::KneesToElbow),
             "leg_extensions" => Some(CrunchExerciseName::LegExtensions),
@@ -13900,30 +14128,48 @@ impl CrunchExerciseName {
             "leg_levers" => Some(CrunchExerciseName::LegLevers),
             "mcgill_curl_up" => Some(CrunchExerciseName::McgillCurlUp),
             "weighted_mcgill_curl_up" => Some(CrunchExerciseName::WeightedMcgillCurlUp),
-            "modified_pilates_roll_up_with_ball" => Some(CrunchExerciseName::ModifiedPilatesRollUpWithBall),
-            "weighted_modified_pilates_roll_up_with_ball" => Some(CrunchExerciseName::WeightedModifiedPilatesRollUpWithBall),
+            "modified_pilates_roll_up_with_ball" => {
+                Some(CrunchExerciseName::ModifiedPilatesRollUpWithBall)
+            }
+            "weighted_modified_pilates_roll_up_with_ball" => {
+                Some(CrunchExerciseName::WeightedModifiedPilatesRollUpWithBall)
+            }
             "pilates_crunch" => Some(CrunchExerciseName::PilatesCrunch),
             "weighted_pilates_crunch" => Some(CrunchExerciseName::WeightedPilatesCrunch),
             "pilates_roll_up_with_ball" => Some(CrunchExerciseName::PilatesRollUpWithBall),
-            "weighted_pilates_roll_up_with_ball" => Some(CrunchExerciseName::WeightedPilatesRollUpWithBall),
+            "weighted_pilates_roll_up_with_ball" => {
+                Some(CrunchExerciseName::WeightedPilatesRollUpWithBall)
+            }
             "raised_legs_crunch" => Some(CrunchExerciseName::RaisedLegsCrunch),
             "weighted_raised_legs_crunch" => Some(CrunchExerciseName::WeightedRaisedLegsCrunch),
             "reverse_crunch" => Some(CrunchExerciseName::ReverseCrunch),
             "weighted_reverse_crunch" => Some(CrunchExerciseName::WeightedReverseCrunch),
             "reverse_crunch_on_a_bench" => Some(CrunchExerciseName::ReverseCrunchOnABench),
-            "weighted_reverse_crunch_on_a_bench" => Some(CrunchExerciseName::WeightedReverseCrunchOnABench),
+            "weighted_reverse_crunch_on_a_bench" => {
+                Some(CrunchExerciseName::WeightedReverseCrunchOnABench)
+            }
             "reverse_curl_and_lift" => Some(CrunchExerciseName::ReverseCurlAndLift),
-            "weighted_reverse_curl_and_lift" => Some(CrunchExerciseName::WeightedReverseCurlAndLift),
+            "weighted_reverse_curl_and_lift" => {
+                Some(CrunchExerciseName::WeightedReverseCurlAndLift)
+            }
             "rotational_lift" => Some(CrunchExerciseName::RotationalLift),
             "weighted_rotational_lift" => Some(CrunchExerciseName::WeightedRotationalLift),
-            "seated_alternating_reverse_crunch" => Some(CrunchExerciseName::SeatedAlternatingReverseCrunch),
-            "weighted_seated_alternating_reverse_crunch" => Some(CrunchExerciseName::WeightedSeatedAlternatingReverseCrunch),
+            "seated_alternating_reverse_crunch" => {
+                Some(CrunchExerciseName::SeatedAlternatingReverseCrunch)
+            }
+            "weighted_seated_alternating_reverse_crunch" => {
+                Some(CrunchExerciseName::WeightedSeatedAlternatingReverseCrunch)
+            }
             "seated_leg_u" => Some(CrunchExerciseName::SeatedLegU),
             "weighted_seated_leg_u" => Some(CrunchExerciseName::WeightedSeatedLegU),
             "side_to_side_crunch_and_weave" => Some(CrunchExerciseName::SideToSideCrunchAndWeave),
-            "weighted_side_to_side_crunch_and_weave" => Some(CrunchExerciseName::WeightedSideToSideCrunchAndWeave),
+            "weighted_side_to_side_crunch_and_weave" => {
+                Some(CrunchExerciseName::WeightedSideToSideCrunchAndWeave)
+            }
             "single_leg_reverse_crunch" => Some(CrunchExerciseName::SingleLegReverseCrunch),
-            "weighted_single_leg_reverse_crunch" => Some(CrunchExerciseName::WeightedSingleLegReverseCrunch),
+            "weighted_single_leg_reverse_crunch" => {
+                Some(CrunchExerciseName::WeightedSingleLegReverseCrunch)
+            }
             "skater_crunch_cross" => Some(CrunchExerciseName::SkaterCrunchCross),
             "weighted_skater_crunch_cross" => Some(CrunchExerciseName::WeightedSkaterCrunchCross),
             "standing_cable_crunch" => Some(CrunchExerciseName::StandingCableCrunch),
@@ -13932,13 +14178,23 @@ impl CrunchExerciseName {
             "weighted_step_climb" => Some(CrunchExerciseName::WeightedStepClimb),
             "swiss_ball_crunch" => Some(CrunchExerciseName::SwissBallCrunch),
             "swiss_ball_reverse_crunch" => Some(CrunchExerciseName::SwissBallReverseCrunch),
-            "weighted_swiss_ball_reverse_crunch" => Some(CrunchExerciseName::WeightedSwissBallReverseCrunch),
+            "weighted_swiss_ball_reverse_crunch" => {
+                Some(CrunchExerciseName::WeightedSwissBallReverseCrunch)
+            }
             "swiss_ball_russian_twist" => Some(CrunchExerciseName::SwissBallRussianTwist),
-            "weighted_swiss_ball_russian_twist" => Some(CrunchExerciseName::WeightedSwissBallRussianTwist),
+            "weighted_swiss_ball_russian_twist" => {
+                Some(CrunchExerciseName::WeightedSwissBallRussianTwist)
+            }
             "swiss_ball_side_crunch" => Some(CrunchExerciseName::SwissBallSideCrunch),
-            "weighted_swiss_ball_side_crunch" => Some(CrunchExerciseName::WeightedSwissBallSideCrunch),
-            "thoracic_crunches_on_foam_roller" => Some(CrunchExerciseName::ThoracicCrunchesOnFoamRoller),
-            "weighted_thoracic_crunches_on_foam_roller" => Some(CrunchExerciseName::WeightedThoracicCrunchesOnFoamRoller),
+            "weighted_swiss_ball_side_crunch" => {
+                Some(CrunchExerciseName::WeightedSwissBallSideCrunch)
+            }
+            "thoracic_crunches_on_foam_roller" => {
+                Some(CrunchExerciseName::ThoracicCrunchesOnFoamRoller)
+            }
+            "weighted_thoracic_crunches_on_foam_roller" => {
+                Some(CrunchExerciseName::WeightedThoracicCrunchesOnFoamRoller)
+            }
             "triceps_crunch" => Some(CrunchExerciseName::TricepsCrunch),
             "weighted_bicycle_crunch" => Some(CrunchExerciseName::WeightedBicycleCrunch),
             "weighted_crunch" => Some(CrunchExerciseName::WeightedCrunch),
@@ -14015,12 +14271,18 @@ impl CurlExerciseName {
     pub fn as_str(&self) -> &'static str {
         match self {
             CurlExerciseName::AlternatingDumbbellBicepsCurl => "alternating_dumbbell_biceps_curl",
-            CurlExerciseName::AlternatingDumbbellBicepsCurlOnSwissBall => "alternating_dumbbell_biceps_curl_on_swiss_ball",
-            CurlExerciseName::AlternatingInclineDumbbellBicepsCurl => "alternating_incline_dumbbell_biceps_curl",
+            CurlExerciseName::AlternatingDumbbellBicepsCurlOnSwissBall => {
+                "alternating_dumbbell_biceps_curl_on_swiss_ball"
+            }
+            CurlExerciseName::AlternatingInclineDumbbellBicepsCurl => {
+                "alternating_incline_dumbbell_biceps_curl"
+            }
             CurlExerciseName::BarbellBicepsCurl => "barbell_biceps_curl",
             CurlExerciseName::BarbellReverseWristCurl => "barbell_reverse_wrist_curl",
             CurlExerciseName::BarbellWristCurl => "barbell_wrist_curl",
-            CurlExerciseName::BehindTheBackBarbellReverseWristCurl => "behind_the_back_barbell_reverse_wrist_curl",
+            CurlExerciseName::BehindTheBackBarbellReverseWristCurl => {
+                "behind_the_back_barbell_reverse_wrist_curl"
+            }
             CurlExerciseName::BehindTheBackOneArmCableCurl => "behind_the_back_one_arm_cable_curl",
             CurlExerciseName::CableBicepsCurl => "cable_biceps_curl",
             CurlExerciseName::CableHammerCurl => "cable_hammer_curl",
@@ -14029,7 +14291,9 @@ impl CurlExerciseName {
             CurlExerciseName::CrossBodyDumbbellHammerCurl => "cross_body_dumbbell_hammer_curl",
             CurlExerciseName::DeadHangBicepsCurl => "dead_hang_biceps_curl",
             CurlExerciseName::DeclineHammerCurl => "decline_hammer_curl",
-            CurlExerciseName::DumbbellBicepsCurlWithStaticHold => "dumbbell_biceps_curl_with_static_hold",
+            CurlExerciseName::DumbbellBicepsCurlWithStaticHold => {
+                "dumbbell_biceps_curl_with_static_hold"
+            }
             CurlExerciseName::DumbbellHammerCurl => "dumbbell_hammer_curl",
             CurlExerciseName::DumbbellReverseWristCurl => "dumbbell_reverse_wrist_curl",
             CurlExerciseName::DumbbellWristCurl => "dumbbell_wrist_curl",
@@ -14037,7 +14301,9 @@ impl CurlExerciseName {
             CurlExerciseName::ForwardBendBicepsCurl => "forward_bend_biceps_curl",
             CurlExerciseName::HammerCurlToPress => "hammer_curl_to_press",
             CurlExerciseName::InclineDumbbellBicepsCurl => "incline_dumbbell_biceps_curl",
-            CurlExerciseName::InclineOffsetThumbDumbbellCurl => "incline_offset_thumb_dumbbell_curl",
+            CurlExerciseName::InclineOffsetThumbDumbbellCurl => {
+                "incline_offset_thumb_dumbbell_curl"
+            }
             CurlExerciseName::KettlebellBicepsCurl => "kettlebell_biceps_curl",
             CurlExerciseName::LyingConcentrationCableCurl => "lying_concentration_cable_curl",
             CurlExerciseName::OneArmPreacherCurl => "one_arm_preacher_curl",
@@ -14046,17 +14312,27 @@ impl CurlExerciseName {
             CurlExerciseName::ReverseEzBarCurl => "reverse_ez_bar_curl",
             CurlExerciseName::ReverseGripWristCurl => "reverse_grip_wrist_curl",
             CurlExerciseName::ReverseGripBarbellBicepsCurl => "reverse_grip_barbell_biceps_curl",
-            CurlExerciseName::SeatedAlternatingDumbbellBicepsCurl => "seated_alternating_dumbbell_biceps_curl",
+            CurlExerciseName::SeatedAlternatingDumbbellBicepsCurl => {
+                "seated_alternating_dumbbell_biceps_curl"
+            }
             CurlExerciseName::SeatedDumbbellBicepsCurl => "seated_dumbbell_biceps_curl",
             CurlExerciseName::SeatedReverseDumbbellCurl => "seated_reverse_dumbbell_curl",
-            CurlExerciseName::SplitStanceOffsetPinkyDumbbellCurl => "split_stance_offset_pinky_dumbbell_curl",
-            CurlExerciseName::StandingAlternatingDumbbellCurls => "standing_alternating_dumbbell_curls",
+            CurlExerciseName::SplitStanceOffsetPinkyDumbbellCurl => {
+                "split_stance_offset_pinky_dumbbell_curl"
+            }
+            CurlExerciseName::StandingAlternatingDumbbellCurls => {
+                "standing_alternating_dumbbell_curls"
+            }
             CurlExerciseName::StandingDumbbellBicepsCurl => "standing_dumbbell_biceps_curl",
             CurlExerciseName::StandingEzBarBicepsCurl => "standing_ez_bar_biceps_curl",
             CurlExerciseName::StaticCurl => "static_curl",
-            CurlExerciseName::SwissBallDumbbellOverheadTricepsExtension => "swiss_ball_dumbbell_overhead_triceps_extension",
+            CurlExerciseName::SwissBallDumbbellOverheadTricepsExtension => {
+                "swiss_ball_dumbbell_overhead_triceps_extension"
+            }
             CurlExerciseName::SwissBallEzBarPreacherCurl => "swiss_ball_ez_bar_preacher_curl",
-            CurlExerciseName::TwistingStandingDumbbellBicepsCurl => "twisting_standing_dumbbell_biceps_curl",
+            CurlExerciseName::TwistingStandingDumbbellBicepsCurl => {
+                "twisting_standing_dumbbell_biceps_curl"
+            }
             CurlExerciseName::WideGripEzBarBicepsCurl => "wide_grip_ez_bar_biceps_curl",
             CurlExerciseName::OneArmConcentrationCurl => "one_arm_concentration_curl",
             CurlExerciseName::StandingZottmanBicepsCurl => "standing_zottman_biceps_curl",
@@ -14129,22 +14405,36 @@ impl CurlExerciseName {
     /// Try to construct from the snake-case canonical name.
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
-            "alternating_dumbbell_biceps_curl" => Some(CurlExerciseName::AlternatingDumbbellBicepsCurl),
-            "alternating_dumbbell_biceps_curl_on_swiss_ball" => Some(CurlExerciseName::AlternatingDumbbellBicepsCurlOnSwissBall),
-            "alternating_incline_dumbbell_biceps_curl" => Some(CurlExerciseName::AlternatingInclineDumbbellBicepsCurl),
+            "alternating_dumbbell_biceps_curl" => {
+                Some(CurlExerciseName::AlternatingDumbbellBicepsCurl)
+            }
+            "alternating_dumbbell_biceps_curl_on_swiss_ball" => {
+                Some(CurlExerciseName::AlternatingDumbbellBicepsCurlOnSwissBall)
+            }
+            "alternating_incline_dumbbell_biceps_curl" => {
+                Some(CurlExerciseName::AlternatingInclineDumbbellBicepsCurl)
+            }
             "barbell_biceps_curl" => Some(CurlExerciseName::BarbellBicepsCurl),
             "barbell_reverse_wrist_curl" => Some(CurlExerciseName::BarbellReverseWristCurl),
             "barbell_wrist_curl" => Some(CurlExerciseName::BarbellWristCurl),
-            "behind_the_back_barbell_reverse_wrist_curl" => Some(CurlExerciseName::BehindTheBackBarbellReverseWristCurl),
-            "behind_the_back_one_arm_cable_curl" => Some(CurlExerciseName::BehindTheBackOneArmCableCurl),
+            "behind_the_back_barbell_reverse_wrist_curl" => {
+                Some(CurlExerciseName::BehindTheBackBarbellReverseWristCurl)
+            }
+            "behind_the_back_one_arm_cable_curl" => {
+                Some(CurlExerciseName::BehindTheBackOneArmCableCurl)
+            }
             "cable_biceps_curl" => Some(CurlExerciseName::CableBicepsCurl),
             "cable_hammer_curl" => Some(CurlExerciseName::CableHammerCurl),
             "cheating_barbell_biceps_curl" => Some(CurlExerciseName::CheatingBarbellBicepsCurl),
             "close_grip_ez_bar_biceps_curl" => Some(CurlExerciseName::CloseGripEzBarBicepsCurl),
-            "cross_body_dumbbell_hammer_curl" => Some(CurlExerciseName::CrossBodyDumbbellHammerCurl),
+            "cross_body_dumbbell_hammer_curl" => {
+                Some(CurlExerciseName::CrossBodyDumbbellHammerCurl)
+            }
             "dead_hang_biceps_curl" => Some(CurlExerciseName::DeadHangBicepsCurl),
             "decline_hammer_curl" => Some(CurlExerciseName::DeclineHammerCurl),
-            "dumbbell_biceps_curl_with_static_hold" => Some(CurlExerciseName::DumbbellBicepsCurlWithStaticHold),
+            "dumbbell_biceps_curl_with_static_hold" => {
+                Some(CurlExerciseName::DumbbellBicepsCurlWithStaticHold)
+            }
             "dumbbell_hammer_curl" => Some(CurlExerciseName::DumbbellHammerCurl),
             "dumbbell_reverse_wrist_curl" => Some(CurlExerciseName::DumbbellReverseWristCurl),
             "dumbbell_wrist_curl" => Some(CurlExerciseName::DumbbellWristCurl),
@@ -14152,7 +14442,9 @@ impl CurlExerciseName {
             "forward_bend_biceps_curl" => Some(CurlExerciseName::ForwardBendBicepsCurl),
             "hammer_curl_to_press" => Some(CurlExerciseName::HammerCurlToPress),
             "incline_dumbbell_biceps_curl" => Some(CurlExerciseName::InclineDumbbellBicepsCurl),
-            "incline_offset_thumb_dumbbell_curl" => Some(CurlExerciseName::InclineOffsetThumbDumbbellCurl),
+            "incline_offset_thumb_dumbbell_curl" => {
+                Some(CurlExerciseName::InclineOffsetThumbDumbbellCurl)
+            }
             "kettlebell_biceps_curl" => Some(CurlExerciseName::KettlebellBicepsCurl),
             "lying_concentration_cable_curl" => Some(CurlExerciseName::LyingConcentrationCableCurl),
             "one_arm_preacher_curl" => Some(CurlExerciseName::OneArmPreacherCurl),
@@ -14160,24 +14452,38 @@ impl CurlExerciseName {
             "preacher_curl_with_cable" => Some(CurlExerciseName::PreacherCurlWithCable),
             "reverse_ez_bar_curl" => Some(CurlExerciseName::ReverseEzBarCurl),
             "reverse_grip_wrist_curl" => Some(CurlExerciseName::ReverseGripWristCurl),
-            "reverse_grip_barbell_biceps_curl" => Some(CurlExerciseName::ReverseGripBarbellBicepsCurl),
-            "seated_alternating_dumbbell_biceps_curl" => Some(CurlExerciseName::SeatedAlternatingDumbbellBicepsCurl),
+            "reverse_grip_barbell_biceps_curl" => {
+                Some(CurlExerciseName::ReverseGripBarbellBicepsCurl)
+            }
+            "seated_alternating_dumbbell_biceps_curl" => {
+                Some(CurlExerciseName::SeatedAlternatingDumbbellBicepsCurl)
+            }
             "seated_dumbbell_biceps_curl" => Some(CurlExerciseName::SeatedDumbbellBicepsCurl),
             "seated_reverse_dumbbell_curl" => Some(CurlExerciseName::SeatedReverseDumbbellCurl),
-            "split_stance_offset_pinky_dumbbell_curl" => Some(CurlExerciseName::SplitStanceOffsetPinkyDumbbellCurl),
-            "standing_alternating_dumbbell_curls" => Some(CurlExerciseName::StandingAlternatingDumbbellCurls),
+            "split_stance_offset_pinky_dumbbell_curl" => {
+                Some(CurlExerciseName::SplitStanceOffsetPinkyDumbbellCurl)
+            }
+            "standing_alternating_dumbbell_curls" => {
+                Some(CurlExerciseName::StandingAlternatingDumbbellCurls)
+            }
             "standing_dumbbell_biceps_curl" => Some(CurlExerciseName::StandingDumbbellBicepsCurl),
             "standing_ez_bar_biceps_curl" => Some(CurlExerciseName::StandingEzBarBicepsCurl),
             "static_curl" => Some(CurlExerciseName::StaticCurl),
-            "swiss_ball_dumbbell_overhead_triceps_extension" => Some(CurlExerciseName::SwissBallDumbbellOverheadTricepsExtension),
+            "swiss_ball_dumbbell_overhead_triceps_extension" => {
+                Some(CurlExerciseName::SwissBallDumbbellOverheadTricepsExtension)
+            }
             "swiss_ball_ez_bar_preacher_curl" => Some(CurlExerciseName::SwissBallEzBarPreacherCurl),
-            "twisting_standing_dumbbell_biceps_curl" => Some(CurlExerciseName::TwistingStandingDumbbellBicepsCurl),
+            "twisting_standing_dumbbell_biceps_curl" => {
+                Some(CurlExerciseName::TwistingStandingDumbbellBicepsCurl)
+            }
             "wide_grip_ez_bar_biceps_curl" => Some(CurlExerciseName::WideGripEzBarBicepsCurl),
             "one_arm_concentration_curl" => Some(CurlExerciseName::OneArmConcentrationCurl),
             "standing_zottman_biceps_curl" => Some(CurlExerciseName::StandingZottmanBicepsCurl),
             "dumbbell_biceps_curl" => Some(CurlExerciseName::DumbbellBicepsCurl),
             "drag_curl_wheelchair" => Some(CurlExerciseName::DragCurlWheelchair),
-            "dumbbell_biceps_curl_wheelchair" => Some(CurlExerciseName::DumbbellBicepsCurlWheelchair),
+            "dumbbell_biceps_curl_wheelchair" => {
+                Some(CurlExerciseName::DumbbellBicepsCurlWheelchair)
+            }
             "bottle_curl" => Some(CurlExerciseName::BottleCurl),
             "seated_bottle_curl" => Some(CurlExerciseName::SeatedBottleCurl),
             _ => None,
@@ -14222,18 +14528,28 @@ impl DeadliftExerciseName {
             DeadliftExerciseName::BarbellDeadlift => "barbell_deadlift",
             DeadliftExerciseName::BarbellStraightLegDeadlift => "barbell_straight_leg_deadlift",
             DeadliftExerciseName::DumbbellDeadlift => "dumbbell_deadlift",
-            DeadliftExerciseName::DumbbellSingleLegDeadliftToRow => "dumbbell_single_leg_deadlift_to_row",
+            DeadliftExerciseName::DumbbellSingleLegDeadliftToRow => {
+                "dumbbell_single_leg_deadlift_to_row"
+            }
             DeadliftExerciseName::DumbbellStraightLegDeadlift => "dumbbell_straight_leg_deadlift",
             DeadliftExerciseName::KettlebellFloorToShelf => "kettlebell_floor_to_shelf",
             DeadliftExerciseName::OneArmOneLegDeadlift => "one_arm_one_leg_deadlift",
             DeadliftExerciseName::RackPull => "rack_pull",
-            DeadliftExerciseName::RotationalDumbbellStraightLegDeadlift => "rotational_dumbbell_straight_leg_deadlift",
+            DeadliftExerciseName::RotationalDumbbellStraightLegDeadlift => {
+                "rotational_dumbbell_straight_leg_deadlift"
+            }
             DeadliftExerciseName::SingleArmDeadlift => "single_arm_deadlift",
             DeadliftExerciseName::SingleLegBarbellDeadlift => "single_leg_barbell_deadlift",
-            DeadliftExerciseName::SingleLegBarbellStraightLegDeadlift => "single_leg_barbell_straight_leg_deadlift",
-            DeadliftExerciseName::SingleLegDeadliftWithBarbell => "single_leg_deadlift_with_barbell",
+            DeadliftExerciseName::SingleLegBarbellStraightLegDeadlift => {
+                "single_leg_barbell_straight_leg_deadlift"
+            }
+            DeadliftExerciseName::SingleLegDeadliftWithBarbell => {
+                "single_leg_deadlift_with_barbell"
+            }
             DeadliftExerciseName::SingleLegRdlCircuit => "single_leg_rdl_circuit",
-            DeadliftExerciseName::SingleLegRomanianDeadliftWithDumbbell => "single_leg_romanian_deadlift_with_dumbbell",
+            DeadliftExerciseName::SingleLegRomanianDeadliftWithDumbbell => {
+                "single_leg_romanian_deadlift_with_dumbbell"
+            }
             DeadliftExerciseName::SumoDeadlift => "sumo_deadlift",
             DeadliftExerciseName::SumoDeadliftHighPull => "sumo_deadlift_high_pull",
             DeadliftExerciseName::TrapBarDeadlift => "trap_bar_deadlift",
@@ -14241,7 +14557,9 @@ impl DeadliftExerciseName {
             DeadliftExerciseName::KettlebellDeadlift => "kettlebell_deadlift",
             DeadliftExerciseName::KettlebellSumoDeadlift => "kettlebell_sumo_deadlift",
             DeadliftExerciseName::RomanianDeadlift => "romanian_deadlift",
-            DeadliftExerciseName::SingleLegRomanianDeadliftCircuit => "single_leg_romanian_deadlift_circuit",
+            DeadliftExerciseName::SingleLegRomanianDeadliftCircuit => {
+                "single_leg_romanian_deadlift_circuit"
+            }
             DeadliftExerciseName::StraightLegDeadlift => "straight_leg_deadlift",
         }
     }
@@ -14281,20 +14599,34 @@ impl DeadliftExerciseName {
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
             "barbell_deadlift" => Some(DeadliftExerciseName::BarbellDeadlift),
-            "barbell_straight_leg_deadlift" => Some(DeadliftExerciseName::BarbellStraightLegDeadlift),
+            "barbell_straight_leg_deadlift" => {
+                Some(DeadliftExerciseName::BarbellStraightLegDeadlift)
+            }
             "dumbbell_deadlift" => Some(DeadliftExerciseName::DumbbellDeadlift),
-            "dumbbell_single_leg_deadlift_to_row" => Some(DeadliftExerciseName::DumbbellSingleLegDeadliftToRow),
-            "dumbbell_straight_leg_deadlift" => Some(DeadliftExerciseName::DumbbellStraightLegDeadlift),
+            "dumbbell_single_leg_deadlift_to_row" => {
+                Some(DeadliftExerciseName::DumbbellSingleLegDeadliftToRow)
+            }
+            "dumbbell_straight_leg_deadlift" => {
+                Some(DeadliftExerciseName::DumbbellStraightLegDeadlift)
+            }
             "kettlebell_floor_to_shelf" => Some(DeadliftExerciseName::KettlebellFloorToShelf),
             "one_arm_one_leg_deadlift" => Some(DeadliftExerciseName::OneArmOneLegDeadlift),
             "rack_pull" => Some(DeadliftExerciseName::RackPull),
-            "rotational_dumbbell_straight_leg_deadlift" => Some(DeadliftExerciseName::RotationalDumbbellStraightLegDeadlift),
+            "rotational_dumbbell_straight_leg_deadlift" => {
+                Some(DeadliftExerciseName::RotationalDumbbellStraightLegDeadlift)
+            }
             "single_arm_deadlift" => Some(DeadliftExerciseName::SingleArmDeadlift),
             "single_leg_barbell_deadlift" => Some(DeadliftExerciseName::SingleLegBarbellDeadlift),
-            "single_leg_barbell_straight_leg_deadlift" => Some(DeadliftExerciseName::SingleLegBarbellStraightLegDeadlift),
-            "single_leg_deadlift_with_barbell" => Some(DeadliftExerciseName::SingleLegDeadliftWithBarbell),
+            "single_leg_barbell_straight_leg_deadlift" => {
+                Some(DeadliftExerciseName::SingleLegBarbellStraightLegDeadlift)
+            }
+            "single_leg_deadlift_with_barbell" => {
+                Some(DeadliftExerciseName::SingleLegDeadliftWithBarbell)
+            }
             "single_leg_rdl_circuit" => Some(DeadliftExerciseName::SingleLegRdlCircuit),
-            "single_leg_romanian_deadlift_with_dumbbell" => Some(DeadliftExerciseName::SingleLegRomanianDeadliftWithDumbbell),
+            "single_leg_romanian_deadlift_with_dumbbell" => {
+                Some(DeadliftExerciseName::SingleLegRomanianDeadliftWithDumbbell)
+            }
             "sumo_deadlift" => Some(DeadliftExerciseName::SumoDeadlift),
             "sumo_deadlift_high_pull" => Some(DeadliftExerciseName::SumoDeadliftHighPull),
             "trap_bar_deadlift" => Some(DeadliftExerciseName::TrapBarDeadlift),
@@ -14302,7 +14634,9 @@ impl DeadliftExerciseName {
             "kettlebell_deadlift" => Some(DeadliftExerciseName::KettlebellDeadlift),
             "kettlebell_sumo_deadlift" => Some(DeadliftExerciseName::KettlebellSumoDeadlift),
             "romanian_deadlift" => Some(DeadliftExerciseName::RomanianDeadlift),
-            "single_leg_romanian_deadlift_circuit" => Some(DeadliftExerciseName::SingleLegRomanianDeadliftCircuit),
+            "single_leg_romanian_deadlift_circuit" => {
+                Some(DeadliftExerciseName::SingleLegRomanianDeadliftCircuit)
+            }
             "straight_leg_deadlift" => Some(DeadliftExerciseName::StraightLegDeadlift),
             _ => None,
         }
@@ -14338,7 +14672,9 @@ impl FlyeExerciseName {
             FlyeExerciseName::InclineDumbbellFlye => "incline_dumbbell_flye",
             FlyeExerciseName::KettlebellFlye => "kettlebell_flye",
             FlyeExerciseName::KneelingRearFlye => "kneeling_rear_flye",
-            FlyeExerciseName::SingleArmStandingCableReverseFlye => "single_arm_standing_cable_reverse_flye",
+            FlyeExerciseName::SingleArmStandingCableReverseFlye => {
+                "single_arm_standing_cable_reverse_flye"
+            }
             FlyeExerciseName::SwissBallDumbbellFlye => "swiss_ball_dumbbell_flye",
             FlyeExerciseName::ArmRotations => "arm_rotations",
             FlyeExerciseName::HugATree => "hug_a_tree",
@@ -14377,7 +14713,9 @@ impl FlyeExerciseName {
             "incline_dumbbell_flye" => Some(FlyeExerciseName::InclineDumbbellFlye),
             "kettlebell_flye" => Some(FlyeExerciseName::KettlebellFlye),
             "kneeling_rear_flye" => Some(FlyeExerciseName::KneelingRearFlye),
-            "single_arm_standing_cable_reverse_flye" => Some(FlyeExerciseName::SingleArmStandingCableReverseFlye),
+            "single_arm_standing_cable_reverse_flye" => {
+                Some(FlyeExerciseName::SingleArmStandingCableReverseFlye)
+            }
             "swiss_ball_dumbbell_flye" => Some(FlyeExerciseName::SwissBallDumbbellFlye),
             "arm_rotations" => Some(FlyeExerciseName::ArmRotations),
             "hug_a_tree" => Some(FlyeExerciseName::HugATree),
@@ -14451,48 +14789,96 @@ impl HipRaiseExerciseName {
         match self {
             HipRaiseExerciseName::BarbellHipThrustOnFloor => "barbell_hip_thrust_on_floor",
             HipRaiseExerciseName::BarbellHipThrustWithBench => "barbell_hip_thrust_with_bench",
-            HipRaiseExerciseName::BentKneeSwissBallReverseHipRaise => "bent_knee_swiss_ball_reverse_hip_raise",
-            HipRaiseExerciseName::WeightedBentKneeSwissBallReverseHipRaise => "weighted_bent_knee_swiss_ball_reverse_hip_raise",
+            HipRaiseExerciseName::BentKneeSwissBallReverseHipRaise => {
+                "bent_knee_swiss_ball_reverse_hip_raise"
+            }
+            HipRaiseExerciseName::WeightedBentKneeSwissBallReverseHipRaise => {
+                "weighted_bent_knee_swiss_ball_reverse_hip_raise"
+            }
             HipRaiseExerciseName::BridgeWithLegExtension => "bridge_with_leg_extension",
-            HipRaiseExerciseName::WeightedBridgeWithLegExtension => "weighted_bridge_with_leg_extension",
+            HipRaiseExerciseName::WeightedBridgeWithLegExtension => {
+                "weighted_bridge_with_leg_extension"
+            }
             HipRaiseExerciseName::ClamBridge => "clam_bridge",
             HipRaiseExerciseName::FrontKickTabletop => "front_kick_tabletop",
             HipRaiseExerciseName::WeightedFrontKickTabletop => "weighted_front_kick_tabletop",
             HipRaiseExerciseName::HipExtensionAndCross => "hip_extension_and_cross",
-            HipRaiseExerciseName::WeightedHipExtensionAndCross => "weighted_hip_extension_and_cross",
+            HipRaiseExerciseName::WeightedHipExtensionAndCross => {
+                "weighted_hip_extension_and_cross"
+            }
             HipRaiseExerciseName::HipRaise => "hip_raise",
             HipRaiseExerciseName::WeightedHipRaise => "weighted_hip_raise",
-            HipRaiseExerciseName::HipRaiseWithFeetOnSwissBall => "hip_raise_with_feet_on_swiss_ball",
-            HipRaiseExerciseName::WeightedHipRaiseWithFeetOnSwissBall => "weighted_hip_raise_with_feet_on_swiss_ball",
+            HipRaiseExerciseName::HipRaiseWithFeetOnSwissBall => {
+                "hip_raise_with_feet_on_swiss_ball"
+            }
+            HipRaiseExerciseName::WeightedHipRaiseWithFeetOnSwissBall => {
+                "weighted_hip_raise_with_feet_on_swiss_ball"
+            }
             HipRaiseExerciseName::HipRaiseWithHeadOnBosuBall => "hip_raise_with_head_on_bosu_ball",
-            HipRaiseExerciseName::WeightedHipRaiseWithHeadOnBosuBall => "weighted_hip_raise_with_head_on_bosu_ball",
-            HipRaiseExerciseName::HipRaiseWithHeadOnSwissBall => "hip_raise_with_head_on_swiss_ball",
-            HipRaiseExerciseName::WeightedHipRaiseWithHeadOnSwissBall => "weighted_hip_raise_with_head_on_swiss_ball",
+            HipRaiseExerciseName::WeightedHipRaiseWithHeadOnBosuBall => {
+                "weighted_hip_raise_with_head_on_bosu_ball"
+            }
+            HipRaiseExerciseName::HipRaiseWithHeadOnSwissBall => {
+                "hip_raise_with_head_on_swiss_ball"
+            }
+            HipRaiseExerciseName::WeightedHipRaiseWithHeadOnSwissBall => {
+                "weighted_hip_raise_with_head_on_swiss_ball"
+            }
             HipRaiseExerciseName::HipRaiseWithKneeSqueeze => "hip_raise_with_knee_squeeze",
-            HipRaiseExerciseName::WeightedHipRaiseWithKneeSqueeze => "weighted_hip_raise_with_knee_squeeze",
+            HipRaiseExerciseName::WeightedHipRaiseWithKneeSqueeze => {
+                "weighted_hip_raise_with_knee_squeeze"
+            }
             HipRaiseExerciseName::InclineRearLegExtension => "incline_rear_leg_extension",
-            HipRaiseExerciseName::WeightedInclineRearLegExtension => "weighted_incline_rear_leg_extension",
+            HipRaiseExerciseName::WeightedInclineRearLegExtension => {
+                "weighted_incline_rear_leg_extension"
+            }
             HipRaiseExerciseName::KettlebellSwing => "kettlebell_swing",
             HipRaiseExerciseName::MarchingHipRaise => "marching_hip_raise",
             HipRaiseExerciseName::WeightedMarchingHipRaise => "weighted_marching_hip_raise",
-            HipRaiseExerciseName::MarchingHipRaiseWithFeetOnASwissBall => "marching_hip_raise_with_feet_on_a_swiss_ball",
-            HipRaiseExerciseName::WeightedMarchingHipRaiseWithFeetOnASwissBall => "weighted_marching_hip_raise_with_feet_on_a_swiss_ball",
+            HipRaiseExerciseName::MarchingHipRaiseWithFeetOnASwissBall => {
+                "marching_hip_raise_with_feet_on_a_swiss_ball"
+            }
+            HipRaiseExerciseName::WeightedMarchingHipRaiseWithFeetOnASwissBall => {
+                "weighted_marching_hip_raise_with_feet_on_a_swiss_ball"
+            }
             HipRaiseExerciseName::ReverseHipRaise => "reverse_hip_raise",
             HipRaiseExerciseName::WeightedReverseHipRaise => "weighted_reverse_hip_raise",
             HipRaiseExerciseName::SingleLegHipRaise => "single_leg_hip_raise",
             HipRaiseExerciseName::WeightedSingleLegHipRaise => "weighted_single_leg_hip_raise",
-            HipRaiseExerciseName::SingleLegHipRaiseWithFootOnBench => "single_leg_hip_raise_with_foot_on_bench",
-            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnBench => "weighted_single_leg_hip_raise_with_foot_on_bench",
-            HipRaiseExerciseName::SingleLegHipRaiseWithFootOnBosuBall => "single_leg_hip_raise_with_foot_on_bosu_ball",
-            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnBosuBall => "weighted_single_leg_hip_raise_with_foot_on_bosu_ball",
-            HipRaiseExerciseName::SingleLegHipRaiseWithFootOnFoamRoller => "single_leg_hip_raise_with_foot_on_foam_roller",
-            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnFoamRoller => "weighted_single_leg_hip_raise_with_foot_on_foam_roller",
-            HipRaiseExerciseName::SingleLegHipRaiseWithFootOnMedicineBall => "single_leg_hip_raise_with_foot_on_medicine_ball",
-            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnMedicineBall => "weighted_single_leg_hip_raise_with_foot_on_medicine_ball",
-            HipRaiseExerciseName::SingleLegHipRaiseWithHeadOnBosuBall => "single_leg_hip_raise_with_head_on_bosu_ball",
-            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithHeadOnBosuBall => "weighted_single_leg_hip_raise_with_head_on_bosu_ball",
+            HipRaiseExerciseName::SingleLegHipRaiseWithFootOnBench => {
+                "single_leg_hip_raise_with_foot_on_bench"
+            }
+            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnBench => {
+                "weighted_single_leg_hip_raise_with_foot_on_bench"
+            }
+            HipRaiseExerciseName::SingleLegHipRaiseWithFootOnBosuBall => {
+                "single_leg_hip_raise_with_foot_on_bosu_ball"
+            }
+            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnBosuBall => {
+                "weighted_single_leg_hip_raise_with_foot_on_bosu_ball"
+            }
+            HipRaiseExerciseName::SingleLegHipRaiseWithFootOnFoamRoller => {
+                "single_leg_hip_raise_with_foot_on_foam_roller"
+            }
+            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnFoamRoller => {
+                "weighted_single_leg_hip_raise_with_foot_on_foam_roller"
+            }
+            HipRaiseExerciseName::SingleLegHipRaiseWithFootOnMedicineBall => {
+                "single_leg_hip_raise_with_foot_on_medicine_ball"
+            }
+            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnMedicineBall => {
+                "weighted_single_leg_hip_raise_with_foot_on_medicine_ball"
+            }
+            HipRaiseExerciseName::SingleLegHipRaiseWithHeadOnBosuBall => {
+                "single_leg_hip_raise_with_head_on_bosu_ball"
+            }
+            HipRaiseExerciseName::WeightedSingleLegHipRaiseWithHeadOnBosuBall => {
+                "weighted_single_leg_hip_raise_with_head_on_bosu_ball"
+            }
             HipRaiseExerciseName::WeightedClamBridge => "weighted_clam_bridge",
-            HipRaiseExerciseName::SingleLegSwissBallHipRaiseAndLegCurl => "single_leg_swiss_ball_hip_raise_and_leg_curl",
+            HipRaiseExerciseName::SingleLegSwissBallHipRaiseAndLegCurl => {
+                "single_leg_swiss_ball_hip_raise_and_leg_curl"
+            }
             HipRaiseExerciseName::Clams => "clams",
             HipRaiseExerciseName::InnerThighCircles => "inner_thigh_circles",
             HipRaiseExerciseName::InnerThighSideLift => "inner_thigh_side_lift",
@@ -14563,55 +14949,111 @@ impl HipRaiseExerciseName {
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
             "barbell_hip_thrust_on_floor" => Some(HipRaiseExerciseName::BarbellHipThrustOnFloor),
-            "barbell_hip_thrust_with_bench" => Some(HipRaiseExerciseName::BarbellHipThrustWithBench),
-            "bent_knee_swiss_ball_reverse_hip_raise" => Some(HipRaiseExerciseName::BentKneeSwissBallReverseHipRaise),
-            "weighted_bent_knee_swiss_ball_reverse_hip_raise" => Some(HipRaiseExerciseName::WeightedBentKneeSwissBallReverseHipRaise),
+            "barbell_hip_thrust_with_bench" => {
+                Some(HipRaiseExerciseName::BarbellHipThrustWithBench)
+            }
+            "bent_knee_swiss_ball_reverse_hip_raise" => {
+                Some(HipRaiseExerciseName::BentKneeSwissBallReverseHipRaise)
+            }
+            "weighted_bent_knee_swiss_ball_reverse_hip_raise" => {
+                Some(HipRaiseExerciseName::WeightedBentKneeSwissBallReverseHipRaise)
+            }
             "bridge_with_leg_extension" => Some(HipRaiseExerciseName::BridgeWithLegExtension),
-            "weighted_bridge_with_leg_extension" => Some(HipRaiseExerciseName::WeightedBridgeWithLegExtension),
+            "weighted_bridge_with_leg_extension" => {
+                Some(HipRaiseExerciseName::WeightedBridgeWithLegExtension)
+            }
             "clam_bridge" => Some(HipRaiseExerciseName::ClamBridge),
             "front_kick_tabletop" => Some(HipRaiseExerciseName::FrontKickTabletop),
             "weighted_front_kick_tabletop" => Some(HipRaiseExerciseName::WeightedFrontKickTabletop),
             "hip_extension_and_cross" => Some(HipRaiseExerciseName::HipExtensionAndCross),
-            "weighted_hip_extension_and_cross" => Some(HipRaiseExerciseName::WeightedHipExtensionAndCross),
+            "weighted_hip_extension_and_cross" => {
+                Some(HipRaiseExerciseName::WeightedHipExtensionAndCross)
+            }
             "hip_raise" => Some(HipRaiseExerciseName::HipRaise),
             "weighted_hip_raise" => Some(HipRaiseExerciseName::WeightedHipRaise),
-            "hip_raise_with_feet_on_swiss_ball" => Some(HipRaiseExerciseName::HipRaiseWithFeetOnSwissBall),
-            "weighted_hip_raise_with_feet_on_swiss_ball" => Some(HipRaiseExerciseName::WeightedHipRaiseWithFeetOnSwissBall),
-            "hip_raise_with_head_on_bosu_ball" => Some(HipRaiseExerciseName::HipRaiseWithHeadOnBosuBall),
-            "weighted_hip_raise_with_head_on_bosu_ball" => Some(HipRaiseExerciseName::WeightedHipRaiseWithHeadOnBosuBall),
-            "hip_raise_with_head_on_swiss_ball" => Some(HipRaiseExerciseName::HipRaiseWithHeadOnSwissBall),
-            "weighted_hip_raise_with_head_on_swiss_ball" => Some(HipRaiseExerciseName::WeightedHipRaiseWithHeadOnSwissBall),
+            "hip_raise_with_feet_on_swiss_ball" => {
+                Some(HipRaiseExerciseName::HipRaiseWithFeetOnSwissBall)
+            }
+            "weighted_hip_raise_with_feet_on_swiss_ball" => {
+                Some(HipRaiseExerciseName::WeightedHipRaiseWithFeetOnSwissBall)
+            }
+            "hip_raise_with_head_on_bosu_ball" => {
+                Some(HipRaiseExerciseName::HipRaiseWithHeadOnBosuBall)
+            }
+            "weighted_hip_raise_with_head_on_bosu_ball" => {
+                Some(HipRaiseExerciseName::WeightedHipRaiseWithHeadOnBosuBall)
+            }
+            "hip_raise_with_head_on_swiss_ball" => {
+                Some(HipRaiseExerciseName::HipRaiseWithHeadOnSwissBall)
+            }
+            "weighted_hip_raise_with_head_on_swiss_ball" => {
+                Some(HipRaiseExerciseName::WeightedHipRaiseWithHeadOnSwissBall)
+            }
             "hip_raise_with_knee_squeeze" => Some(HipRaiseExerciseName::HipRaiseWithKneeSqueeze),
-            "weighted_hip_raise_with_knee_squeeze" => Some(HipRaiseExerciseName::WeightedHipRaiseWithKneeSqueeze),
+            "weighted_hip_raise_with_knee_squeeze" => {
+                Some(HipRaiseExerciseName::WeightedHipRaiseWithKneeSqueeze)
+            }
             "incline_rear_leg_extension" => Some(HipRaiseExerciseName::InclineRearLegExtension),
-            "weighted_incline_rear_leg_extension" => Some(HipRaiseExerciseName::WeightedInclineRearLegExtension),
+            "weighted_incline_rear_leg_extension" => {
+                Some(HipRaiseExerciseName::WeightedInclineRearLegExtension)
+            }
             "kettlebell_swing" => Some(HipRaiseExerciseName::KettlebellSwing),
             "marching_hip_raise" => Some(HipRaiseExerciseName::MarchingHipRaise),
             "weighted_marching_hip_raise" => Some(HipRaiseExerciseName::WeightedMarchingHipRaise),
-            "marching_hip_raise_with_feet_on_a_swiss_ball" => Some(HipRaiseExerciseName::MarchingHipRaiseWithFeetOnASwissBall),
-            "weighted_marching_hip_raise_with_feet_on_a_swiss_ball" => Some(HipRaiseExerciseName::WeightedMarchingHipRaiseWithFeetOnASwissBall),
+            "marching_hip_raise_with_feet_on_a_swiss_ball" => {
+                Some(HipRaiseExerciseName::MarchingHipRaiseWithFeetOnASwissBall)
+            }
+            "weighted_marching_hip_raise_with_feet_on_a_swiss_ball" => {
+                Some(HipRaiseExerciseName::WeightedMarchingHipRaiseWithFeetOnASwissBall)
+            }
             "reverse_hip_raise" => Some(HipRaiseExerciseName::ReverseHipRaise),
             "weighted_reverse_hip_raise" => Some(HipRaiseExerciseName::WeightedReverseHipRaise),
             "single_leg_hip_raise" => Some(HipRaiseExerciseName::SingleLegHipRaise),
-            "weighted_single_leg_hip_raise" => Some(HipRaiseExerciseName::WeightedSingleLegHipRaise),
-            "single_leg_hip_raise_with_foot_on_bench" => Some(HipRaiseExerciseName::SingleLegHipRaiseWithFootOnBench),
-            "weighted_single_leg_hip_raise_with_foot_on_bench" => Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnBench),
-            "single_leg_hip_raise_with_foot_on_bosu_ball" => Some(HipRaiseExerciseName::SingleLegHipRaiseWithFootOnBosuBall),
-            "weighted_single_leg_hip_raise_with_foot_on_bosu_ball" => Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnBosuBall),
-            "single_leg_hip_raise_with_foot_on_foam_roller" => Some(HipRaiseExerciseName::SingleLegHipRaiseWithFootOnFoamRoller),
-            "weighted_single_leg_hip_raise_with_foot_on_foam_roller" => Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnFoamRoller),
-            "single_leg_hip_raise_with_foot_on_medicine_ball" => Some(HipRaiseExerciseName::SingleLegHipRaiseWithFootOnMedicineBall),
-            "weighted_single_leg_hip_raise_with_foot_on_medicine_ball" => Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnMedicineBall),
-            "single_leg_hip_raise_with_head_on_bosu_ball" => Some(HipRaiseExerciseName::SingleLegHipRaiseWithHeadOnBosuBall),
-            "weighted_single_leg_hip_raise_with_head_on_bosu_ball" => Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithHeadOnBosuBall),
+            "weighted_single_leg_hip_raise" => {
+                Some(HipRaiseExerciseName::WeightedSingleLegHipRaise)
+            }
+            "single_leg_hip_raise_with_foot_on_bench" => {
+                Some(HipRaiseExerciseName::SingleLegHipRaiseWithFootOnBench)
+            }
+            "weighted_single_leg_hip_raise_with_foot_on_bench" => {
+                Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnBench)
+            }
+            "single_leg_hip_raise_with_foot_on_bosu_ball" => {
+                Some(HipRaiseExerciseName::SingleLegHipRaiseWithFootOnBosuBall)
+            }
+            "weighted_single_leg_hip_raise_with_foot_on_bosu_ball" => {
+                Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnBosuBall)
+            }
+            "single_leg_hip_raise_with_foot_on_foam_roller" => {
+                Some(HipRaiseExerciseName::SingleLegHipRaiseWithFootOnFoamRoller)
+            }
+            "weighted_single_leg_hip_raise_with_foot_on_foam_roller" => {
+                Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnFoamRoller)
+            }
+            "single_leg_hip_raise_with_foot_on_medicine_ball" => {
+                Some(HipRaiseExerciseName::SingleLegHipRaiseWithFootOnMedicineBall)
+            }
+            "weighted_single_leg_hip_raise_with_foot_on_medicine_ball" => {
+                Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithFootOnMedicineBall)
+            }
+            "single_leg_hip_raise_with_head_on_bosu_ball" => {
+                Some(HipRaiseExerciseName::SingleLegHipRaiseWithHeadOnBosuBall)
+            }
+            "weighted_single_leg_hip_raise_with_head_on_bosu_ball" => {
+                Some(HipRaiseExerciseName::WeightedSingleLegHipRaiseWithHeadOnBosuBall)
+            }
             "weighted_clam_bridge" => Some(HipRaiseExerciseName::WeightedClamBridge),
-            "single_leg_swiss_ball_hip_raise_and_leg_curl" => Some(HipRaiseExerciseName::SingleLegSwissBallHipRaiseAndLegCurl),
+            "single_leg_swiss_ball_hip_raise_and_leg_curl" => {
+                Some(HipRaiseExerciseName::SingleLegSwissBallHipRaiseAndLegCurl)
+            }
             "clams" => Some(HipRaiseExerciseName::Clams),
             "inner_thigh_circles" => Some(HipRaiseExerciseName::InnerThighCircles),
             "inner_thigh_side_lift" => Some(HipRaiseExerciseName::InnerThighSideLift),
             "leg_circles" => Some(HipRaiseExerciseName::LegCircles),
             "leg_lift" => Some(HipRaiseExerciseName::LegLift),
-            "leg_lift_in_external_rotation" => Some(HipRaiseExerciseName::LegLiftInExternalRotation),
+            "leg_lift_in_external_rotation" => {
+                Some(HipRaiseExerciseName::LegLiftInExternalRotation)
+            }
             _ => None,
         }
     }
@@ -14673,29 +15115,45 @@ impl HipStabilityExerciseName {
             HipStabilityExerciseName::WeightedHipCircles => "weighted_hip_circles",
             HipStabilityExerciseName::InnerThighLift => "inner_thigh_lift",
             HipStabilityExerciseName::WeightedInnerThighLift => "weighted_inner_thigh_lift",
-            HipStabilityExerciseName::LateralWalksWithBandAtAnkles => "lateral_walks_with_band_at_ankles",
+            HipStabilityExerciseName::LateralWalksWithBandAtAnkles => {
+                "lateral_walks_with_band_at_ankles"
+            }
             HipStabilityExerciseName::PretzelSideKick => "pretzel_side_kick",
             HipStabilityExerciseName::WeightedPretzelSideKick => "weighted_pretzel_side_kick",
             HipStabilityExerciseName::ProneHipInternalRotation => "prone_hip_internal_rotation",
-            HipStabilityExerciseName::WeightedProneHipInternalRotation => "weighted_prone_hip_internal_rotation",
+            HipStabilityExerciseName::WeightedProneHipInternalRotation => {
+                "weighted_prone_hip_internal_rotation"
+            }
             HipStabilityExerciseName::Quadruped => "quadruped",
             HipStabilityExerciseName::QuadrupedHipExtension => "quadruped_hip_extension",
-            HipStabilityExerciseName::WeightedQuadrupedHipExtension => "weighted_quadruped_hip_extension",
+            HipStabilityExerciseName::WeightedQuadrupedHipExtension => {
+                "weighted_quadruped_hip_extension"
+            }
             HipStabilityExerciseName::QuadrupedWithLegLift => "quadruped_with_leg_lift",
-            HipStabilityExerciseName::WeightedQuadrupedWithLegLift => "weighted_quadruped_with_leg_lift",
+            HipStabilityExerciseName::WeightedQuadrupedWithLegLift => {
+                "weighted_quadruped_with_leg_lift"
+            }
             HipStabilityExerciseName::SideLyingLegRaise => "side_lying_leg_raise",
             HipStabilityExerciseName::WeightedSideLyingLegRaise => "weighted_side_lying_leg_raise",
             HipStabilityExerciseName::SlidingHipAdduction => "sliding_hip_adduction",
-            HipStabilityExerciseName::WeightedSlidingHipAdduction => "weighted_sliding_hip_adduction",
+            HipStabilityExerciseName::WeightedSlidingHipAdduction => {
+                "weighted_sliding_hip_adduction"
+            }
             HipStabilityExerciseName::StandingAdduction => "standing_adduction",
             HipStabilityExerciseName::WeightedStandingAdduction => "weighted_standing_adduction",
             HipStabilityExerciseName::StandingCableHipAbduction => "standing_cable_hip_abduction",
             HipStabilityExerciseName::StandingHipAbduction => "standing_hip_abduction",
-            HipStabilityExerciseName::WeightedStandingHipAbduction => "weighted_standing_hip_abduction",
+            HipStabilityExerciseName::WeightedStandingHipAbduction => {
+                "weighted_standing_hip_abduction"
+            }
             HipStabilityExerciseName::StandingRearLegRaise => "standing_rear_leg_raise",
-            HipStabilityExerciseName::WeightedStandingRearLegRaise => "weighted_standing_rear_leg_raise",
+            HipStabilityExerciseName::WeightedStandingRearLegRaise => {
+                "weighted_standing_rear_leg_raise"
+            }
             HipStabilityExerciseName::SupineHipInternalRotation => "supine_hip_internal_rotation",
-            HipStabilityExerciseName::WeightedSupineHipInternalRotation => "weighted_supine_hip_internal_rotation",
+            HipStabilityExerciseName::WeightedSupineHipInternalRotation => {
+                "weighted_supine_hip_internal_rotation"
+            }
             HipStabilityExerciseName::LyingAbductionStretch => "lying_abduction_stretch",
         }
     }
@@ -14749,36 +15207,66 @@ impl HipStabilityExerciseName {
             "dead_bug" => Some(HipStabilityExerciseName::DeadBug),
             "weighted_dead_bug" => Some(HipStabilityExerciseName::WeightedDeadBug),
             "external_hip_raise" => Some(HipStabilityExerciseName::ExternalHipRaise),
-            "weighted_external_hip_raise" => Some(HipStabilityExerciseName::WeightedExternalHipRaise),
+            "weighted_external_hip_raise" => {
+                Some(HipStabilityExerciseName::WeightedExternalHipRaise)
+            }
             "fire_hydrant_kicks" => Some(HipStabilityExerciseName::FireHydrantKicks),
-            "weighted_fire_hydrant_kicks" => Some(HipStabilityExerciseName::WeightedFireHydrantKicks),
+            "weighted_fire_hydrant_kicks" => {
+                Some(HipStabilityExerciseName::WeightedFireHydrantKicks)
+            }
             "hip_circles" => Some(HipStabilityExerciseName::HipCircles),
             "weighted_hip_circles" => Some(HipStabilityExerciseName::WeightedHipCircles),
             "inner_thigh_lift" => Some(HipStabilityExerciseName::InnerThighLift),
             "weighted_inner_thigh_lift" => Some(HipStabilityExerciseName::WeightedInnerThighLift),
-            "lateral_walks_with_band_at_ankles" => Some(HipStabilityExerciseName::LateralWalksWithBandAtAnkles),
+            "lateral_walks_with_band_at_ankles" => {
+                Some(HipStabilityExerciseName::LateralWalksWithBandAtAnkles)
+            }
             "pretzel_side_kick" => Some(HipStabilityExerciseName::PretzelSideKick),
             "weighted_pretzel_side_kick" => Some(HipStabilityExerciseName::WeightedPretzelSideKick),
-            "prone_hip_internal_rotation" => Some(HipStabilityExerciseName::ProneHipInternalRotation),
-            "weighted_prone_hip_internal_rotation" => Some(HipStabilityExerciseName::WeightedProneHipInternalRotation),
+            "prone_hip_internal_rotation" => {
+                Some(HipStabilityExerciseName::ProneHipInternalRotation)
+            }
+            "weighted_prone_hip_internal_rotation" => {
+                Some(HipStabilityExerciseName::WeightedProneHipInternalRotation)
+            }
             "quadruped" => Some(HipStabilityExerciseName::Quadruped),
             "quadruped_hip_extension" => Some(HipStabilityExerciseName::QuadrupedHipExtension),
-            "weighted_quadruped_hip_extension" => Some(HipStabilityExerciseName::WeightedQuadrupedHipExtension),
+            "weighted_quadruped_hip_extension" => {
+                Some(HipStabilityExerciseName::WeightedQuadrupedHipExtension)
+            }
             "quadruped_with_leg_lift" => Some(HipStabilityExerciseName::QuadrupedWithLegLift),
-            "weighted_quadruped_with_leg_lift" => Some(HipStabilityExerciseName::WeightedQuadrupedWithLegLift),
+            "weighted_quadruped_with_leg_lift" => {
+                Some(HipStabilityExerciseName::WeightedQuadrupedWithLegLift)
+            }
             "side_lying_leg_raise" => Some(HipStabilityExerciseName::SideLyingLegRaise),
-            "weighted_side_lying_leg_raise" => Some(HipStabilityExerciseName::WeightedSideLyingLegRaise),
+            "weighted_side_lying_leg_raise" => {
+                Some(HipStabilityExerciseName::WeightedSideLyingLegRaise)
+            }
             "sliding_hip_adduction" => Some(HipStabilityExerciseName::SlidingHipAdduction),
-            "weighted_sliding_hip_adduction" => Some(HipStabilityExerciseName::WeightedSlidingHipAdduction),
+            "weighted_sliding_hip_adduction" => {
+                Some(HipStabilityExerciseName::WeightedSlidingHipAdduction)
+            }
             "standing_adduction" => Some(HipStabilityExerciseName::StandingAdduction),
-            "weighted_standing_adduction" => Some(HipStabilityExerciseName::WeightedStandingAdduction),
-            "standing_cable_hip_abduction" => Some(HipStabilityExerciseName::StandingCableHipAbduction),
+            "weighted_standing_adduction" => {
+                Some(HipStabilityExerciseName::WeightedStandingAdduction)
+            }
+            "standing_cable_hip_abduction" => {
+                Some(HipStabilityExerciseName::StandingCableHipAbduction)
+            }
             "standing_hip_abduction" => Some(HipStabilityExerciseName::StandingHipAbduction),
-            "weighted_standing_hip_abduction" => Some(HipStabilityExerciseName::WeightedStandingHipAbduction),
+            "weighted_standing_hip_abduction" => {
+                Some(HipStabilityExerciseName::WeightedStandingHipAbduction)
+            }
             "standing_rear_leg_raise" => Some(HipStabilityExerciseName::StandingRearLegRaise),
-            "weighted_standing_rear_leg_raise" => Some(HipStabilityExerciseName::WeightedStandingRearLegRaise),
-            "supine_hip_internal_rotation" => Some(HipStabilityExerciseName::SupineHipInternalRotation),
-            "weighted_supine_hip_internal_rotation" => Some(HipStabilityExerciseName::WeightedSupineHipInternalRotation),
+            "weighted_standing_rear_leg_raise" => {
+                Some(HipStabilityExerciseName::WeightedStandingRearLegRaise)
+            }
+            "supine_hip_internal_rotation" => {
+                Some(HipStabilityExerciseName::SupineHipInternalRotation)
+            }
+            "weighted_supine_hip_internal_rotation" => {
+                Some(HipStabilityExerciseName::WeightedSupineHipInternalRotation)
+            }
             "lying_abduction_stretch" => Some(HipStabilityExerciseName::LyingAbductionStretch),
             _ => None,
         }
@@ -14879,14 +15367,24 @@ impl HyperextensionExerciseName {
     /// Snake-case canonical name from Profile.xlsx.
     pub fn as_str(&self) -> &'static str {
         match self {
-            HyperextensionExerciseName::BackExtensionWithOppositeArmAndLegReach => "back_extension_with_opposite_arm_and_leg_reach",
-            HyperextensionExerciseName::WeightedBackExtensionWithOppositeArmAndLegReach => "weighted_back_extension_with_opposite_arm_and_leg_reach",
+            HyperextensionExerciseName::BackExtensionWithOppositeArmAndLegReach => {
+                "back_extension_with_opposite_arm_and_leg_reach"
+            }
+            HyperextensionExerciseName::WeightedBackExtensionWithOppositeArmAndLegReach => {
+                "weighted_back_extension_with_opposite_arm_and_leg_reach"
+            }
             HyperextensionExerciseName::BaseRotations => "base_rotations",
             HyperextensionExerciseName::WeightedBaseRotations => "weighted_base_rotations",
-            HyperextensionExerciseName::BentKneeReverseHyperextension => "bent_knee_reverse_hyperextension",
-            HyperextensionExerciseName::WeightedBentKneeReverseHyperextension => "weighted_bent_knee_reverse_hyperextension",
+            HyperextensionExerciseName::BentKneeReverseHyperextension => {
+                "bent_knee_reverse_hyperextension"
+            }
+            HyperextensionExerciseName::WeightedBentKneeReverseHyperextension => {
+                "weighted_bent_knee_reverse_hyperextension"
+            }
             HyperextensionExerciseName::HollowHoldAndRoll => "hollow_hold_and_roll",
-            HyperextensionExerciseName::WeightedHollowHoldAndRoll => "weighted_hollow_hold_and_roll",
+            HyperextensionExerciseName::WeightedHollowHoldAndRoll => {
+                "weighted_hollow_hold_and_roll"
+            }
             HyperextensionExerciseName::Kicks => "kicks",
             HyperextensionExerciseName::WeightedKicks => "weighted_kicks",
             HyperextensionExerciseName::KneeRaises => "knee_raises",
@@ -14894,28 +15392,44 @@ impl HyperextensionExerciseName {
             HyperextensionExerciseName::KneelingSuperman => "kneeling_superman",
             HyperextensionExerciseName::WeightedKneelingSuperman => "weighted_kneeling_superman",
             HyperextensionExerciseName::LatPullDownWithRow => "lat_pull_down_with_row",
-            HyperextensionExerciseName::MedicineBallDeadliftToReach => "medicine_ball_deadlift_to_reach",
+            HyperextensionExerciseName::MedicineBallDeadliftToReach => {
+                "medicine_ball_deadlift_to_reach"
+            }
             HyperextensionExerciseName::OneArmOneLegRow => "one_arm_one_leg_row",
             HyperextensionExerciseName::OneArmRowWithBand => "one_arm_row_with_band",
-            HyperextensionExerciseName::OverheadLungeWithMedicineBall => "overhead_lunge_with_medicine_ball",
+            HyperextensionExerciseName::OverheadLungeWithMedicineBall => {
+                "overhead_lunge_with_medicine_ball"
+            }
             HyperextensionExerciseName::PlankKneeTucks => "plank_knee_tucks",
             HyperextensionExerciseName::WeightedPlankKneeTucks => "weighted_plank_knee_tucks",
             HyperextensionExerciseName::SideStep => "side_step",
             HyperextensionExerciseName::WeightedSideStep => "weighted_side_step",
             HyperextensionExerciseName::SingleLegBackExtension => "single_leg_back_extension",
-            HyperextensionExerciseName::WeightedSingleLegBackExtension => "weighted_single_leg_back_extension",
+            HyperextensionExerciseName::WeightedSingleLegBackExtension => {
+                "weighted_single_leg_back_extension"
+            }
             HyperextensionExerciseName::SpineExtension => "spine_extension",
             HyperextensionExerciseName::WeightedSpineExtension => "weighted_spine_extension",
             HyperextensionExerciseName::StaticBackExtension => "static_back_extension",
-            HyperextensionExerciseName::WeightedStaticBackExtension => "weighted_static_back_extension",
+            HyperextensionExerciseName::WeightedStaticBackExtension => {
+                "weighted_static_back_extension"
+            }
             HyperextensionExerciseName::SupermanFromFloor => "superman_from_floor",
             HyperextensionExerciseName::WeightedSupermanFromFloor => "weighted_superman_from_floor",
             HyperextensionExerciseName::SwissBallBackExtension => "swiss_ball_back_extension",
-            HyperextensionExerciseName::WeightedSwissBallBackExtension => "weighted_swiss_ball_back_extension",
+            HyperextensionExerciseName::WeightedSwissBallBackExtension => {
+                "weighted_swiss_ball_back_extension"
+            }
             HyperextensionExerciseName::SwissBallHyperextension => "swiss_ball_hyperextension",
-            HyperextensionExerciseName::WeightedSwissBallHyperextension => "weighted_swiss_ball_hyperextension",
-            HyperextensionExerciseName::SwissBallOppositeArmAndLegLift => "swiss_ball_opposite_arm_and_leg_lift",
-            HyperextensionExerciseName::WeightedSwissBallOppositeArmAndLegLift => "weighted_swiss_ball_opposite_arm_and_leg_lift",
+            HyperextensionExerciseName::WeightedSwissBallHyperextension => {
+                "weighted_swiss_ball_hyperextension"
+            }
+            HyperextensionExerciseName::SwissBallOppositeArmAndLegLift => {
+                "swiss_ball_opposite_arm_and_leg_lift"
+            }
+            HyperextensionExerciseName::WeightedSwissBallOppositeArmAndLegLift => {
+                "weighted_swiss_ball_opposite_arm_and_leg_lift"
+            }
             HyperextensionExerciseName::SupermanOnSwissBall => "superman_on_swiss_ball",
             HyperextensionExerciseName::Cobra => "cobra",
             HyperextensionExerciseName::SupineFloorBarre => "supine_floor_barre",
@@ -14972,43 +15486,75 @@ impl HyperextensionExerciseName {
     /// Try to construct from the snake-case canonical name.
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
-            "back_extension_with_opposite_arm_and_leg_reach" => Some(HyperextensionExerciseName::BackExtensionWithOppositeArmAndLegReach),
-            "weighted_back_extension_with_opposite_arm_and_leg_reach" => Some(HyperextensionExerciseName::WeightedBackExtensionWithOppositeArmAndLegReach),
+            "back_extension_with_opposite_arm_and_leg_reach" => {
+                Some(HyperextensionExerciseName::BackExtensionWithOppositeArmAndLegReach)
+            }
+            "weighted_back_extension_with_opposite_arm_and_leg_reach" => {
+                Some(HyperextensionExerciseName::WeightedBackExtensionWithOppositeArmAndLegReach)
+            }
             "base_rotations" => Some(HyperextensionExerciseName::BaseRotations),
             "weighted_base_rotations" => Some(HyperextensionExerciseName::WeightedBaseRotations),
-            "bent_knee_reverse_hyperextension" => Some(HyperextensionExerciseName::BentKneeReverseHyperextension),
-            "weighted_bent_knee_reverse_hyperextension" => Some(HyperextensionExerciseName::WeightedBentKneeReverseHyperextension),
+            "bent_knee_reverse_hyperextension" => {
+                Some(HyperextensionExerciseName::BentKneeReverseHyperextension)
+            }
+            "weighted_bent_knee_reverse_hyperextension" => {
+                Some(HyperextensionExerciseName::WeightedBentKneeReverseHyperextension)
+            }
             "hollow_hold_and_roll" => Some(HyperextensionExerciseName::HollowHoldAndRoll),
-            "weighted_hollow_hold_and_roll" => Some(HyperextensionExerciseName::WeightedHollowHoldAndRoll),
+            "weighted_hollow_hold_and_roll" => {
+                Some(HyperextensionExerciseName::WeightedHollowHoldAndRoll)
+            }
             "kicks" => Some(HyperextensionExerciseName::Kicks),
             "weighted_kicks" => Some(HyperextensionExerciseName::WeightedKicks),
             "knee_raises" => Some(HyperextensionExerciseName::KneeRaises),
             "weighted_knee_raises" => Some(HyperextensionExerciseName::WeightedKneeRaises),
             "kneeling_superman" => Some(HyperextensionExerciseName::KneelingSuperman),
-            "weighted_kneeling_superman" => Some(HyperextensionExerciseName::WeightedKneelingSuperman),
+            "weighted_kneeling_superman" => {
+                Some(HyperextensionExerciseName::WeightedKneelingSuperman)
+            }
             "lat_pull_down_with_row" => Some(HyperextensionExerciseName::LatPullDownWithRow),
-            "medicine_ball_deadlift_to_reach" => Some(HyperextensionExerciseName::MedicineBallDeadliftToReach),
+            "medicine_ball_deadlift_to_reach" => {
+                Some(HyperextensionExerciseName::MedicineBallDeadliftToReach)
+            }
             "one_arm_one_leg_row" => Some(HyperextensionExerciseName::OneArmOneLegRow),
             "one_arm_row_with_band" => Some(HyperextensionExerciseName::OneArmRowWithBand),
-            "overhead_lunge_with_medicine_ball" => Some(HyperextensionExerciseName::OverheadLungeWithMedicineBall),
+            "overhead_lunge_with_medicine_ball" => {
+                Some(HyperextensionExerciseName::OverheadLungeWithMedicineBall)
+            }
             "plank_knee_tucks" => Some(HyperextensionExerciseName::PlankKneeTucks),
             "weighted_plank_knee_tucks" => Some(HyperextensionExerciseName::WeightedPlankKneeTucks),
             "side_step" => Some(HyperextensionExerciseName::SideStep),
             "weighted_side_step" => Some(HyperextensionExerciseName::WeightedSideStep),
             "single_leg_back_extension" => Some(HyperextensionExerciseName::SingleLegBackExtension),
-            "weighted_single_leg_back_extension" => Some(HyperextensionExerciseName::WeightedSingleLegBackExtension),
+            "weighted_single_leg_back_extension" => {
+                Some(HyperextensionExerciseName::WeightedSingleLegBackExtension)
+            }
             "spine_extension" => Some(HyperextensionExerciseName::SpineExtension),
             "weighted_spine_extension" => Some(HyperextensionExerciseName::WeightedSpineExtension),
             "static_back_extension" => Some(HyperextensionExerciseName::StaticBackExtension),
-            "weighted_static_back_extension" => Some(HyperextensionExerciseName::WeightedStaticBackExtension),
+            "weighted_static_back_extension" => {
+                Some(HyperextensionExerciseName::WeightedStaticBackExtension)
+            }
             "superman_from_floor" => Some(HyperextensionExerciseName::SupermanFromFloor),
-            "weighted_superman_from_floor" => Some(HyperextensionExerciseName::WeightedSupermanFromFloor),
+            "weighted_superman_from_floor" => {
+                Some(HyperextensionExerciseName::WeightedSupermanFromFloor)
+            }
             "swiss_ball_back_extension" => Some(HyperextensionExerciseName::SwissBallBackExtension),
-            "weighted_swiss_ball_back_extension" => Some(HyperextensionExerciseName::WeightedSwissBallBackExtension),
-            "swiss_ball_hyperextension" => Some(HyperextensionExerciseName::SwissBallHyperextension),
-            "weighted_swiss_ball_hyperextension" => Some(HyperextensionExerciseName::WeightedSwissBallHyperextension),
-            "swiss_ball_opposite_arm_and_leg_lift" => Some(HyperextensionExerciseName::SwissBallOppositeArmAndLegLift),
-            "weighted_swiss_ball_opposite_arm_and_leg_lift" => Some(HyperextensionExerciseName::WeightedSwissBallOppositeArmAndLegLift),
+            "weighted_swiss_ball_back_extension" => {
+                Some(HyperextensionExerciseName::WeightedSwissBallBackExtension)
+            }
+            "swiss_ball_hyperextension" => {
+                Some(HyperextensionExerciseName::SwissBallHyperextension)
+            }
+            "weighted_swiss_ball_hyperextension" => {
+                Some(HyperextensionExerciseName::WeightedSwissBallHyperextension)
+            }
+            "swiss_ball_opposite_arm_and_leg_lift" => {
+                Some(HyperextensionExerciseName::SwissBallOppositeArmAndLegLift)
+            }
+            "weighted_swiss_ball_opposite_arm_and_leg_lift" => {
+                Some(HyperextensionExerciseName::WeightedSwissBallOppositeArmAndLegLift)
+            }
             "superman_on_swiss_ball" => Some(HyperextensionExerciseName::SupermanOnSwissBall),
             "cobra" => Some(HyperextensionExerciseName::Cobra),
             "supine_floor_barre" => Some(HyperextensionExerciseName::SupineFloorBarre),
@@ -15068,8 +15614,12 @@ impl LateralRaiseExerciseName {
     /// Snake-case canonical name from Profile.xlsx.
     pub fn as_str(&self) -> &'static str {
         match self {
-            LateralRaiseExerciseName::_45DegreeCableExternalRotation => "45_degree_cable_external_rotation",
-            LateralRaiseExerciseName::AlternatingLateralRaiseWithStaticHold => "alternating_lateral_raise_with_static_hold",
+            LateralRaiseExerciseName::_45DegreeCableExternalRotation => {
+                "45_degree_cable_external_rotation"
+            }
+            LateralRaiseExerciseName::AlternatingLateralRaiseWithStaticHold => {
+                "alternating_lateral_raise_with_static_hold"
+            }
             LateralRaiseExerciseName::BarMuscleUp => "bar_muscle_up",
             LateralRaiseExerciseName::BentOverLateralRaise => "bent_over_lateral_raise",
             LateralRaiseExerciseName::CableDiagonalRaise => "cable_diagonal_raise",
@@ -15079,11 +15629,15 @@ impl LateralRaiseExerciseName {
             LateralRaiseExerciseName::DumbbellDiagonalRaise => "dumbbell_diagonal_raise",
             LateralRaiseExerciseName::DumbbellVRaise => "dumbbell_v_raise",
             LateralRaiseExerciseName::FrontRaise => "front_raise",
-            LateralRaiseExerciseName::LeaningDumbbellLateralRaise => "leaning_dumbbell_lateral_raise",
+            LateralRaiseExerciseName::LeaningDumbbellLateralRaise => {
+                "leaning_dumbbell_lateral_raise"
+            }
             LateralRaiseExerciseName::LyingDumbbellRaise => "lying_dumbbell_raise",
             LateralRaiseExerciseName::MuscleUp => "muscle_up",
             LateralRaiseExerciseName::OneArmCableLateralRaise => "one_arm_cable_lateral_raise",
-            LateralRaiseExerciseName::OverhandGripRearLateralRaise => "overhand_grip_rear_lateral_raise",
+            LateralRaiseExerciseName::OverhandGripRearLateralRaise => {
+                "overhand_grip_rear_lateral_raise"
+            }
             LateralRaiseExerciseName::PlateRaises => "plate_raises",
             LateralRaiseExerciseName::RingDip => "ring_dip",
             LateralRaiseExerciseName::WeightedRingDip => "weighted_ring_dip",
@@ -15097,7 +15651,9 @@ impl LateralRaiseExerciseName {
             LateralRaiseExerciseName::SideLyingLateralRaise => "side_lying_lateral_raise",
             LateralRaiseExerciseName::StandingLift => "standing_lift",
             LateralRaiseExerciseName::SuspendedRow => "suspended_row",
-            LateralRaiseExerciseName::UnderhandGripRearLateralRaise => "underhand_grip_rear_lateral_raise",
+            LateralRaiseExerciseName::UnderhandGripRearLateralRaise => {
+                "underhand_grip_rear_lateral_raise"
+            }
             LateralRaiseExerciseName::WallSlide => "wall_slide",
             LateralRaiseExerciseName::WeightedWallSlide => "weighted_wall_slide",
             LateralRaiseExerciseName::ArmCircles => "arm_circles",
@@ -15105,10 +15661,18 @@ impl LateralRaiseExerciseName {
             LateralRaiseExerciseName::DumbbellLateralRaise => "dumbbell_lateral_raise",
             LateralRaiseExerciseName::RingDipKipping => "ring_dip_kipping",
             LateralRaiseExerciseName::WallWalk => "wall_walk",
-            LateralRaiseExerciseName::DumbbellFrontRaiseWheelchair => "dumbbell_front_raise_wheelchair",
-            LateralRaiseExerciseName::DumbbellLateralRaiseWheelchair => "dumbbell_lateral_raise_wheelchair",
-            LateralRaiseExerciseName::PoleDoubleArmOverheadAndForwardWheelchair => "pole_double_arm_overhead_and_forward_wheelchair",
-            LateralRaiseExerciseName::PoleStraightArmOverheadWheelchair => "pole_straight_arm_overhead_wheelchair",
+            LateralRaiseExerciseName::DumbbellFrontRaiseWheelchair => {
+                "dumbbell_front_raise_wheelchair"
+            }
+            LateralRaiseExerciseName::DumbbellLateralRaiseWheelchair => {
+                "dumbbell_lateral_raise_wheelchair"
+            }
+            LateralRaiseExerciseName::PoleDoubleArmOverheadAndForwardWheelchair => {
+                "pole_double_arm_overhead_and_forward_wheelchair"
+            }
+            LateralRaiseExerciseName::PoleStraightArmOverheadWheelchair => {
+                "pole_straight_arm_overhead_wheelchair"
+            }
         }
     }
 
@@ -15163,8 +15727,12 @@ impl LateralRaiseExerciseName {
     /// Try to construct from the snake-case canonical name.
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
-            "45_degree_cable_external_rotation" => Some(LateralRaiseExerciseName::_45DegreeCableExternalRotation),
-            "alternating_lateral_raise_with_static_hold" => Some(LateralRaiseExerciseName::AlternatingLateralRaiseWithStaticHold),
+            "45_degree_cable_external_rotation" => {
+                Some(LateralRaiseExerciseName::_45DegreeCableExternalRotation)
+            }
+            "alternating_lateral_raise_with_static_hold" => {
+                Some(LateralRaiseExerciseName::AlternatingLateralRaiseWithStaticHold)
+            }
             "bar_muscle_up" => Some(LateralRaiseExerciseName::BarMuscleUp),
             "bent_over_lateral_raise" => Some(LateralRaiseExerciseName::BentOverLateralRaise),
             "cable_diagonal_raise" => Some(LateralRaiseExerciseName::CableDiagonalRaise),
@@ -15174,11 +15742,17 @@ impl LateralRaiseExerciseName {
             "dumbbell_diagonal_raise" => Some(LateralRaiseExerciseName::DumbbellDiagonalRaise),
             "dumbbell_v_raise" => Some(LateralRaiseExerciseName::DumbbellVRaise),
             "front_raise" => Some(LateralRaiseExerciseName::FrontRaise),
-            "leaning_dumbbell_lateral_raise" => Some(LateralRaiseExerciseName::LeaningDumbbellLateralRaise),
+            "leaning_dumbbell_lateral_raise" => {
+                Some(LateralRaiseExerciseName::LeaningDumbbellLateralRaise)
+            }
             "lying_dumbbell_raise" => Some(LateralRaiseExerciseName::LyingDumbbellRaise),
             "muscle_up" => Some(LateralRaiseExerciseName::MuscleUp),
-            "one_arm_cable_lateral_raise" => Some(LateralRaiseExerciseName::OneArmCableLateralRaise),
-            "overhand_grip_rear_lateral_raise" => Some(LateralRaiseExerciseName::OverhandGripRearLateralRaise),
+            "one_arm_cable_lateral_raise" => {
+                Some(LateralRaiseExerciseName::OneArmCableLateralRaise)
+            }
+            "overhand_grip_rear_lateral_raise" => {
+                Some(LateralRaiseExerciseName::OverhandGripRearLateralRaise)
+            }
             "plate_raises" => Some(LateralRaiseExerciseName::PlateRaises),
             "ring_dip" => Some(LateralRaiseExerciseName::RingDip),
             "weighted_ring_dip" => Some(LateralRaiseExerciseName::WeightedRingDip),
@@ -15192,7 +15766,9 @@ impl LateralRaiseExerciseName {
             "side_lying_lateral_raise" => Some(LateralRaiseExerciseName::SideLyingLateralRaise),
             "standing_lift" => Some(LateralRaiseExerciseName::StandingLift),
             "suspended_row" => Some(LateralRaiseExerciseName::SuspendedRow),
-            "underhand_grip_rear_lateral_raise" => Some(LateralRaiseExerciseName::UnderhandGripRearLateralRaise),
+            "underhand_grip_rear_lateral_raise" => {
+                Some(LateralRaiseExerciseName::UnderhandGripRearLateralRaise)
+            }
             "wall_slide" => Some(LateralRaiseExerciseName::WallSlide),
             "weighted_wall_slide" => Some(LateralRaiseExerciseName::WeightedWallSlide),
             "arm_circles" => Some(LateralRaiseExerciseName::ArmCircles),
@@ -15200,10 +15776,18 @@ impl LateralRaiseExerciseName {
             "dumbbell_lateral_raise" => Some(LateralRaiseExerciseName::DumbbellLateralRaise),
             "ring_dip_kipping" => Some(LateralRaiseExerciseName::RingDipKipping),
             "wall_walk" => Some(LateralRaiseExerciseName::WallWalk),
-            "dumbbell_front_raise_wheelchair" => Some(LateralRaiseExerciseName::DumbbellFrontRaiseWheelchair),
-            "dumbbell_lateral_raise_wheelchair" => Some(LateralRaiseExerciseName::DumbbellLateralRaiseWheelchair),
-            "pole_double_arm_overhead_and_forward_wheelchair" => Some(LateralRaiseExerciseName::PoleDoubleArmOverheadAndForwardWheelchair),
-            "pole_straight_arm_overhead_wheelchair" => Some(LateralRaiseExerciseName::PoleStraightArmOverheadWheelchair),
+            "dumbbell_front_raise_wheelchair" => {
+                Some(LateralRaiseExerciseName::DumbbellFrontRaiseWheelchair)
+            }
+            "dumbbell_lateral_raise_wheelchair" => {
+                Some(LateralRaiseExerciseName::DumbbellLateralRaiseWheelchair)
+            }
+            "pole_double_arm_overhead_and_forward_wheelchair" => {
+                Some(LateralRaiseExerciseName::PoleDoubleArmOverheadAndForwardWheelchair)
+            }
+            "pole_straight_arm_overhead_wheelchair" => {
+                Some(LateralRaiseExerciseName::PoleStraightArmOverheadWheelchair)
+            }
             _ => None,
         }
     }
@@ -15278,13 +15862,19 @@ impl LegCurlExerciseName {
             "weighted_leg_curl" => Some(LegCurlExerciseName::WeightedLegCurl),
             "good_morning" => Some(LegCurlExerciseName::GoodMorning),
             "seated_barbell_good_morning" => Some(LegCurlExerciseName::SeatedBarbellGoodMorning),
-            "single_leg_barbell_good_morning" => Some(LegCurlExerciseName::SingleLegBarbellGoodMorning),
+            "single_leg_barbell_good_morning" => {
+                Some(LegCurlExerciseName::SingleLegBarbellGoodMorning)
+            }
             "single_leg_sliding_leg_curl" => Some(LegCurlExerciseName::SingleLegSlidingLegCurl),
             "sliding_leg_curl" => Some(LegCurlExerciseName::SlidingLegCurl),
             "split_barbell_good_morning" => Some(LegCurlExerciseName::SplitBarbellGoodMorning),
             "split_stance_extension" => Some(LegCurlExerciseName::SplitStanceExtension),
-            "staggered_stance_good_morning" => Some(LegCurlExerciseName::StaggeredStanceGoodMorning),
-            "swiss_ball_hip_raise_and_leg_curl" => Some(LegCurlExerciseName::SwissBallHipRaiseAndLegCurl),
+            "staggered_stance_good_morning" => {
+                Some(LegCurlExerciseName::StaggeredStanceGoodMorning)
+            }
+            "swiss_ball_hip_raise_and_leg_curl" => {
+                Some(LegCurlExerciseName::SwissBallHipRaiseAndLegCurl)
+            }
             "zercher_good_morning" => Some(LegCurlExerciseName::ZercherGoodMorning),
             "band_good_morning" => Some(LegCurlExerciseName::BandGoodMorning),
             "bar_good_morning" => Some(LegCurlExerciseName::BarGoodMorning),
@@ -15329,21 +15919,29 @@ impl LegRaiseExerciseName {
             LegRaiseExerciseName::HangingLegRaise => "hanging_leg_raise",
             LegRaiseExerciseName::WeightedHangingLegRaise => "weighted_hanging_leg_raise",
             LegRaiseExerciseName::HangingSingleLegRaise => "hanging_single_leg_raise",
-            LegRaiseExerciseName::WeightedHangingSingleLegRaise => "weighted_hanging_single_leg_raise",
+            LegRaiseExerciseName::WeightedHangingSingleLegRaise => {
+                "weighted_hanging_single_leg_raise"
+            }
             LegRaiseExerciseName::KettlebellLegRaises => "kettlebell_leg_raises",
             LegRaiseExerciseName::LegLoweringDrill => "leg_lowering_drill",
             LegRaiseExerciseName::WeightedLegLoweringDrill => "weighted_leg_lowering_drill",
             LegRaiseExerciseName::LyingStraightLegRaise => "lying_straight_leg_raise",
-            LegRaiseExerciseName::WeightedLyingStraightLegRaise => "weighted_lying_straight_leg_raise",
+            LegRaiseExerciseName::WeightedLyingStraightLegRaise => {
+                "weighted_lying_straight_leg_raise"
+            }
             LegRaiseExerciseName::MedicineBallLegDrops => "medicine_ball_leg_drops",
             LegRaiseExerciseName::QuadrupedLegRaise => "quadruped_leg_raise",
             LegRaiseExerciseName::WeightedQuadrupedLegRaise => "weighted_quadruped_leg_raise",
             LegRaiseExerciseName::ReverseLegRaise => "reverse_leg_raise",
             LegRaiseExerciseName::WeightedReverseLegRaise => "weighted_reverse_leg_raise",
             LegRaiseExerciseName::ReverseLegRaiseOnSwissBall => "reverse_leg_raise_on_swiss_ball",
-            LegRaiseExerciseName::WeightedReverseLegRaiseOnSwissBall => "weighted_reverse_leg_raise_on_swiss_ball",
+            LegRaiseExerciseName::WeightedReverseLegRaiseOnSwissBall => {
+                "weighted_reverse_leg_raise_on_swiss_ball"
+            }
             LegRaiseExerciseName::SingleLegLoweringDrill => "single_leg_lowering_drill",
-            LegRaiseExerciseName::WeightedSingleLegLoweringDrill => "weighted_single_leg_lowering_drill",
+            LegRaiseExerciseName::WeightedSingleLegLoweringDrill => {
+                "weighted_single_leg_lowering_drill"
+            }
             LegRaiseExerciseName::WeightedHangingKneeRaise => "weighted_hanging_knee_raise",
             LegRaiseExerciseName::LateralStepover => "lateral_stepover",
             LegRaiseExerciseName::WeightedLateralStepover => "weighted_lateral_stepover",
@@ -15386,21 +15984,31 @@ impl LegRaiseExerciseName {
             "hanging_leg_raise" => Some(LegRaiseExerciseName::HangingLegRaise),
             "weighted_hanging_leg_raise" => Some(LegRaiseExerciseName::WeightedHangingLegRaise),
             "hanging_single_leg_raise" => Some(LegRaiseExerciseName::HangingSingleLegRaise),
-            "weighted_hanging_single_leg_raise" => Some(LegRaiseExerciseName::WeightedHangingSingleLegRaise),
+            "weighted_hanging_single_leg_raise" => {
+                Some(LegRaiseExerciseName::WeightedHangingSingleLegRaise)
+            }
             "kettlebell_leg_raises" => Some(LegRaiseExerciseName::KettlebellLegRaises),
             "leg_lowering_drill" => Some(LegRaiseExerciseName::LegLoweringDrill),
             "weighted_leg_lowering_drill" => Some(LegRaiseExerciseName::WeightedLegLoweringDrill),
             "lying_straight_leg_raise" => Some(LegRaiseExerciseName::LyingStraightLegRaise),
-            "weighted_lying_straight_leg_raise" => Some(LegRaiseExerciseName::WeightedLyingStraightLegRaise),
+            "weighted_lying_straight_leg_raise" => {
+                Some(LegRaiseExerciseName::WeightedLyingStraightLegRaise)
+            }
             "medicine_ball_leg_drops" => Some(LegRaiseExerciseName::MedicineBallLegDrops),
             "quadruped_leg_raise" => Some(LegRaiseExerciseName::QuadrupedLegRaise),
             "weighted_quadruped_leg_raise" => Some(LegRaiseExerciseName::WeightedQuadrupedLegRaise),
             "reverse_leg_raise" => Some(LegRaiseExerciseName::ReverseLegRaise),
             "weighted_reverse_leg_raise" => Some(LegRaiseExerciseName::WeightedReverseLegRaise),
-            "reverse_leg_raise_on_swiss_ball" => Some(LegRaiseExerciseName::ReverseLegRaiseOnSwissBall),
-            "weighted_reverse_leg_raise_on_swiss_ball" => Some(LegRaiseExerciseName::WeightedReverseLegRaiseOnSwissBall),
+            "reverse_leg_raise_on_swiss_ball" => {
+                Some(LegRaiseExerciseName::ReverseLegRaiseOnSwissBall)
+            }
+            "weighted_reverse_leg_raise_on_swiss_ball" => {
+                Some(LegRaiseExerciseName::WeightedReverseLegRaiseOnSwissBall)
+            }
             "single_leg_lowering_drill" => Some(LegRaiseExerciseName::SingleLegLoweringDrill),
-            "weighted_single_leg_lowering_drill" => Some(LegRaiseExerciseName::WeightedSingleLegLoweringDrill),
+            "weighted_single_leg_lowering_drill" => {
+                Some(LegRaiseExerciseName::WeightedSingleLegLoweringDrill)
+            }
             "weighted_hanging_knee_raise" => Some(LegRaiseExerciseName::WeightedHangingKneeRaise),
             "lateral_stepover" => Some(LegRaiseExerciseName::LateralStepover),
             "weighted_lateral_stepover" => Some(LegRaiseExerciseName::WeightedLateralStepover),
@@ -15513,9 +16121,15 @@ impl LungeExerciseName {
             LungeExerciseName::OverheadLunge => "overhead_lunge",
             LungeExerciseName::LungeMatrix => "lunge_matrix",
             LungeExerciseName::WeightedLungeMatrix => "weighted_lunge_matrix",
-            LungeExerciseName::AlternatingBarbellForwardLunge => "alternating_barbell_forward_lunge",
-            LungeExerciseName::AlternatingDumbbellLungeWithReach => "alternating_dumbbell_lunge_with_reach",
-            LungeExerciseName::BackFootElevatedDumbbellSplitSquat => "back_foot_elevated_dumbbell_split_squat",
+            LungeExerciseName::AlternatingBarbellForwardLunge => {
+                "alternating_barbell_forward_lunge"
+            }
+            LungeExerciseName::AlternatingDumbbellLungeWithReach => {
+                "alternating_dumbbell_lunge_with_reach"
+            }
+            LungeExerciseName::BackFootElevatedDumbbellSplitSquat => {
+                "back_foot_elevated_dumbbell_split_squat"
+            }
             LungeExerciseName::BarbellBoxLunge => "barbell_box_lunge",
             LungeExerciseName::BarbellBulgarianSplitSquat => "barbell_bulgarian_split_squat",
             LungeExerciseName::BarbellCrossoverLunge => "barbell_crossover_lunge",
@@ -15533,14 +16147,24 @@ impl LungeExerciseName {
             LungeExerciseName::DumbbellDiagonalLunge => "dumbbell_diagonal_lunge",
             LungeExerciseName::DumbbellLunge => "dumbbell_lunge",
             LungeExerciseName::DumbbellLungeAndRotation => "dumbbell_lunge_and_rotation",
-            LungeExerciseName::DumbbellOverheadBulgarianSplitSquat => "dumbbell_overhead_bulgarian_split_squat",
-            LungeExerciseName::DumbbellReverseLungeToHighKneeAndPress => "dumbbell_reverse_lunge_to_high_knee_and_press",
+            LungeExerciseName::DumbbellOverheadBulgarianSplitSquat => {
+                "dumbbell_overhead_bulgarian_split_squat"
+            }
+            LungeExerciseName::DumbbellReverseLungeToHighKneeAndPress => {
+                "dumbbell_reverse_lunge_to_high_knee_and_press"
+            }
             LungeExerciseName::DumbbellSideLunge => "dumbbell_side_lunge",
-            LungeExerciseName::ElevatedFrontFootBarbellSplitSquat => "elevated_front_foot_barbell_split_squat",
-            LungeExerciseName::FrontFootElevatedDumbbellSplitSquat => "front_foot_elevated_dumbbell_split_squat",
+            LungeExerciseName::ElevatedFrontFootBarbellSplitSquat => {
+                "elevated_front_foot_barbell_split_squat"
+            }
+            LungeExerciseName::FrontFootElevatedDumbbellSplitSquat => {
+                "front_foot_elevated_dumbbell_split_squat"
+            }
             LungeExerciseName::GunslingerLunge => "gunslinger_lunge",
             LungeExerciseName::LawnmowerLunge => "lawnmower_lunge",
-            LungeExerciseName::LowLungeWithIsometricAdduction => "low_lunge_with_isometric_adduction",
+            LungeExerciseName::LowLungeWithIsometricAdduction => {
+                "low_lunge_with_isometric_adduction"
+            }
             LungeExerciseName::LowSideToSideLunge => "low_side_to_side_lunge",
             LungeExerciseName::Lunge => "lunge",
             LungeExerciseName::WeightedLunge => "weighted_lunge",
@@ -15559,11 +16183,19 @@ impl LungeExerciseName {
             LungeExerciseName::ReverseDumbbellCrossoverLunge => "reverse_dumbbell_crossover_lunge",
             LungeExerciseName::ReverseDumbbellDiagonalLunge => "reverse_dumbbell_diagonal_lunge",
             LungeExerciseName::ReverseLungeWithReachBack => "reverse_lunge_with_reach_back",
-            LungeExerciseName::WeightedReverseLungeWithReachBack => "weighted_reverse_lunge_with_reach_back",
-            LungeExerciseName::ReverseLungeWithTwistAndOverheadReach => "reverse_lunge_with_twist_and_overhead_reach",
-            LungeExerciseName::WeightedReverseLungeWithTwistAndOverheadReach => "weighted_reverse_lunge_with_twist_and_overhead_reach",
+            LungeExerciseName::WeightedReverseLungeWithReachBack => {
+                "weighted_reverse_lunge_with_reach_back"
+            }
+            LungeExerciseName::ReverseLungeWithTwistAndOverheadReach => {
+                "reverse_lunge_with_twist_and_overhead_reach"
+            }
+            LungeExerciseName::WeightedReverseLungeWithTwistAndOverheadReach => {
+                "weighted_reverse_lunge_with_twist_and_overhead_reach"
+            }
             LungeExerciseName::ReverseSlidingBoxLunge => "reverse_sliding_box_lunge",
-            LungeExerciseName::WeightedReverseSlidingBoxLunge => "weighted_reverse_sliding_box_lunge",
+            LungeExerciseName::WeightedReverseSlidingBoxLunge => {
+                "weighted_reverse_sliding_box_lunge"
+            }
             LungeExerciseName::ReverseSlidingLunge => "reverse_sliding_lunge",
             LungeExerciseName::WeightedReverseSlidingLunge => "weighted_reverse_sliding_lunge",
             LungeExerciseName::RunnersLungeToBalance => "runners_lunge_to_balance",
@@ -15578,19 +16210,25 @@ impl LungeExerciseName {
             LungeExerciseName::SideLungeSweep => "side_lunge_sweep",
             LungeExerciseName::WeightedSideLungeSweep => "weighted_side_lunge_sweep",
             LungeExerciseName::SideLungeToCrossoverTap => "side_lunge_to_crossover_tap",
-            LungeExerciseName::WeightedSideLungeToCrossoverTap => "weighted_side_lunge_to_crossover_tap",
+            LungeExerciseName::WeightedSideLungeToCrossoverTap => {
+                "weighted_side_lunge_to_crossover_tap"
+            }
             LungeExerciseName::SideToSideLungeChops => "side_to_side_lunge_chops",
             LungeExerciseName::WeightedSideToSideLungeChops => "weighted_side_to_side_lunge_chops",
             LungeExerciseName::SiffJumpLunge => "siff_jump_lunge",
             LungeExerciseName::WeightedSiffJumpLunge => "weighted_siff_jump_lunge",
-            LungeExerciseName::SingleArmReverseLungeAndPress => "single_arm_reverse_lunge_and_press",
+            LungeExerciseName::SingleArmReverseLungeAndPress => {
+                "single_arm_reverse_lunge_and_press"
+            }
             LungeExerciseName::SlidingLateralLunge => "sliding_lateral_lunge",
             LungeExerciseName::WeightedSlidingLateralLunge => "weighted_sliding_lateral_lunge",
             LungeExerciseName::WalkingBarbellLunge => "walking_barbell_lunge",
             LungeExerciseName::WalkingDumbbellLunge => "walking_dumbbell_lunge",
             LungeExerciseName::WalkingLunge => "walking_lunge",
             LungeExerciseName::WeightedWalkingLunge => "weighted_walking_lunge",
-            LungeExerciseName::WideGripOverheadBarbellSplitSquat => "wide_grip_overhead_barbell_split_squat",
+            LungeExerciseName::WideGripOverheadBarbellSplitSquat => {
+                "wide_grip_overhead_barbell_split_squat"
+            }
             LungeExerciseName::AlternatingDumbbellLunge => "alternating_dumbbell_lunge",
             LungeExerciseName::DumbbellReverseLunge => "dumbbell_reverse_lunge",
             LungeExerciseName::OverheadDumbbellLunge => "overhead_dumbbell_lunge",
@@ -15708,9 +16346,15 @@ impl LungeExerciseName {
             "overhead_lunge" => Some(LungeExerciseName::OverheadLunge),
             "lunge_matrix" => Some(LungeExerciseName::LungeMatrix),
             "weighted_lunge_matrix" => Some(LungeExerciseName::WeightedLungeMatrix),
-            "alternating_barbell_forward_lunge" => Some(LungeExerciseName::AlternatingBarbellForwardLunge),
-            "alternating_dumbbell_lunge_with_reach" => Some(LungeExerciseName::AlternatingDumbbellLungeWithReach),
-            "back_foot_elevated_dumbbell_split_squat" => Some(LungeExerciseName::BackFootElevatedDumbbellSplitSquat),
+            "alternating_barbell_forward_lunge" => {
+                Some(LungeExerciseName::AlternatingBarbellForwardLunge)
+            }
+            "alternating_dumbbell_lunge_with_reach" => {
+                Some(LungeExerciseName::AlternatingDumbbellLungeWithReach)
+            }
+            "back_foot_elevated_dumbbell_split_squat" => {
+                Some(LungeExerciseName::BackFootElevatedDumbbellSplitSquat)
+            }
             "barbell_box_lunge" => Some(LungeExerciseName::BarbellBoxLunge),
             "barbell_bulgarian_split_squat" => Some(LungeExerciseName::BarbellBulgarianSplitSquat),
             "barbell_crossover_lunge" => Some(LungeExerciseName::BarbellCrossoverLunge),
@@ -15723,19 +16367,31 @@ impl LungeExerciseName {
             "diagonal_lunge" => Some(LungeExerciseName::DiagonalLunge),
             "drop_lunge" => Some(LungeExerciseName::DropLunge),
             "dumbbell_box_lunge" => Some(LungeExerciseName::DumbbellBoxLunge),
-            "dumbbell_bulgarian_split_squat" => Some(LungeExerciseName::DumbbellBulgarianSplitSquat),
+            "dumbbell_bulgarian_split_squat" => {
+                Some(LungeExerciseName::DumbbellBulgarianSplitSquat)
+            }
             "dumbbell_crossover_lunge" => Some(LungeExerciseName::DumbbellCrossoverLunge),
             "dumbbell_diagonal_lunge" => Some(LungeExerciseName::DumbbellDiagonalLunge),
             "dumbbell_lunge" => Some(LungeExerciseName::DumbbellLunge),
             "dumbbell_lunge_and_rotation" => Some(LungeExerciseName::DumbbellLungeAndRotation),
-            "dumbbell_overhead_bulgarian_split_squat" => Some(LungeExerciseName::DumbbellOverheadBulgarianSplitSquat),
-            "dumbbell_reverse_lunge_to_high_knee_and_press" => Some(LungeExerciseName::DumbbellReverseLungeToHighKneeAndPress),
+            "dumbbell_overhead_bulgarian_split_squat" => {
+                Some(LungeExerciseName::DumbbellOverheadBulgarianSplitSquat)
+            }
+            "dumbbell_reverse_lunge_to_high_knee_and_press" => {
+                Some(LungeExerciseName::DumbbellReverseLungeToHighKneeAndPress)
+            }
             "dumbbell_side_lunge" => Some(LungeExerciseName::DumbbellSideLunge),
-            "elevated_front_foot_barbell_split_squat" => Some(LungeExerciseName::ElevatedFrontFootBarbellSplitSquat),
-            "front_foot_elevated_dumbbell_split_squat" => Some(LungeExerciseName::FrontFootElevatedDumbbellSplitSquat),
+            "elevated_front_foot_barbell_split_squat" => {
+                Some(LungeExerciseName::ElevatedFrontFootBarbellSplitSquat)
+            }
+            "front_foot_elevated_dumbbell_split_squat" => {
+                Some(LungeExerciseName::FrontFootElevatedDumbbellSplitSquat)
+            }
             "gunslinger_lunge" => Some(LungeExerciseName::GunslingerLunge),
             "lawnmower_lunge" => Some(LungeExerciseName::LawnmowerLunge),
-            "low_lunge_with_isometric_adduction" => Some(LungeExerciseName::LowLungeWithIsometricAdduction),
+            "low_lunge_with_isometric_adduction" => {
+                Some(LungeExerciseName::LowLungeWithIsometricAdduction)
+            }
             "low_side_to_side_lunge" => Some(LungeExerciseName::LowSideToSideLunge),
             "lunge" => Some(LungeExerciseName::Lunge),
             "weighted_lunge" => Some(LungeExerciseName::WeightedLunge),
@@ -15744,28 +16400,50 @@ impl LungeExerciseName {
             "lunge_with_side_bend" => Some(LungeExerciseName::LungeWithSideBend),
             "offset_dumbbell_lunge" => Some(LungeExerciseName::OffsetDumbbellLunge),
             "offset_dumbbell_reverse_lunge" => Some(LungeExerciseName::OffsetDumbbellReverseLunge),
-            "overhead_bulgarian_split_squat" => Some(LungeExerciseName::OverheadBulgarianSplitSquat),
-            "overhead_dumbbell_reverse_lunge" => Some(LungeExerciseName::OverheadDumbbellReverseLunge),
+            "overhead_bulgarian_split_squat" => {
+                Some(LungeExerciseName::OverheadBulgarianSplitSquat)
+            }
+            "overhead_dumbbell_reverse_lunge" => {
+                Some(LungeExerciseName::OverheadDumbbellReverseLunge)
+            }
             "overhead_dumbbell_split_squat" => Some(LungeExerciseName::OverheadDumbbellSplitSquat),
             "overhead_lunge_with_rotation" => Some(LungeExerciseName::OverheadLungeWithRotation),
             "reverse_barbell_box_lunge" => Some(LungeExerciseName::ReverseBarbellBoxLunge),
             "reverse_box_lunge" => Some(LungeExerciseName::ReverseBoxLunge),
             "reverse_dumbbell_box_lunge" => Some(LungeExerciseName::ReverseDumbbellBoxLunge),
-            "reverse_dumbbell_crossover_lunge" => Some(LungeExerciseName::ReverseDumbbellCrossoverLunge),
-            "reverse_dumbbell_diagonal_lunge" => Some(LungeExerciseName::ReverseDumbbellDiagonalLunge),
+            "reverse_dumbbell_crossover_lunge" => {
+                Some(LungeExerciseName::ReverseDumbbellCrossoverLunge)
+            }
+            "reverse_dumbbell_diagonal_lunge" => {
+                Some(LungeExerciseName::ReverseDumbbellDiagonalLunge)
+            }
             "reverse_lunge_with_reach_back" => Some(LungeExerciseName::ReverseLungeWithReachBack),
-            "weighted_reverse_lunge_with_reach_back" => Some(LungeExerciseName::WeightedReverseLungeWithReachBack),
-            "reverse_lunge_with_twist_and_overhead_reach" => Some(LungeExerciseName::ReverseLungeWithTwistAndOverheadReach),
-            "weighted_reverse_lunge_with_twist_and_overhead_reach" => Some(LungeExerciseName::WeightedReverseLungeWithTwistAndOverheadReach),
+            "weighted_reverse_lunge_with_reach_back" => {
+                Some(LungeExerciseName::WeightedReverseLungeWithReachBack)
+            }
+            "reverse_lunge_with_twist_and_overhead_reach" => {
+                Some(LungeExerciseName::ReverseLungeWithTwistAndOverheadReach)
+            }
+            "weighted_reverse_lunge_with_twist_and_overhead_reach" => {
+                Some(LungeExerciseName::WeightedReverseLungeWithTwistAndOverheadReach)
+            }
             "reverse_sliding_box_lunge" => Some(LungeExerciseName::ReverseSlidingBoxLunge),
-            "weighted_reverse_sliding_box_lunge" => Some(LungeExerciseName::WeightedReverseSlidingBoxLunge),
+            "weighted_reverse_sliding_box_lunge" => {
+                Some(LungeExerciseName::WeightedReverseSlidingBoxLunge)
+            }
             "reverse_sliding_lunge" => Some(LungeExerciseName::ReverseSlidingLunge),
-            "weighted_reverse_sliding_lunge" => Some(LungeExerciseName::WeightedReverseSlidingLunge),
+            "weighted_reverse_sliding_lunge" => {
+                Some(LungeExerciseName::WeightedReverseSlidingLunge)
+            }
             "runners_lunge_to_balance" => Some(LungeExerciseName::RunnersLungeToBalance),
-            "weighted_runners_lunge_to_balance" => Some(LungeExerciseName::WeightedRunnersLungeToBalance),
+            "weighted_runners_lunge_to_balance" => {
+                Some(LungeExerciseName::WeightedRunnersLungeToBalance)
+            }
             "shifting_side_lunge" => Some(LungeExerciseName::ShiftingSideLunge),
             "side_and_crossover_lunge" => Some(LungeExerciseName::SideAndCrossoverLunge),
-            "weighted_side_and_crossover_lunge" => Some(LungeExerciseName::WeightedSideAndCrossoverLunge),
+            "weighted_side_and_crossover_lunge" => {
+                Some(LungeExerciseName::WeightedSideAndCrossoverLunge)
+            }
             "side_lunge" => Some(LungeExerciseName::SideLunge),
             "weighted_side_lunge" => Some(LungeExerciseName::WeightedSideLunge),
             "side_lunge_and_press" => Some(LungeExerciseName::SideLungeAndPress),
@@ -15773,24 +16451,36 @@ impl LungeExerciseName {
             "side_lunge_sweep" => Some(LungeExerciseName::SideLungeSweep),
             "weighted_side_lunge_sweep" => Some(LungeExerciseName::WeightedSideLungeSweep),
             "side_lunge_to_crossover_tap" => Some(LungeExerciseName::SideLungeToCrossoverTap),
-            "weighted_side_lunge_to_crossover_tap" => Some(LungeExerciseName::WeightedSideLungeToCrossoverTap),
+            "weighted_side_lunge_to_crossover_tap" => {
+                Some(LungeExerciseName::WeightedSideLungeToCrossoverTap)
+            }
             "side_to_side_lunge_chops" => Some(LungeExerciseName::SideToSideLungeChops),
-            "weighted_side_to_side_lunge_chops" => Some(LungeExerciseName::WeightedSideToSideLungeChops),
+            "weighted_side_to_side_lunge_chops" => {
+                Some(LungeExerciseName::WeightedSideToSideLungeChops)
+            }
             "siff_jump_lunge" => Some(LungeExerciseName::SiffJumpLunge),
             "weighted_siff_jump_lunge" => Some(LungeExerciseName::WeightedSiffJumpLunge),
-            "single_arm_reverse_lunge_and_press" => Some(LungeExerciseName::SingleArmReverseLungeAndPress),
+            "single_arm_reverse_lunge_and_press" => {
+                Some(LungeExerciseName::SingleArmReverseLungeAndPress)
+            }
             "sliding_lateral_lunge" => Some(LungeExerciseName::SlidingLateralLunge),
-            "weighted_sliding_lateral_lunge" => Some(LungeExerciseName::WeightedSlidingLateralLunge),
+            "weighted_sliding_lateral_lunge" => {
+                Some(LungeExerciseName::WeightedSlidingLateralLunge)
+            }
             "walking_barbell_lunge" => Some(LungeExerciseName::WalkingBarbellLunge),
             "walking_dumbbell_lunge" => Some(LungeExerciseName::WalkingDumbbellLunge),
             "walking_lunge" => Some(LungeExerciseName::WalkingLunge),
             "weighted_walking_lunge" => Some(LungeExerciseName::WeightedWalkingLunge),
-            "wide_grip_overhead_barbell_split_squat" => Some(LungeExerciseName::WideGripOverheadBarbellSplitSquat),
+            "wide_grip_overhead_barbell_split_squat" => {
+                Some(LungeExerciseName::WideGripOverheadBarbellSplitSquat)
+            }
             "alternating_dumbbell_lunge" => Some(LungeExerciseName::AlternatingDumbbellLunge),
             "dumbbell_reverse_lunge" => Some(LungeExerciseName::DumbbellReverseLunge),
             "overhead_dumbbell_lunge" => Some(LungeExerciseName::OverheadDumbbellLunge),
             "scissor_power_switch" => Some(LungeExerciseName::ScissorPowerSwitch),
-            "dumbbell_overhead_walking_lunge" => Some(LungeExerciseName::DumbbellOverheadWalkingLunge),
+            "dumbbell_overhead_walking_lunge" => {
+                Some(LungeExerciseName::DumbbellOverheadWalkingLunge)
+            }
             "curtsy_lunge" => Some(LungeExerciseName::CurtsyLunge),
             "weighted_curtsy_lunge" => Some(LungeExerciseName::WeightedCurtsyLunge),
             "weighted_shifting_side_lunge" => Some(LungeExerciseName::WeightedShiftingSideLunge),
@@ -15863,8 +16553,12 @@ impl OlympicLiftExerciseName {
             OlympicLiftExerciseName::SquatCleanAndJerk => "squat_clean_and_jerk",
             OlympicLiftExerciseName::DumbbellHangSnatch => "dumbbell_hang_snatch",
             OlympicLiftExerciseName::DumbbellPowerCleanAndJerk => "dumbbell_power_clean_and_jerk",
-            OlympicLiftExerciseName::DumbbellPowerCleanAndPushPress => "dumbbell_power_clean_and_push_press",
-            OlympicLiftExerciseName::DumbbellPowerCleanAndStrictPress => "dumbbell_power_clean_and_strict_press",
+            OlympicLiftExerciseName::DumbbellPowerCleanAndPushPress => {
+                "dumbbell_power_clean_and_push_press"
+            }
+            OlympicLiftExerciseName::DumbbellPowerCleanAndStrictPress => {
+                "dumbbell_power_clean_and_strict_press"
+            }
             OlympicLiftExerciseName::DumbbellSnatch => "dumbbell_snatch",
             OlympicLiftExerciseName::MedicineBallClean => "medicine_ball_clean",
             OlympicLiftExerciseName::CleanAndPress => "clean_and_press",
@@ -15925,17 +16619,27 @@ impl OlympicLiftExerciseName {
             "clean" => Some(OlympicLiftExerciseName::Clean),
             "dumbbell_clean" => Some(OlympicLiftExerciseName::DumbbellClean),
             "dumbbell_hang_pull" => Some(OlympicLiftExerciseName::DumbbellHangPull),
-            "one_hand_dumbbell_split_snatch" => Some(OlympicLiftExerciseName::OneHandDumbbellSplitSnatch),
+            "one_hand_dumbbell_split_snatch" => {
+                Some(OlympicLiftExerciseName::OneHandDumbbellSplitSnatch)
+            }
             "push_jerk" => Some(OlympicLiftExerciseName::PushJerk),
             "single_arm_dumbbell_snatch" => Some(OlympicLiftExerciseName::SingleArmDumbbellSnatch),
             "single_arm_hang_snatch" => Some(OlympicLiftExerciseName::SingleArmHangSnatch),
-            "single_arm_kettlebell_snatch" => Some(OlympicLiftExerciseName::SingleArmKettlebellSnatch),
+            "single_arm_kettlebell_snatch" => {
+                Some(OlympicLiftExerciseName::SingleArmKettlebellSnatch)
+            }
             "split_jerk" => Some(OlympicLiftExerciseName::SplitJerk),
             "squat_clean_and_jerk" => Some(OlympicLiftExerciseName::SquatCleanAndJerk),
             "dumbbell_hang_snatch" => Some(OlympicLiftExerciseName::DumbbellHangSnatch),
-            "dumbbell_power_clean_and_jerk" => Some(OlympicLiftExerciseName::DumbbellPowerCleanAndJerk),
-            "dumbbell_power_clean_and_push_press" => Some(OlympicLiftExerciseName::DumbbellPowerCleanAndPushPress),
-            "dumbbell_power_clean_and_strict_press" => Some(OlympicLiftExerciseName::DumbbellPowerCleanAndStrictPress),
+            "dumbbell_power_clean_and_jerk" => {
+                Some(OlympicLiftExerciseName::DumbbellPowerCleanAndJerk)
+            }
+            "dumbbell_power_clean_and_push_press" => {
+                Some(OlympicLiftExerciseName::DumbbellPowerCleanAndPushPress)
+            }
+            "dumbbell_power_clean_and_strict_press" => {
+                Some(OlympicLiftExerciseName::DumbbellPowerCleanAndStrictPress)
+            }
             "dumbbell_snatch" => Some(OlympicLiftExerciseName::DumbbellSnatch),
             "medicine_ball_clean" => Some(OlympicLiftExerciseName::MedicineBallClean),
             "clean_and_press" => Some(OlympicLiftExerciseName::CleanAndPress),
@@ -16098,7 +16802,9 @@ impl PlankExerciseName {
             PlankExerciseName::BearCrawl => "bear_crawl",
             PlankExerciseName::WeightedBearCrawl => "weighted_bear_crawl",
             PlankExerciseName::CrossBodyMountainClimber => "cross_body_mountain_climber",
-            PlankExerciseName::WeightedCrossBodyMountainClimber => "weighted_cross_body_mountain_climber",
+            PlankExerciseName::WeightedCrossBodyMountainClimber => {
+                "weighted_cross_body_mountain_climber"
+            }
             PlankExerciseName::ElbowPlankPikeJacks => "elbow_plank_pike_jacks",
             PlankExerciseName::WeightedElbowPlankPikeJacks => "weighted_elbow_plank_pike_jacks",
             PlankExerciseName::ElevatedFeetPlank => "elevated_feet_plank",
@@ -16116,27 +16822,51 @@ impl PlankExerciseName {
             PlankExerciseName::KneelingPlank => "kneeling_plank",
             PlankExerciseName::WeightedKneelingPlank => "weighted_kneeling_plank",
             PlankExerciseName::KneelingSidePlankWithLegLift => "kneeling_side_plank_with_leg_lift",
-            PlankExerciseName::WeightedKneelingSidePlankWithLegLift => "weighted_kneeling_side_plank_with_leg_lift",
+            PlankExerciseName::WeightedKneelingSidePlankWithLegLift => {
+                "weighted_kneeling_side_plank_with_leg_lift"
+            }
             PlankExerciseName::LateralRoll => "lateral_roll",
             PlankExerciseName::WeightedLateralRoll => "weighted_lateral_roll",
             PlankExerciseName::LyingReversePlank => "lying_reverse_plank",
             PlankExerciseName::WeightedLyingReversePlank => "weighted_lying_reverse_plank",
             PlankExerciseName::MedicineBallMountainClimber => "medicine_ball_mountain_climber",
-            PlankExerciseName::WeightedMedicineBallMountainClimber => "weighted_medicine_ball_mountain_climber",
-            PlankExerciseName::ModifiedMountainClimberAndExtension => "modified_mountain_climber_and_extension",
-            PlankExerciseName::WeightedModifiedMountainClimberAndExtension => "weighted_modified_mountain_climber_and_extension",
+            PlankExerciseName::WeightedMedicineBallMountainClimber => {
+                "weighted_medicine_ball_mountain_climber"
+            }
+            PlankExerciseName::ModifiedMountainClimberAndExtension => {
+                "modified_mountain_climber_and_extension"
+            }
+            PlankExerciseName::WeightedModifiedMountainClimberAndExtension => {
+                "weighted_modified_mountain_climber_and_extension"
+            }
             PlankExerciseName::MountainClimber => "mountain_climber",
             PlankExerciseName::WeightedMountainClimber => "weighted_mountain_climber",
             PlankExerciseName::MountainClimberOnSlidingDiscs => "mountain_climber_on_sliding_discs",
-            PlankExerciseName::WeightedMountainClimberOnSlidingDiscs => "weighted_mountain_climber_on_sliding_discs",
-            PlankExerciseName::MountainClimberWithFeetOnBosuBall => "mountain_climber_with_feet_on_bosu_ball",
-            PlankExerciseName::WeightedMountainClimberWithFeetOnBosuBall => "weighted_mountain_climber_with_feet_on_bosu_ball",
-            PlankExerciseName::MountainClimberWithHandsOnBench => "mountain_climber_with_hands_on_bench",
-            PlankExerciseName::MountainClimberWithHandsOnSwissBall => "mountain_climber_with_hands_on_swiss_ball",
-            PlankExerciseName::WeightedMountainClimberWithHandsOnSwissBall => "weighted_mountain_climber_with_hands_on_swiss_ball",
+            PlankExerciseName::WeightedMountainClimberOnSlidingDiscs => {
+                "weighted_mountain_climber_on_sliding_discs"
+            }
+            PlankExerciseName::MountainClimberWithFeetOnBosuBall => {
+                "mountain_climber_with_feet_on_bosu_ball"
+            }
+            PlankExerciseName::WeightedMountainClimberWithFeetOnBosuBall => {
+                "weighted_mountain_climber_with_feet_on_bosu_ball"
+            }
+            PlankExerciseName::MountainClimberWithHandsOnBench => {
+                "mountain_climber_with_hands_on_bench"
+            }
+            PlankExerciseName::MountainClimberWithHandsOnSwissBall => {
+                "mountain_climber_with_hands_on_swiss_ball"
+            }
+            PlankExerciseName::WeightedMountainClimberWithHandsOnSwissBall => {
+                "weighted_mountain_climber_with_hands_on_swiss_ball"
+            }
             PlankExerciseName::Plank => "plank",
-            PlankExerciseName::PlankJacksWithFeetOnSlidingDiscs => "plank_jacks_with_feet_on_sliding_discs",
-            PlankExerciseName::WeightedPlankJacksWithFeetOnSlidingDiscs => "weighted_plank_jacks_with_feet_on_sliding_discs",
+            PlankExerciseName::PlankJacksWithFeetOnSlidingDiscs => {
+                "plank_jacks_with_feet_on_sliding_discs"
+            }
+            PlankExerciseName::WeightedPlankJacksWithFeetOnSlidingDiscs => {
+                "weighted_plank_jacks_with_feet_on_sliding_discs"
+            }
             PlankExerciseName::PlankKneeTwist => "plank_knee_twist",
             PlankExerciseName::WeightedPlankKneeTwist => "weighted_plank_knee_twist",
             PlankExerciseName::PlankPikeJumps => "plank_pike_jumps",
@@ -16150,7 +16880,9 @@ impl PlankExerciseName {
             PlankExerciseName::PlankWithKneeToElbow => "plank_with_knee_to_elbow",
             PlankExerciseName::WeightedPlankWithKneeToElbow => "weighted_plank_with_knee_to_elbow",
             PlankExerciseName::PlankWithObliqueCrunch => "plank_with_oblique_crunch",
-            PlankExerciseName::WeightedPlankWithObliqueCrunch => "weighted_plank_with_oblique_crunch",
+            PlankExerciseName::WeightedPlankWithObliqueCrunch => {
+                "weighted_plank_with_oblique_crunch"
+            }
             PlankExerciseName::PlyometricSidePlank => "plyometric_side_plank",
             PlankExerciseName::WeightedPlyometricSidePlank => "weighted_plyometric_side_plank",
             PlankExerciseName::RollingSidePlank => "rolling_side_plank",
@@ -16164,38 +16896,64 @@ impl PlankExerciseName {
             PlankExerciseName::SidePlankLift => "side_plank_lift",
             PlankExerciseName::WeightedSidePlankLift => "weighted_side_plank_lift",
             PlankExerciseName::SidePlankWithElbowOnBosuBall => "side_plank_with_elbow_on_bosu_ball",
-            PlankExerciseName::WeightedSidePlankWithElbowOnBosuBall => "weighted_side_plank_with_elbow_on_bosu_ball",
+            PlankExerciseName::WeightedSidePlankWithElbowOnBosuBall => {
+                "weighted_side_plank_with_elbow_on_bosu_ball"
+            }
             PlankExerciseName::SidePlankWithFeetOnBench => "side_plank_with_feet_on_bench",
-            PlankExerciseName::WeightedSidePlankWithFeetOnBench => "weighted_side_plank_with_feet_on_bench",
+            PlankExerciseName::WeightedSidePlankWithFeetOnBench => {
+                "weighted_side_plank_with_feet_on_bench"
+            }
             PlankExerciseName::SidePlankWithKneeCircle => "side_plank_with_knee_circle",
-            PlankExerciseName::WeightedSidePlankWithKneeCircle => "weighted_side_plank_with_knee_circle",
+            PlankExerciseName::WeightedSidePlankWithKneeCircle => {
+                "weighted_side_plank_with_knee_circle"
+            }
             PlankExerciseName::SidePlankWithKneeTuck => "side_plank_with_knee_tuck",
-            PlankExerciseName::WeightedSidePlankWithKneeTuck => "weighted_side_plank_with_knee_tuck",
+            PlankExerciseName::WeightedSidePlankWithKneeTuck => {
+                "weighted_side_plank_with_knee_tuck"
+            }
             PlankExerciseName::SidePlankWithLegLift => "side_plank_with_leg_lift",
             PlankExerciseName::WeightedSidePlankWithLegLift => "weighted_side_plank_with_leg_lift",
             PlankExerciseName::SidePlankWithReachUnder => "side_plank_with_reach_under",
-            PlankExerciseName::WeightedSidePlankWithReachUnder => "weighted_side_plank_with_reach_under",
+            PlankExerciseName::WeightedSidePlankWithReachUnder => {
+                "weighted_side_plank_with_reach_under"
+            }
             PlankExerciseName::SingleLegElevatedFeetPlank => "single_leg_elevated_feet_plank",
-            PlankExerciseName::WeightedSingleLegElevatedFeetPlank => "weighted_single_leg_elevated_feet_plank",
+            PlankExerciseName::WeightedSingleLegElevatedFeetPlank => {
+                "weighted_single_leg_elevated_feet_plank"
+            }
             PlankExerciseName::SingleLegFlexAndExtend => "single_leg_flex_and_extend",
-            PlankExerciseName::WeightedSingleLegFlexAndExtend => "weighted_single_leg_flex_and_extend",
+            PlankExerciseName::WeightedSingleLegFlexAndExtend => {
+                "weighted_single_leg_flex_and_extend"
+            }
             PlankExerciseName::SingleLegSidePlank => "single_leg_side_plank",
             PlankExerciseName::WeightedSingleLegSidePlank => "weighted_single_leg_side_plank",
             PlankExerciseName::SpidermanPlank => "spiderman_plank",
             PlankExerciseName::WeightedSpidermanPlank => "weighted_spiderman_plank",
             PlankExerciseName::StraightArmPlank => "straight_arm_plank",
             PlankExerciseName::WeightedStraightArmPlank => "weighted_straight_arm_plank",
-            PlankExerciseName::StraightArmPlankWithShoulderTouch => "straight_arm_plank_with_shoulder_touch",
-            PlankExerciseName::WeightedStraightArmPlankWithShoulderTouch => "weighted_straight_arm_plank_with_shoulder_touch",
+            PlankExerciseName::StraightArmPlankWithShoulderTouch => {
+                "straight_arm_plank_with_shoulder_touch"
+            }
+            PlankExerciseName::WeightedStraightArmPlankWithShoulderTouch => {
+                "weighted_straight_arm_plank_with_shoulder_touch"
+            }
             PlankExerciseName::SwissBallPlank => "swiss_ball_plank",
             PlankExerciseName::WeightedSwissBallPlank => "weighted_swiss_ball_plank",
             PlankExerciseName::SwissBallPlankLegLift => "swiss_ball_plank_leg_lift",
-            PlankExerciseName::WeightedSwissBallPlankLegLift => "weighted_swiss_ball_plank_leg_lift",
+            PlankExerciseName::WeightedSwissBallPlankLegLift => {
+                "weighted_swiss_ball_plank_leg_lift"
+            }
             PlankExerciseName::SwissBallPlankLegLiftAndHold => "swiss_ball_plank_leg_lift_and_hold",
-            PlankExerciseName::SwissBallPlankWithFeetOnBench => "swiss_ball_plank_with_feet_on_bench",
-            PlankExerciseName::WeightedSwissBallPlankWithFeetOnBench => "weighted_swiss_ball_plank_with_feet_on_bench",
+            PlankExerciseName::SwissBallPlankWithFeetOnBench => {
+                "swiss_ball_plank_with_feet_on_bench"
+            }
+            PlankExerciseName::WeightedSwissBallPlankWithFeetOnBench => {
+                "weighted_swiss_ball_plank_with_feet_on_bench"
+            }
             PlankExerciseName::SwissBallProneJackknife => "swiss_ball_prone_jackknife",
-            PlankExerciseName::WeightedSwissBallProneJackknife => "weighted_swiss_ball_prone_jackknife",
+            PlankExerciseName::WeightedSwissBallProneJackknife => {
+                "weighted_swiss_ball_prone_jackknife"
+            }
             PlankExerciseName::SwissBallSidePlank => "swiss_ball_side_plank",
             PlankExerciseName::WeightedSwissBallSidePlank => "weighted_swiss_ball_side_plank",
             PlankExerciseName::ThreeWayPlank => "three_way_plank",
@@ -16205,22 +16963,44 @@ impl PlankExerciseName {
             PlankExerciseName::TStabilization => "t_stabilization",
             PlankExerciseName::WeightedTStabilization => "weighted_t_stabilization",
             PlankExerciseName::TurkishGetUpToSidePlank => "turkish_get_up_to_side_plank",
-            PlankExerciseName::WeightedTurkishGetUpToSidePlank => "weighted_turkish_get_up_to_side_plank",
+            PlankExerciseName::WeightedTurkishGetUpToSidePlank => {
+                "weighted_turkish_get_up_to_side_plank"
+            }
             PlankExerciseName::TwoPointPlank => "two_point_plank",
             PlankExerciseName::WeightedTwoPointPlank => "weighted_two_point_plank",
             PlankExerciseName::WeightedPlank => "weighted_plank",
-            PlankExerciseName::WideStancePlankWithDiagonalArmLift => "wide_stance_plank_with_diagonal_arm_lift",
-            PlankExerciseName::WeightedWideStancePlankWithDiagonalArmLift => "weighted_wide_stance_plank_with_diagonal_arm_lift",
-            PlankExerciseName::WideStancePlankWithDiagonalLegLift => "wide_stance_plank_with_diagonal_leg_lift",
-            PlankExerciseName::WeightedWideStancePlankWithDiagonalLegLift => "weighted_wide_stance_plank_with_diagonal_leg_lift",
+            PlankExerciseName::WideStancePlankWithDiagonalArmLift => {
+                "wide_stance_plank_with_diagonal_arm_lift"
+            }
+            PlankExerciseName::WeightedWideStancePlankWithDiagonalArmLift => {
+                "weighted_wide_stance_plank_with_diagonal_arm_lift"
+            }
+            PlankExerciseName::WideStancePlankWithDiagonalLegLift => {
+                "wide_stance_plank_with_diagonal_leg_lift"
+            }
+            PlankExerciseName::WeightedWideStancePlankWithDiagonalLegLift => {
+                "weighted_wide_stance_plank_with_diagonal_leg_lift"
+            }
             PlankExerciseName::WideStancePlankWithLegLift => "wide_stance_plank_with_leg_lift",
-            PlankExerciseName::WeightedWideStancePlankWithLegLift => "weighted_wide_stance_plank_with_leg_lift",
-            PlankExerciseName::WideStancePlankWithOppositeArmAndLegLift => "wide_stance_plank_with_opposite_arm_and_leg_lift",
-            PlankExerciseName::WeightedMountainClimberWithHandsOnBench => "weighted_mountain_climber_with_hands_on_bench",
-            PlankExerciseName::WeightedSwissBallPlankLegLiftAndHold => "weighted_swiss_ball_plank_leg_lift_and_hold",
-            PlankExerciseName::WeightedWideStancePlankWithOppositeArmAndLegLift => "weighted_wide_stance_plank_with_opposite_arm_and_leg_lift",
+            PlankExerciseName::WeightedWideStancePlankWithLegLift => {
+                "weighted_wide_stance_plank_with_leg_lift"
+            }
+            PlankExerciseName::WideStancePlankWithOppositeArmAndLegLift => {
+                "wide_stance_plank_with_opposite_arm_and_leg_lift"
+            }
+            PlankExerciseName::WeightedMountainClimberWithHandsOnBench => {
+                "weighted_mountain_climber_with_hands_on_bench"
+            }
+            PlankExerciseName::WeightedSwissBallPlankLegLiftAndHold => {
+                "weighted_swiss_ball_plank_leg_lift_and_hold"
+            }
+            PlankExerciseName::WeightedWideStancePlankWithOppositeArmAndLegLift => {
+                "weighted_wide_stance_plank_with_opposite_arm_and_leg_lift"
+            }
             PlankExerciseName::PlankWithFeetOnSwissBall => "plank_with_feet_on_swiss_ball",
-            PlankExerciseName::SidePlankToPlankWithReachUnder => "side_plank_to_plank_with_reach_under",
+            PlankExerciseName::SidePlankToPlankWithReachUnder => {
+                "side_plank_to_plank_with_reach_under"
+            }
             PlankExerciseName::BridgeWithGluteLowerLift => "bridge_with_glute_lower_lift",
             PlankExerciseName::BridgeOneLegBridge => "bridge_one_leg_bridge",
             PlankExerciseName::PlankWithArmVariations => "plank_with_arm_variations",
@@ -16383,9 +17163,13 @@ impl PlankExerciseName {
             "bear_crawl" => Some(PlankExerciseName::BearCrawl),
             "weighted_bear_crawl" => Some(PlankExerciseName::WeightedBearCrawl),
             "cross_body_mountain_climber" => Some(PlankExerciseName::CrossBodyMountainClimber),
-            "weighted_cross_body_mountain_climber" => Some(PlankExerciseName::WeightedCrossBodyMountainClimber),
+            "weighted_cross_body_mountain_climber" => {
+                Some(PlankExerciseName::WeightedCrossBodyMountainClimber)
+            }
             "elbow_plank_pike_jacks" => Some(PlankExerciseName::ElbowPlankPikeJacks),
-            "weighted_elbow_plank_pike_jacks" => Some(PlankExerciseName::WeightedElbowPlankPikeJacks),
+            "weighted_elbow_plank_pike_jacks" => {
+                Some(PlankExerciseName::WeightedElbowPlankPikeJacks)
+            }
             "elevated_feet_plank" => Some(PlankExerciseName::ElevatedFeetPlank),
             "weighted_elevated_feet_plank" => Some(PlankExerciseName::WeightedElevatedFeetPlank),
             "elevator_abs" => Some(PlankExerciseName::ElevatorAbs),
@@ -16393,35 +17177,69 @@ impl PlankExerciseName {
             "extended_plank" => Some(PlankExerciseName::ExtendedPlank),
             "weighted_extended_plank" => Some(PlankExerciseName::WeightedExtendedPlank),
             "full_plank_passe_twist" => Some(PlankExerciseName::FullPlankPasseTwist),
-            "weighted_full_plank_passe_twist" => Some(PlankExerciseName::WeightedFullPlankPasseTwist),
+            "weighted_full_plank_passe_twist" => {
+                Some(PlankExerciseName::WeightedFullPlankPasseTwist)
+            }
             "inching_elbow_plank" => Some(PlankExerciseName::InchingElbowPlank),
             "weighted_inching_elbow_plank" => Some(PlankExerciseName::WeightedInchingElbowPlank),
             "inchworm_to_side_plank" => Some(PlankExerciseName::InchwormToSidePlank),
-            "weighted_inchworm_to_side_plank" => Some(PlankExerciseName::WeightedInchwormToSidePlank),
+            "weighted_inchworm_to_side_plank" => {
+                Some(PlankExerciseName::WeightedInchwormToSidePlank)
+            }
             "kneeling_plank" => Some(PlankExerciseName::KneelingPlank),
             "weighted_kneeling_plank" => Some(PlankExerciseName::WeightedKneelingPlank),
-            "kneeling_side_plank_with_leg_lift" => Some(PlankExerciseName::KneelingSidePlankWithLegLift),
-            "weighted_kneeling_side_plank_with_leg_lift" => Some(PlankExerciseName::WeightedKneelingSidePlankWithLegLift),
+            "kneeling_side_plank_with_leg_lift" => {
+                Some(PlankExerciseName::KneelingSidePlankWithLegLift)
+            }
+            "weighted_kneeling_side_plank_with_leg_lift" => {
+                Some(PlankExerciseName::WeightedKneelingSidePlankWithLegLift)
+            }
             "lateral_roll" => Some(PlankExerciseName::LateralRoll),
             "weighted_lateral_roll" => Some(PlankExerciseName::WeightedLateralRoll),
             "lying_reverse_plank" => Some(PlankExerciseName::LyingReversePlank),
             "weighted_lying_reverse_plank" => Some(PlankExerciseName::WeightedLyingReversePlank),
-            "medicine_ball_mountain_climber" => Some(PlankExerciseName::MedicineBallMountainClimber),
-            "weighted_medicine_ball_mountain_climber" => Some(PlankExerciseName::WeightedMedicineBallMountainClimber),
-            "modified_mountain_climber_and_extension" => Some(PlankExerciseName::ModifiedMountainClimberAndExtension),
-            "weighted_modified_mountain_climber_and_extension" => Some(PlankExerciseName::WeightedModifiedMountainClimberAndExtension),
+            "medicine_ball_mountain_climber" => {
+                Some(PlankExerciseName::MedicineBallMountainClimber)
+            }
+            "weighted_medicine_ball_mountain_climber" => {
+                Some(PlankExerciseName::WeightedMedicineBallMountainClimber)
+            }
+            "modified_mountain_climber_and_extension" => {
+                Some(PlankExerciseName::ModifiedMountainClimberAndExtension)
+            }
+            "weighted_modified_mountain_climber_and_extension" => {
+                Some(PlankExerciseName::WeightedModifiedMountainClimberAndExtension)
+            }
             "mountain_climber" => Some(PlankExerciseName::MountainClimber),
             "weighted_mountain_climber" => Some(PlankExerciseName::WeightedMountainClimber),
-            "mountain_climber_on_sliding_discs" => Some(PlankExerciseName::MountainClimberOnSlidingDiscs),
-            "weighted_mountain_climber_on_sliding_discs" => Some(PlankExerciseName::WeightedMountainClimberOnSlidingDiscs),
-            "mountain_climber_with_feet_on_bosu_ball" => Some(PlankExerciseName::MountainClimberWithFeetOnBosuBall),
-            "weighted_mountain_climber_with_feet_on_bosu_ball" => Some(PlankExerciseName::WeightedMountainClimberWithFeetOnBosuBall),
-            "mountain_climber_with_hands_on_bench" => Some(PlankExerciseName::MountainClimberWithHandsOnBench),
-            "mountain_climber_with_hands_on_swiss_ball" => Some(PlankExerciseName::MountainClimberWithHandsOnSwissBall),
-            "weighted_mountain_climber_with_hands_on_swiss_ball" => Some(PlankExerciseName::WeightedMountainClimberWithHandsOnSwissBall),
+            "mountain_climber_on_sliding_discs" => {
+                Some(PlankExerciseName::MountainClimberOnSlidingDiscs)
+            }
+            "weighted_mountain_climber_on_sliding_discs" => {
+                Some(PlankExerciseName::WeightedMountainClimberOnSlidingDiscs)
+            }
+            "mountain_climber_with_feet_on_bosu_ball" => {
+                Some(PlankExerciseName::MountainClimberWithFeetOnBosuBall)
+            }
+            "weighted_mountain_climber_with_feet_on_bosu_ball" => {
+                Some(PlankExerciseName::WeightedMountainClimberWithFeetOnBosuBall)
+            }
+            "mountain_climber_with_hands_on_bench" => {
+                Some(PlankExerciseName::MountainClimberWithHandsOnBench)
+            }
+            "mountain_climber_with_hands_on_swiss_ball" => {
+                Some(PlankExerciseName::MountainClimberWithHandsOnSwissBall)
+            }
+            "weighted_mountain_climber_with_hands_on_swiss_ball" => {
+                Some(PlankExerciseName::WeightedMountainClimberWithHandsOnSwissBall)
+            }
             "plank" => Some(PlankExerciseName::Plank),
-            "plank_jacks_with_feet_on_sliding_discs" => Some(PlankExerciseName::PlankJacksWithFeetOnSlidingDiscs),
-            "weighted_plank_jacks_with_feet_on_sliding_discs" => Some(PlankExerciseName::WeightedPlankJacksWithFeetOnSlidingDiscs),
+            "plank_jacks_with_feet_on_sliding_discs" => {
+                Some(PlankExerciseName::PlankJacksWithFeetOnSlidingDiscs)
+            }
+            "weighted_plank_jacks_with_feet_on_sliding_discs" => {
+                Some(PlankExerciseName::WeightedPlankJacksWithFeetOnSlidingDiscs)
+            }
             "plank_knee_twist" => Some(PlankExerciseName::PlankKneeTwist),
             "weighted_plank_knee_twist" => Some(PlankExerciseName::WeightedPlankKneeTwist),
             "plank_pike_jumps" => Some(PlankExerciseName::PlankPikeJumps),
@@ -16433,11 +17251,17 @@ impl PlankExerciseName {
             "plank_with_arm_raise" => Some(PlankExerciseName::PlankWithArmRaise),
             "weighted_plank_with_arm_raise" => Some(PlankExerciseName::WeightedPlankWithArmRaise),
             "plank_with_knee_to_elbow" => Some(PlankExerciseName::PlankWithKneeToElbow),
-            "weighted_plank_with_knee_to_elbow" => Some(PlankExerciseName::WeightedPlankWithKneeToElbow),
+            "weighted_plank_with_knee_to_elbow" => {
+                Some(PlankExerciseName::WeightedPlankWithKneeToElbow)
+            }
             "plank_with_oblique_crunch" => Some(PlankExerciseName::PlankWithObliqueCrunch),
-            "weighted_plank_with_oblique_crunch" => Some(PlankExerciseName::WeightedPlankWithObliqueCrunch),
+            "weighted_plank_with_oblique_crunch" => {
+                Some(PlankExerciseName::WeightedPlankWithObliqueCrunch)
+            }
             "plyometric_side_plank" => Some(PlankExerciseName::PlyometricSidePlank),
-            "weighted_plyometric_side_plank" => Some(PlankExerciseName::WeightedPlyometricSidePlank),
+            "weighted_plyometric_side_plank" => {
+                Some(PlankExerciseName::WeightedPlyometricSidePlank)
+            }
             "rolling_side_plank" => Some(PlankExerciseName::RollingSidePlank),
             "weighted_rolling_side_plank" => Some(PlankExerciseName::WeightedRollingSidePlank),
             "side_kick_plank" => Some(PlankExerciseName::SideKickPlank),
@@ -16448,64 +17272,122 @@ impl PlankExerciseName {
             "weighted_side_plank_and_row" => Some(PlankExerciseName::WeightedSidePlankAndRow),
             "side_plank_lift" => Some(PlankExerciseName::SidePlankLift),
             "weighted_side_plank_lift" => Some(PlankExerciseName::WeightedSidePlankLift),
-            "side_plank_with_elbow_on_bosu_ball" => Some(PlankExerciseName::SidePlankWithElbowOnBosuBall),
-            "weighted_side_plank_with_elbow_on_bosu_ball" => Some(PlankExerciseName::WeightedSidePlankWithElbowOnBosuBall),
+            "side_plank_with_elbow_on_bosu_ball" => {
+                Some(PlankExerciseName::SidePlankWithElbowOnBosuBall)
+            }
+            "weighted_side_plank_with_elbow_on_bosu_ball" => {
+                Some(PlankExerciseName::WeightedSidePlankWithElbowOnBosuBall)
+            }
             "side_plank_with_feet_on_bench" => Some(PlankExerciseName::SidePlankWithFeetOnBench),
-            "weighted_side_plank_with_feet_on_bench" => Some(PlankExerciseName::WeightedSidePlankWithFeetOnBench),
+            "weighted_side_plank_with_feet_on_bench" => {
+                Some(PlankExerciseName::WeightedSidePlankWithFeetOnBench)
+            }
             "side_plank_with_knee_circle" => Some(PlankExerciseName::SidePlankWithKneeCircle),
-            "weighted_side_plank_with_knee_circle" => Some(PlankExerciseName::WeightedSidePlankWithKneeCircle),
+            "weighted_side_plank_with_knee_circle" => {
+                Some(PlankExerciseName::WeightedSidePlankWithKneeCircle)
+            }
             "side_plank_with_knee_tuck" => Some(PlankExerciseName::SidePlankWithKneeTuck),
-            "weighted_side_plank_with_knee_tuck" => Some(PlankExerciseName::WeightedSidePlankWithKneeTuck),
+            "weighted_side_plank_with_knee_tuck" => {
+                Some(PlankExerciseName::WeightedSidePlankWithKneeTuck)
+            }
             "side_plank_with_leg_lift" => Some(PlankExerciseName::SidePlankWithLegLift),
-            "weighted_side_plank_with_leg_lift" => Some(PlankExerciseName::WeightedSidePlankWithLegLift),
+            "weighted_side_plank_with_leg_lift" => {
+                Some(PlankExerciseName::WeightedSidePlankWithLegLift)
+            }
             "side_plank_with_reach_under" => Some(PlankExerciseName::SidePlankWithReachUnder),
-            "weighted_side_plank_with_reach_under" => Some(PlankExerciseName::WeightedSidePlankWithReachUnder),
+            "weighted_side_plank_with_reach_under" => {
+                Some(PlankExerciseName::WeightedSidePlankWithReachUnder)
+            }
             "single_leg_elevated_feet_plank" => Some(PlankExerciseName::SingleLegElevatedFeetPlank),
-            "weighted_single_leg_elevated_feet_plank" => Some(PlankExerciseName::WeightedSingleLegElevatedFeetPlank),
+            "weighted_single_leg_elevated_feet_plank" => {
+                Some(PlankExerciseName::WeightedSingleLegElevatedFeetPlank)
+            }
             "single_leg_flex_and_extend" => Some(PlankExerciseName::SingleLegFlexAndExtend),
-            "weighted_single_leg_flex_and_extend" => Some(PlankExerciseName::WeightedSingleLegFlexAndExtend),
+            "weighted_single_leg_flex_and_extend" => {
+                Some(PlankExerciseName::WeightedSingleLegFlexAndExtend)
+            }
             "single_leg_side_plank" => Some(PlankExerciseName::SingleLegSidePlank),
             "weighted_single_leg_side_plank" => Some(PlankExerciseName::WeightedSingleLegSidePlank),
             "spiderman_plank" => Some(PlankExerciseName::SpidermanPlank),
             "weighted_spiderman_plank" => Some(PlankExerciseName::WeightedSpidermanPlank),
             "straight_arm_plank" => Some(PlankExerciseName::StraightArmPlank),
             "weighted_straight_arm_plank" => Some(PlankExerciseName::WeightedStraightArmPlank),
-            "straight_arm_plank_with_shoulder_touch" => Some(PlankExerciseName::StraightArmPlankWithShoulderTouch),
-            "weighted_straight_arm_plank_with_shoulder_touch" => Some(PlankExerciseName::WeightedStraightArmPlankWithShoulderTouch),
+            "straight_arm_plank_with_shoulder_touch" => {
+                Some(PlankExerciseName::StraightArmPlankWithShoulderTouch)
+            }
+            "weighted_straight_arm_plank_with_shoulder_touch" => {
+                Some(PlankExerciseName::WeightedStraightArmPlankWithShoulderTouch)
+            }
             "swiss_ball_plank" => Some(PlankExerciseName::SwissBallPlank),
             "weighted_swiss_ball_plank" => Some(PlankExerciseName::WeightedSwissBallPlank),
             "swiss_ball_plank_leg_lift" => Some(PlankExerciseName::SwissBallPlankLegLift),
-            "weighted_swiss_ball_plank_leg_lift" => Some(PlankExerciseName::WeightedSwissBallPlankLegLift),
-            "swiss_ball_plank_leg_lift_and_hold" => Some(PlankExerciseName::SwissBallPlankLegLiftAndHold),
-            "swiss_ball_plank_with_feet_on_bench" => Some(PlankExerciseName::SwissBallPlankWithFeetOnBench),
-            "weighted_swiss_ball_plank_with_feet_on_bench" => Some(PlankExerciseName::WeightedSwissBallPlankWithFeetOnBench),
+            "weighted_swiss_ball_plank_leg_lift" => {
+                Some(PlankExerciseName::WeightedSwissBallPlankLegLift)
+            }
+            "swiss_ball_plank_leg_lift_and_hold" => {
+                Some(PlankExerciseName::SwissBallPlankLegLiftAndHold)
+            }
+            "swiss_ball_plank_with_feet_on_bench" => {
+                Some(PlankExerciseName::SwissBallPlankWithFeetOnBench)
+            }
+            "weighted_swiss_ball_plank_with_feet_on_bench" => {
+                Some(PlankExerciseName::WeightedSwissBallPlankWithFeetOnBench)
+            }
             "swiss_ball_prone_jackknife" => Some(PlankExerciseName::SwissBallProneJackknife),
-            "weighted_swiss_ball_prone_jackknife" => Some(PlankExerciseName::WeightedSwissBallProneJackknife),
+            "weighted_swiss_ball_prone_jackknife" => {
+                Some(PlankExerciseName::WeightedSwissBallProneJackknife)
+            }
             "swiss_ball_side_plank" => Some(PlankExerciseName::SwissBallSidePlank),
             "weighted_swiss_ball_side_plank" => Some(PlankExerciseName::WeightedSwissBallSidePlank),
             "three_way_plank" => Some(PlankExerciseName::ThreeWayPlank),
             "weighted_three_way_plank" => Some(PlankExerciseName::WeightedThreeWayPlank),
             "towel_plank_and_knee_in" => Some(PlankExerciseName::TowelPlankAndKneeIn),
-            "weighted_towel_plank_and_knee_in" => Some(PlankExerciseName::WeightedTowelPlankAndKneeIn),
+            "weighted_towel_plank_and_knee_in" => {
+                Some(PlankExerciseName::WeightedTowelPlankAndKneeIn)
+            }
             "t_stabilization" => Some(PlankExerciseName::TStabilization),
             "weighted_t_stabilization" => Some(PlankExerciseName::WeightedTStabilization),
             "turkish_get_up_to_side_plank" => Some(PlankExerciseName::TurkishGetUpToSidePlank),
-            "weighted_turkish_get_up_to_side_plank" => Some(PlankExerciseName::WeightedTurkishGetUpToSidePlank),
+            "weighted_turkish_get_up_to_side_plank" => {
+                Some(PlankExerciseName::WeightedTurkishGetUpToSidePlank)
+            }
             "two_point_plank" => Some(PlankExerciseName::TwoPointPlank),
             "weighted_two_point_plank" => Some(PlankExerciseName::WeightedTwoPointPlank),
             "weighted_plank" => Some(PlankExerciseName::WeightedPlank),
-            "wide_stance_plank_with_diagonal_arm_lift" => Some(PlankExerciseName::WideStancePlankWithDiagonalArmLift),
-            "weighted_wide_stance_plank_with_diagonal_arm_lift" => Some(PlankExerciseName::WeightedWideStancePlankWithDiagonalArmLift),
-            "wide_stance_plank_with_diagonal_leg_lift" => Some(PlankExerciseName::WideStancePlankWithDiagonalLegLift),
-            "weighted_wide_stance_plank_with_diagonal_leg_lift" => Some(PlankExerciseName::WeightedWideStancePlankWithDiagonalLegLift),
-            "wide_stance_plank_with_leg_lift" => Some(PlankExerciseName::WideStancePlankWithLegLift),
-            "weighted_wide_stance_plank_with_leg_lift" => Some(PlankExerciseName::WeightedWideStancePlankWithLegLift),
-            "wide_stance_plank_with_opposite_arm_and_leg_lift" => Some(PlankExerciseName::WideStancePlankWithOppositeArmAndLegLift),
-            "weighted_mountain_climber_with_hands_on_bench" => Some(PlankExerciseName::WeightedMountainClimberWithHandsOnBench),
-            "weighted_swiss_ball_plank_leg_lift_and_hold" => Some(PlankExerciseName::WeightedSwissBallPlankLegLiftAndHold),
-            "weighted_wide_stance_plank_with_opposite_arm_and_leg_lift" => Some(PlankExerciseName::WeightedWideStancePlankWithOppositeArmAndLegLift),
+            "wide_stance_plank_with_diagonal_arm_lift" => {
+                Some(PlankExerciseName::WideStancePlankWithDiagonalArmLift)
+            }
+            "weighted_wide_stance_plank_with_diagonal_arm_lift" => {
+                Some(PlankExerciseName::WeightedWideStancePlankWithDiagonalArmLift)
+            }
+            "wide_stance_plank_with_diagonal_leg_lift" => {
+                Some(PlankExerciseName::WideStancePlankWithDiagonalLegLift)
+            }
+            "weighted_wide_stance_plank_with_diagonal_leg_lift" => {
+                Some(PlankExerciseName::WeightedWideStancePlankWithDiagonalLegLift)
+            }
+            "wide_stance_plank_with_leg_lift" => {
+                Some(PlankExerciseName::WideStancePlankWithLegLift)
+            }
+            "weighted_wide_stance_plank_with_leg_lift" => {
+                Some(PlankExerciseName::WeightedWideStancePlankWithLegLift)
+            }
+            "wide_stance_plank_with_opposite_arm_and_leg_lift" => {
+                Some(PlankExerciseName::WideStancePlankWithOppositeArmAndLegLift)
+            }
+            "weighted_mountain_climber_with_hands_on_bench" => {
+                Some(PlankExerciseName::WeightedMountainClimberWithHandsOnBench)
+            }
+            "weighted_swiss_ball_plank_leg_lift_and_hold" => {
+                Some(PlankExerciseName::WeightedSwissBallPlankLegLiftAndHold)
+            }
+            "weighted_wide_stance_plank_with_opposite_arm_and_leg_lift" => {
+                Some(PlankExerciseName::WeightedWideStancePlankWithOppositeArmAndLegLift)
+            }
             "plank_with_feet_on_swiss_ball" => Some(PlankExerciseName::PlankWithFeetOnSwissBall),
-            "side_plank_to_plank_with_reach_under" => Some(PlankExerciseName::SidePlankToPlankWithReachUnder),
+            "side_plank_to_plank_with_reach_under" => {
+                Some(PlankExerciseName::SidePlankToPlankWithReachUnder)
+            }
             "bridge_with_glute_lower_lift" => Some(PlankExerciseName::BridgeWithGluteLowerLift),
             "bridge_one_leg_bridge" => Some(PlankExerciseName::BridgeOneLegBridge),
             "plank_with_arm_variations" => Some(PlankExerciseName::PlankWithArmVariations),
@@ -16580,8 +17462,12 @@ impl PlyoExerciseName {
             PlyoExerciseName::WeightedFrontKneeStrike => "weighted_front_knee_strike",
             PlyoExerciseName::HighBoxJump => "high_box_jump",
             PlyoExerciseName::WeightedHighBoxJump => "weighted_high_box_jump",
-            PlyoExerciseName::IsometricExplosiveBodyWeightJumpSquat => "isometric_explosive_body_weight_jump_squat",
-            PlyoExerciseName::WeightedIsometricExplosiveJumpSquat => "weighted_isometric_explosive_jump_squat",
+            PlyoExerciseName::IsometricExplosiveBodyWeightJumpSquat => {
+                "isometric_explosive_body_weight_jump_squat"
+            }
+            PlyoExerciseName::WeightedIsometricExplosiveJumpSquat => {
+                "weighted_isometric_explosive_jump_squat"
+            }
             PlyoExerciseName::LateralLeapAndHop => "lateral_leap_and_hop",
             PlyoExerciseName::WeightedLateralLeapAndHop => "weighted_lateral_leap_and_hop",
             PlyoExerciseName::LateralPlyoSquats => "lateral_plyo_squats",
@@ -16655,7 +17541,9 @@ impl PlyoExerciseName {
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
             "alternating_jump_lunge" => Some(PlyoExerciseName::AlternatingJumpLunge),
-            "weighted_alternating_jump_lunge" => Some(PlyoExerciseName::WeightedAlternatingJumpLunge),
+            "weighted_alternating_jump_lunge" => {
+                Some(PlyoExerciseName::WeightedAlternatingJumpLunge)
+            }
             "barbell_jump_squat" => Some(PlyoExerciseName::BarbellJumpSquat),
             "body_weight_jump_squat" => Some(PlyoExerciseName::BodyWeightJumpSquat),
             "weighted_jump_squat" => Some(PlyoExerciseName::WeightedJumpSquat),
@@ -16669,8 +17557,12 @@ impl PlyoExerciseName {
             "weighted_front_knee_strike" => Some(PlyoExerciseName::WeightedFrontKneeStrike),
             "high_box_jump" => Some(PlyoExerciseName::HighBoxJump),
             "weighted_high_box_jump" => Some(PlyoExerciseName::WeightedHighBoxJump),
-            "isometric_explosive_body_weight_jump_squat" => Some(PlyoExerciseName::IsometricExplosiveBodyWeightJumpSquat),
-            "weighted_isometric_explosive_jump_squat" => Some(PlyoExerciseName::WeightedIsometricExplosiveJumpSquat),
+            "isometric_explosive_body_weight_jump_squat" => {
+                Some(PlyoExerciseName::IsometricExplosiveBodyWeightJumpSquat)
+            }
+            "weighted_isometric_explosive_jump_squat" => {
+                Some(PlyoExerciseName::WeightedIsometricExplosiveJumpSquat)
+            }
             "lateral_leap_and_hop" => Some(PlyoExerciseName::LateralLeapAndHop),
             "weighted_lateral_leap_and_hop" => Some(PlyoExerciseName::WeightedLateralLeapAndHop),
             "lateral_plyo_squats" => Some(PlyoExerciseName::LateralPlyoSquats),
@@ -16680,9 +17572,13 @@ impl PlyoExerciseName {
             "medicine_ball_overhead_throws" => Some(PlyoExerciseName::MedicineBallOverheadThrows),
             "medicine_ball_side_throw" => Some(PlyoExerciseName::MedicineBallSideThrow),
             "medicine_ball_slam" => Some(PlyoExerciseName::MedicineBallSlam),
-            "side_to_side_medicine_ball_throws" => Some(PlyoExerciseName::SideToSideMedicineBallThrows),
+            "side_to_side_medicine_ball_throws" => {
+                Some(PlyoExerciseName::SideToSideMedicineBallThrows)
+            }
             "side_to_side_shuffle_jump" => Some(PlyoExerciseName::SideToSideShuffleJump),
-            "weighted_side_to_side_shuffle_jump" => Some(PlyoExerciseName::WeightedSideToSideShuffleJump),
+            "weighted_side_to_side_shuffle_jump" => {
+                Some(PlyoExerciseName::WeightedSideToSideShuffleJump)
+            }
             "squat_jump_onto_box" => Some(PlyoExerciseName::SquatJumpOntoBox),
             "weighted_squat_jump_onto_box" => Some(PlyoExerciseName::WeightedSquatJumpOntoBox),
             "squat_jumps_in_and_out" => Some(PlyoExerciseName::SquatJumpsInAndOut),
@@ -16765,7 +17661,9 @@ impl PullUpExerciseName {
             PullUpExerciseName::HangingHurdle => "hanging_hurdle",
             PullUpExerciseName::WeightedHangingHurdle => "weighted_hanging_hurdle",
             PullUpExerciseName::KneelingLatPulldown => "kneeling_lat_pulldown",
-            PullUpExerciseName::KneelingUnderhandGripLatPulldown => "kneeling_underhand_grip_lat_pulldown",
+            PullUpExerciseName::KneelingUnderhandGripLatPulldown => {
+                "kneeling_underhand_grip_lat_pulldown"
+            }
             PullUpExerciseName::LatPulldown => "lat_pulldown",
             PullUpExerciseName::MixedGripChinUp => "mixed_grip_chin_up",
             PullUpExerciseName::WeightedMixedGripChinUp => "weighted_mixed_grip_chin_up",
@@ -16870,7 +17768,9 @@ impl PullUpExerciseName {
             "hanging_hurdle" => Some(PullUpExerciseName::HangingHurdle),
             "weighted_hanging_hurdle" => Some(PullUpExerciseName::WeightedHangingHurdle),
             "kneeling_lat_pulldown" => Some(PullUpExerciseName::KneelingLatPulldown),
-            "kneeling_underhand_grip_lat_pulldown" => Some(PullUpExerciseName::KneelingUnderhandGripLatPulldown),
+            "kneeling_underhand_grip_lat_pulldown" => {
+                Some(PullUpExerciseName::KneelingUnderhandGripLatPulldown)
+            }
             "lat_pulldown" => Some(PullUpExerciseName::LatPulldown),
             "mixed_grip_chin_up" => Some(PullUpExerciseName::MixedGripChinUp),
             "weighted_mixed_grip_chin_up" => Some(PullUpExerciseName::WeightedMixedGripChinUp),
@@ -17012,15 +17912,23 @@ impl PushUpExerciseName {
         match self {
             PushUpExerciseName::ChestPressWithBand => "chest_press_with_band",
             PushUpExerciseName::AlternatingStaggeredPushUp => "alternating_staggered_push_up",
-            PushUpExerciseName::WeightedAlternatingStaggeredPushUp => "weighted_alternating_staggered_push_up",
-            PushUpExerciseName::AlternatingHandsMedicineBallPushUp => "alternating_hands_medicine_ball_push_up",
-            PushUpExerciseName::WeightedAlternatingHandsMedicineBallPushUp => "weighted_alternating_hands_medicine_ball_push_up",
+            PushUpExerciseName::WeightedAlternatingStaggeredPushUp => {
+                "weighted_alternating_staggered_push_up"
+            }
+            PushUpExerciseName::AlternatingHandsMedicineBallPushUp => {
+                "alternating_hands_medicine_ball_push_up"
+            }
+            PushUpExerciseName::WeightedAlternatingHandsMedicineBallPushUp => {
+                "weighted_alternating_hands_medicine_ball_push_up"
+            }
             PushUpExerciseName::BosuBallPushUp => "bosu_ball_push_up",
             PushUpExerciseName::WeightedBosuBallPushUp => "weighted_bosu_ball_push_up",
             PushUpExerciseName::ClappingPushUp => "clapping_push_up",
             PushUpExerciseName::WeightedClappingPushUp => "weighted_clapping_push_up",
             PushUpExerciseName::CloseGripMedicineBallPushUp => "close_grip_medicine_ball_push_up",
-            PushUpExerciseName::WeightedCloseGripMedicineBallPushUp => "weighted_close_grip_medicine_ball_push_up",
+            PushUpExerciseName::WeightedCloseGripMedicineBallPushUp => {
+                "weighted_close_grip_medicine_ball_push_up"
+            }
             PushUpExerciseName::CloseHandsPushUp => "close_hands_push_up",
             PushUpExerciseName::WeightedCloseHandsPushUp => "weighted_close_hands_push_up",
             PushUpExerciseName::DeclinePushUp => "decline_push_up",
@@ -17028,11 +17936,17 @@ impl PushUpExerciseName {
             PushUpExerciseName::DiamondPushUp => "diamond_push_up",
             PushUpExerciseName::WeightedDiamondPushUp => "weighted_diamond_push_up",
             PushUpExerciseName::ExplosiveCrossoverPushUp => "explosive_crossover_push_up",
-            PushUpExerciseName::WeightedExplosiveCrossoverPushUp => "weighted_explosive_crossover_push_up",
+            PushUpExerciseName::WeightedExplosiveCrossoverPushUp => {
+                "weighted_explosive_crossover_push_up"
+            }
             PushUpExerciseName::ExplosivePushUp => "explosive_push_up",
             PushUpExerciseName::WeightedExplosivePushUp => "weighted_explosive_push_up",
-            PushUpExerciseName::FeetElevatedSideToSidePushUp => "feet_elevated_side_to_side_push_up",
-            PushUpExerciseName::WeightedFeetElevatedSideToSidePushUp => "weighted_feet_elevated_side_to_side_push_up",
+            PushUpExerciseName::FeetElevatedSideToSidePushUp => {
+                "feet_elevated_side_to_side_push_up"
+            }
+            PushUpExerciseName::WeightedFeetElevatedSideToSidePushUp => {
+                "weighted_feet_elevated_side_to_side_push_up"
+            }
             PushUpExerciseName::HandReleasePushUp => "hand_release_push_up",
             PushUpExerciseName::WeightedHandReleasePushUp => "weighted_hand_release_push_up",
             PushUpExerciseName::HandstandPushUp => "handstand_push_up",
@@ -17040,7 +17954,9 @@ impl PushUpExerciseName {
             PushUpExerciseName::InclinePushUp => "incline_push_up",
             PushUpExerciseName::WeightedInclinePushUp => "weighted_incline_push_up",
             PushUpExerciseName::IsometricExplosivePushUp => "isometric_explosive_push_up",
-            PushUpExerciseName::WeightedIsometricExplosivePushUp => "weighted_isometric_explosive_push_up",
+            PushUpExerciseName::WeightedIsometricExplosivePushUp => {
+                "weighted_isometric_explosive_push_up"
+            }
             PushUpExerciseName::JudoPushUp => "judo_push_up",
             PushUpExerciseName::WeightedJudoPushUp => "weighted_judo_push_up",
             PushUpExerciseName::KneelingPushUp => "kneeling_push_up",
@@ -17056,13 +17972,21 @@ impl PushUpExerciseName {
             PushUpExerciseName::PushUpPlus => "push_up_plus",
             PushUpExerciseName::WeightedPushUpPlus => "weighted_push_up_plus",
             PushUpExerciseName::PushUpWithFeetOnSwissBall => "push_up_with_feet_on_swiss_ball",
-            PushUpExerciseName::WeightedPushUpWithFeetOnSwissBall => "weighted_push_up_with_feet_on_swiss_ball",
-            PushUpExerciseName::PushUpWithOneHandOnMedicineBall => "push_up_with_one_hand_on_medicine_ball",
-            PushUpExerciseName::WeightedPushUpWithOneHandOnMedicineBall => "weighted_push_up_with_one_hand_on_medicine_ball",
+            PushUpExerciseName::WeightedPushUpWithFeetOnSwissBall => {
+                "weighted_push_up_with_feet_on_swiss_ball"
+            }
+            PushUpExerciseName::PushUpWithOneHandOnMedicineBall => {
+                "push_up_with_one_hand_on_medicine_ball"
+            }
+            PushUpExerciseName::WeightedPushUpWithOneHandOnMedicineBall => {
+                "weighted_push_up_with_one_hand_on_medicine_ball"
+            }
             PushUpExerciseName::ShoulderPushUp => "shoulder_push_up",
             PushUpExerciseName::WeightedShoulderPushUp => "weighted_shoulder_push_up",
             PushUpExerciseName::SingleArmMedicineBallPushUp => "single_arm_medicine_ball_push_up",
-            PushUpExerciseName::WeightedSingleArmMedicineBallPushUp => "weighted_single_arm_medicine_ball_push_up",
+            PushUpExerciseName::WeightedSingleArmMedicineBallPushUp => {
+                "weighted_single_arm_medicine_ball_push_up"
+            }
             PushUpExerciseName::SpidermanPushUp => "spiderman_push_up",
             PushUpExerciseName::WeightedSpidermanPushUp => "weighted_spiderman_push_up",
             PushUpExerciseName::StackedFeetPushUp => "stacked_feet_push_up",
@@ -17082,7 +18006,9 @@ impl PushUpExerciseName {
             PushUpExerciseName::WideHandsPushUp => "wide_hands_push_up",
             PushUpExerciseName::WeightedWideHandsPushUp => "weighted_wide_hands_push_up",
             PushUpExerciseName::ParalletteHandstandPushUp => "parallette_handstand_push_up",
-            PushUpExerciseName::WeightedParalletteHandstandPushUp => "weighted_parallette_handstand_push_up",
+            PushUpExerciseName::WeightedParalletteHandstandPushUp => {
+                "weighted_parallette_handstand_push_up"
+            }
             PushUpExerciseName::RingHandstandPushUp => "ring_handstand_push_up",
             PushUpExerciseName::WeightedRingHandstandPushUp => "weighted_ring_handstand_push_up",
             PushUpExerciseName::RingPushUp => "ring_push_up",
@@ -17099,7 +18025,9 @@ impl PushUpExerciseName {
             PushUpExerciseName::WeightedBicepsPushUp => "weighted_biceps_push_up",
             PushUpExerciseName::WeightedHinduPushUp => "weighted_hindu_push_up",
             PushUpExerciseName::WeightedPikePushUp => "weighted_pike_push_up",
-            PushUpExerciseName::KippingParalletteHandstandPushUp => "kipping_parallette_handstand_push_up",
+            PushUpExerciseName::KippingParalletteHandstandPushUp => {
+                "kipping_parallette_handstand_push_up"
+            }
             PushUpExerciseName::WallPushUp => "wall_push_up",
         }
     }
@@ -17207,15 +18135,25 @@ impl PushUpExerciseName {
         match name {
             "chest_press_with_band" => Some(PushUpExerciseName::ChestPressWithBand),
             "alternating_staggered_push_up" => Some(PushUpExerciseName::AlternatingStaggeredPushUp),
-            "weighted_alternating_staggered_push_up" => Some(PushUpExerciseName::WeightedAlternatingStaggeredPushUp),
-            "alternating_hands_medicine_ball_push_up" => Some(PushUpExerciseName::AlternatingHandsMedicineBallPushUp),
-            "weighted_alternating_hands_medicine_ball_push_up" => Some(PushUpExerciseName::WeightedAlternatingHandsMedicineBallPushUp),
+            "weighted_alternating_staggered_push_up" => {
+                Some(PushUpExerciseName::WeightedAlternatingStaggeredPushUp)
+            }
+            "alternating_hands_medicine_ball_push_up" => {
+                Some(PushUpExerciseName::AlternatingHandsMedicineBallPushUp)
+            }
+            "weighted_alternating_hands_medicine_ball_push_up" => {
+                Some(PushUpExerciseName::WeightedAlternatingHandsMedicineBallPushUp)
+            }
             "bosu_ball_push_up" => Some(PushUpExerciseName::BosuBallPushUp),
             "weighted_bosu_ball_push_up" => Some(PushUpExerciseName::WeightedBosuBallPushUp),
             "clapping_push_up" => Some(PushUpExerciseName::ClappingPushUp),
             "weighted_clapping_push_up" => Some(PushUpExerciseName::WeightedClappingPushUp),
-            "close_grip_medicine_ball_push_up" => Some(PushUpExerciseName::CloseGripMedicineBallPushUp),
-            "weighted_close_grip_medicine_ball_push_up" => Some(PushUpExerciseName::WeightedCloseGripMedicineBallPushUp),
+            "close_grip_medicine_ball_push_up" => {
+                Some(PushUpExerciseName::CloseGripMedicineBallPushUp)
+            }
+            "weighted_close_grip_medicine_ball_push_up" => {
+                Some(PushUpExerciseName::WeightedCloseGripMedicineBallPushUp)
+            }
             "close_hands_push_up" => Some(PushUpExerciseName::CloseHandsPushUp),
             "weighted_close_hands_push_up" => Some(PushUpExerciseName::WeightedCloseHandsPushUp),
             "decline_push_up" => Some(PushUpExerciseName::DeclinePushUp),
@@ -17223,11 +18161,17 @@ impl PushUpExerciseName {
             "diamond_push_up" => Some(PushUpExerciseName::DiamondPushUp),
             "weighted_diamond_push_up" => Some(PushUpExerciseName::WeightedDiamondPushUp),
             "explosive_crossover_push_up" => Some(PushUpExerciseName::ExplosiveCrossoverPushUp),
-            "weighted_explosive_crossover_push_up" => Some(PushUpExerciseName::WeightedExplosiveCrossoverPushUp),
+            "weighted_explosive_crossover_push_up" => {
+                Some(PushUpExerciseName::WeightedExplosiveCrossoverPushUp)
+            }
             "explosive_push_up" => Some(PushUpExerciseName::ExplosivePushUp),
             "weighted_explosive_push_up" => Some(PushUpExerciseName::WeightedExplosivePushUp),
-            "feet_elevated_side_to_side_push_up" => Some(PushUpExerciseName::FeetElevatedSideToSidePushUp),
-            "weighted_feet_elevated_side_to_side_push_up" => Some(PushUpExerciseName::WeightedFeetElevatedSideToSidePushUp),
+            "feet_elevated_side_to_side_push_up" => {
+                Some(PushUpExerciseName::FeetElevatedSideToSidePushUp)
+            }
+            "weighted_feet_elevated_side_to_side_push_up" => {
+                Some(PushUpExerciseName::WeightedFeetElevatedSideToSidePushUp)
+            }
             "hand_release_push_up" => Some(PushUpExerciseName::HandReleasePushUp),
             "weighted_hand_release_push_up" => Some(PushUpExerciseName::WeightedHandReleasePushUp),
             "handstand_push_up" => Some(PushUpExerciseName::HandstandPushUp),
@@ -17235,14 +18179,18 @@ impl PushUpExerciseName {
             "incline_push_up" => Some(PushUpExerciseName::InclinePushUp),
             "weighted_incline_push_up" => Some(PushUpExerciseName::WeightedInclinePushUp),
             "isometric_explosive_push_up" => Some(PushUpExerciseName::IsometricExplosivePushUp),
-            "weighted_isometric_explosive_push_up" => Some(PushUpExerciseName::WeightedIsometricExplosivePushUp),
+            "weighted_isometric_explosive_push_up" => {
+                Some(PushUpExerciseName::WeightedIsometricExplosivePushUp)
+            }
             "judo_push_up" => Some(PushUpExerciseName::JudoPushUp),
             "weighted_judo_push_up" => Some(PushUpExerciseName::WeightedJudoPushUp),
             "kneeling_push_up" => Some(PushUpExerciseName::KneelingPushUp),
             "weighted_kneeling_push_up" => Some(PushUpExerciseName::WeightedKneelingPushUp),
             "medicine_ball_chest_pass" => Some(PushUpExerciseName::MedicineBallChestPass),
             "medicine_ball_push_up" => Some(PushUpExerciseName::MedicineBallPushUp),
-            "weighted_medicine_ball_push_up" => Some(PushUpExerciseName::WeightedMedicineBallPushUp),
+            "weighted_medicine_ball_push_up" => {
+                Some(PushUpExerciseName::WeightedMedicineBallPushUp)
+            }
             "one_arm_push_up" => Some(PushUpExerciseName::OneArmPushUp),
             "weighted_one_arm_push_up" => Some(PushUpExerciseName::WeightedOneArmPushUp),
             "weighted_push_up" => Some(PushUpExerciseName::WeightedPushUp),
@@ -17250,26 +18198,42 @@ impl PushUpExerciseName {
             "weighted_push_up_and_row" => Some(PushUpExerciseName::WeightedPushUpAndRow),
             "push_up_plus" => Some(PushUpExerciseName::PushUpPlus),
             "weighted_push_up_plus" => Some(PushUpExerciseName::WeightedPushUpPlus),
-            "push_up_with_feet_on_swiss_ball" => Some(PushUpExerciseName::PushUpWithFeetOnSwissBall),
-            "weighted_push_up_with_feet_on_swiss_ball" => Some(PushUpExerciseName::WeightedPushUpWithFeetOnSwissBall),
-            "push_up_with_one_hand_on_medicine_ball" => Some(PushUpExerciseName::PushUpWithOneHandOnMedicineBall),
-            "weighted_push_up_with_one_hand_on_medicine_ball" => Some(PushUpExerciseName::WeightedPushUpWithOneHandOnMedicineBall),
+            "push_up_with_feet_on_swiss_ball" => {
+                Some(PushUpExerciseName::PushUpWithFeetOnSwissBall)
+            }
+            "weighted_push_up_with_feet_on_swiss_ball" => {
+                Some(PushUpExerciseName::WeightedPushUpWithFeetOnSwissBall)
+            }
+            "push_up_with_one_hand_on_medicine_ball" => {
+                Some(PushUpExerciseName::PushUpWithOneHandOnMedicineBall)
+            }
+            "weighted_push_up_with_one_hand_on_medicine_ball" => {
+                Some(PushUpExerciseName::WeightedPushUpWithOneHandOnMedicineBall)
+            }
             "shoulder_push_up" => Some(PushUpExerciseName::ShoulderPushUp),
             "weighted_shoulder_push_up" => Some(PushUpExerciseName::WeightedShoulderPushUp),
-            "single_arm_medicine_ball_push_up" => Some(PushUpExerciseName::SingleArmMedicineBallPushUp),
-            "weighted_single_arm_medicine_ball_push_up" => Some(PushUpExerciseName::WeightedSingleArmMedicineBallPushUp),
+            "single_arm_medicine_ball_push_up" => {
+                Some(PushUpExerciseName::SingleArmMedicineBallPushUp)
+            }
+            "weighted_single_arm_medicine_ball_push_up" => {
+                Some(PushUpExerciseName::WeightedSingleArmMedicineBallPushUp)
+            }
             "spiderman_push_up" => Some(PushUpExerciseName::SpidermanPushUp),
             "weighted_spiderman_push_up" => Some(PushUpExerciseName::WeightedSpidermanPushUp),
             "stacked_feet_push_up" => Some(PushUpExerciseName::StackedFeetPushUp),
             "weighted_stacked_feet_push_up" => Some(PushUpExerciseName::WeightedStackedFeetPushUp),
             "staggered_hands_push_up" => Some(PushUpExerciseName::StaggeredHandsPushUp),
-            "weighted_staggered_hands_push_up" => Some(PushUpExerciseName::WeightedStaggeredHandsPushUp),
+            "weighted_staggered_hands_push_up" => {
+                Some(PushUpExerciseName::WeightedStaggeredHandsPushUp)
+            }
             "suspended_push_up" => Some(PushUpExerciseName::SuspendedPushUp),
             "weighted_suspended_push_up" => Some(PushUpExerciseName::WeightedSuspendedPushUp),
             "swiss_ball_push_up" => Some(PushUpExerciseName::SwissBallPushUp),
             "weighted_swiss_ball_push_up" => Some(PushUpExerciseName::WeightedSwissBallPushUp),
             "swiss_ball_push_up_plus" => Some(PushUpExerciseName::SwissBallPushUpPlus),
-            "weighted_swiss_ball_push_up_plus" => Some(PushUpExerciseName::WeightedSwissBallPushUpPlus),
+            "weighted_swiss_ball_push_up_plus" => {
+                Some(PushUpExerciseName::WeightedSwissBallPushUpPlus)
+            }
             "t_push_up" => Some(PushUpExerciseName::TPushUp),
             "weighted_t_push_up" => Some(PushUpExerciseName::WeightedTPushUp),
             "triple_stop_push_up" => Some(PushUpExerciseName::TripleStopPushUp),
@@ -17277,9 +18241,13 @@ impl PushUpExerciseName {
             "wide_hands_push_up" => Some(PushUpExerciseName::WideHandsPushUp),
             "weighted_wide_hands_push_up" => Some(PushUpExerciseName::WeightedWideHandsPushUp),
             "parallette_handstand_push_up" => Some(PushUpExerciseName::ParalletteHandstandPushUp),
-            "weighted_parallette_handstand_push_up" => Some(PushUpExerciseName::WeightedParalletteHandstandPushUp),
+            "weighted_parallette_handstand_push_up" => {
+                Some(PushUpExerciseName::WeightedParalletteHandstandPushUp)
+            }
             "ring_handstand_push_up" => Some(PushUpExerciseName::RingHandstandPushUp),
-            "weighted_ring_handstand_push_up" => Some(PushUpExerciseName::WeightedRingHandstandPushUp),
+            "weighted_ring_handstand_push_up" => {
+                Some(PushUpExerciseName::WeightedRingHandstandPushUp)
+            }
             "ring_push_up" => Some(PushUpExerciseName::RingPushUp),
             "weighted_ring_push_up" => Some(PushUpExerciseName::WeightedRingPushUp),
             "push_up" => Some(PushUpExerciseName::PushUp),
@@ -17294,7 +18262,9 @@ impl PushUpExerciseName {
             "weighted_biceps_push_up" => Some(PushUpExerciseName::WeightedBicepsPushUp),
             "weighted_hindu_push_up" => Some(PushUpExerciseName::WeightedHinduPushUp),
             "weighted_pike_push_up" => Some(PushUpExerciseName::WeightedPikePushUp),
-            "kipping_parallette_handstand_push_up" => Some(PushUpExerciseName::KippingParalletteHandstandPushUp),
+            "kipping_parallette_handstand_push_up" => {
+                Some(PushUpExerciseName::KippingParalletteHandstandPushUp)
+            }
             "wall_push_up" => Some(PushUpExerciseName::WallPushUp),
             _ => None,
         }
@@ -17364,19 +18334,29 @@ impl RowExerciseName {
     /// Snake-case canonical name from Profile.xlsx.
     pub fn as_str(&self) -> &'static str {
         match self {
-            RowExerciseName::BarbellStraightLegDeadliftToRow => "barbell_straight_leg_deadlift_to_row",
+            RowExerciseName::BarbellStraightLegDeadliftToRow => {
+                "barbell_straight_leg_deadlift_to_row"
+            }
             RowExerciseName::CableRowStanding => "cable_row_standing",
             RowExerciseName::DumbbellRow => "dumbbell_row",
             RowExerciseName::ElevatedFeetInvertedRow => "elevated_feet_inverted_row",
-            RowExerciseName::WeightedElevatedFeetInvertedRow => "weighted_elevated_feet_inverted_row",
+            RowExerciseName::WeightedElevatedFeetInvertedRow => {
+                "weighted_elevated_feet_inverted_row"
+            }
             RowExerciseName::FacePull => "face_pull",
             RowExerciseName::FacePullWithExternalRotation => "face_pull_with_external_rotation",
-            RowExerciseName::InvertedRowWithFeetOnSwissBall => "inverted_row_with_feet_on_swiss_ball",
-            RowExerciseName::WeightedInvertedRowWithFeetOnSwissBall => "weighted_inverted_row_with_feet_on_swiss_ball",
+            RowExerciseName::InvertedRowWithFeetOnSwissBall => {
+                "inverted_row_with_feet_on_swiss_ball"
+            }
+            RowExerciseName::WeightedInvertedRowWithFeetOnSwissBall => {
+                "weighted_inverted_row_with_feet_on_swiss_ball"
+            }
             RowExerciseName::KettlebellRow => "kettlebell_row",
             RowExerciseName::ModifiedInvertedRow => "modified_inverted_row",
             RowExerciseName::WeightedModifiedInvertedRow => "weighted_modified_inverted_row",
-            RowExerciseName::NeutralGripAlternatingDumbbellRow => "neutral_grip_alternating_dumbbell_row",
+            RowExerciseName::NeutralGripAlternatingDumbbellRow => {
+                "neutral_grip_alternating_dumbbell_row"
+            }
             RowExerciseName::OneArmBentOverRow => "one_arm_bent_over_row",
             RowExerciseName::OneLeggedDumbbellRow => "one_legged_dumbbell_row",
             RowExerciseName::RenegadeRow => "renegade_row",
@@ -17388,8 +18368,12 @@ impl RowExerciseName {
             RowExerciseName::SingleArmCableRowAndRotation => "single_arm_cable_row_and_rotation",
             RowExerciseName::SingleArmInvertedRow => "single_arm_inverted_row",
             RowExerciseName::WeightedSingleArmInvertedRow => "weighted_single_arm_inverted_row",
-            RowExerciseName::SingleArmNeutralGripDumbbellRow => "single_arm_neutral_grip_dumbbell_row",
-            RowExerciseName::SingleArmNeutralGripDumbbellRowAndRotation => "single_arm_neutral_grip_dumbbell_row_and_rotation",
+            RowExerciseName::SingleArmNeutralGripDumbbellRow => {
+                "single_arm_neutral_grip_dumbbell_row"
+            }
+            RowExerciseName::SingleArmNeutralGripDumbbellRowAndRotation => {
+                "single_arm_neutral_grip_dumbbell_row_and_rotation"
+            }
             RowExerciseName::SuspendedInvertedRow => "suspended_inverted_row",
             RowExerciseName::WeightedSuspendedInvertedRow => "weighted_suspended_inverted_row",
             RowExerciseName::TBarRow => "t_bar_row",
@@ -17407,7 +18391,9 @@ impl RowExerciseName {
             RowExerciseName::ChestSupportedDumbbellRow => "chest_supported_dumbbell_row",
             RowExerciseName::DeclineRingRow => "decline_ring_row",
             RowExerciseName::ElevatedRingRow => "elevated_ring_row",
-            RowExerciseName::RdlBentOverRowWithBarbellDumbbell => "rdl_bent_over_row_with_barbell_dumbbell",
+            RowExerciseName::RdlBentOverRowWithBarbellDumbbell => {
+                "rdl_bent_over_row_with_barbell_dumbbell"
+            }
             RowExerciseName::RingRow => "ring_row",
             RowExerciseName::BarbellRow => "barbell_row",
             RowExerciseName::BentOverRowWithBarbell => "bent_over_row_with_barbell",
@@ -17483,19 +18469,31 @@ impl RowExerciseName {
     /// Try to construct from the snake-case canonical name.
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
-            "barbell_straight_leg_deadlift_to_row" => Some(RowExerciseName::BarbellStraightLegDeadliftToRow),
+            "barbell_straight_leg_deadlift_to_row" => {
+                Some(RowExerciseName::BarbellStraightLegDeadliftToRow)
+            }
             "cable_row_standing" => Some(RowExerciseName::CableRowStanding),
             "dumbbell_row" => Some(RowExerciseName::DumbbellRow),
             "elevated_feet_inverted_row" => Some(RowExerciseName::ElevatedFeetInvertedRow),
-            "weighted_elevated_feet_inverted_row" => Some(RowExerciseName::WeightedElevatedFeetInvertedRow),
+            "weighted_elevated_feet_inverted_row" => {
+                Some(RowExerciseName::WeightedElevatedFeetInvertedRow)
+            }
             "face_pull" => Some(RowExerciseName::FacePull),
-            "face_pull_with_external_rotation" => Some(RowExerciseName::FacePullWithExternalRotation),
-            "inverted_row_with_feet_on_swiss_ball" => Some(RowExerciseName::InvertedRowWithFeetOnSwissBall),
-            "weighted_inverted_row_with_feet_on_swiss_ball" => Some(RowExerciseName::WeightedInvertedRowWithFeetOnSwissBall),
+            "face_pull_with_external_rotation" => {
+                Some(RowExerciseName::FacePullWithExternalRotation)
+            }
+            "inverted_row_with_feet_on_swiss_ball" => {
+                Some(RowExerciseName::InvertedRowWithFeetOnSwissBall)
+            }
+            "weighted_inverted_row_with_feet_on_swiss_ball" => {
+                Some(RowExerciseName::WeightedInvertedRowWithFeetOnSwissBall)
+            }
             "kettlebell_row" => Some(RowExerciseName::KettlebellRow),
             "modified_inverted_row" => Some(RowExerciseName::ModifiedInvertedRow),
             "weighted_modified_inverted_row" => Some(RowExerciseName::WeightedModifiedInvertedRow),
-            "neutral_grip_alternating_dumbbell_row" => Some(RowExerciseName::NeutralGripAlternatingDumbbellRow),
+            "neutral_grip_alternating_dumbbell_row" => {
+                Some(RowExerciseName::NeutralGripAlternatingDumbbellRow)
+            }
             "one_arm_bent_over_row" => Some(RowExerciseName::OneArmBentOverRow),
             "one_legged_dumbbell_row" => Some(RowExerciseName::OneLeggedDumbbellRow),
             "renegade_row" => Some(RowExerciseName::RenegadeRow),
@@ -17504,16 +18502,28 @@ impl RowExerciseName {
             "seated_cable_row" => Some(RowExerciseName::SeatedCableRow),
             "seated_dumbbell_row" => Some(RowExerciseName::SeatedDumbbellRow),
             "single_arm_cable_row" => Some(RowExerciseName::SingleArmCableRow),
-            "single_arm_cable_row_and_rotation" => Some(RowExerciseName::SingleArmCableRowAndRotation),
+            "single_arm_cable_row_and_rotation" => {
+                Some(RowExerciseName::SingleArmCableRowAndRotation)
+            }
             "single_arm_inverted_row" => Some(RowExerciseName::SingleArmInvertedRow),
-            "weighted_single_arm_inverted_row" => Some(RowExerciseName::WeightedSingleArmInvertedRow),
-            "single_arm_neutral_grip_dumbbell_row" => Some(RowExerciseName::SingleArmNeutralGripDumbbellRow),
-            "single_arm_neutral_grip_dumbbell_row_and_rotation" => Some(RowExerciseName::SingleArmNeutralGripDumbbellRowAndRotation),
+            "weighted_single_arm_inverted_row" => {
+                Some(RowExerciseName::WeightedSingleArmInvertedRow)
+            }
+            "single_arm_neutral_grip_dumbbell_row" => {
+                Some(RowExerciseName::SingleArmNeutralGripDumbbellRow)
+            }
+            "single_arm_neutral_grip_dumbbell_row_and_rotation" => {
+                Some(RowExerciseName::SingleArmNeutralGripDumbbellRowAndRotation)
+            }
             "suspended_inverted_row" => Some(RowExerciseName::SuspendedInvertedRow),
-            "weighted_suspended_inverted_row" => Some(RowExerciseName::WeightedSuspendedInvertedRow),
+            "weighted_suspended_inverted_row" => {
+                Some(RowExerciseName::WeightedSuspendedInvertedRow)
+            }
             "t_bar_row" => Some(RowExerciseName::TBarRow),
             "towel_grip_inverted_row" => Some(RowExerciseName::TowelGripInvertedRow),
-            "weighted_towel_grip_inverted_row" => Some(RowExerciseName::WeightedTowelGripInvertedRow),
+            "weighted_towel_grip_inverted_row" => {
+                Some(RowExerciseName::WeightedTowelGripInvertedRow)
+            }
             "underhand_grip_cable_row" => Some(RowExerciseName::UnderhandGripCableRow),
             "v_grip_cable_row" => Some(RowExerciseName::VGripCableRow),
             "wide_grip_seated_cable_row" => Some(RowExerciseName::WideGripSeatedCableRow),
@@ -17526,7 +18536,9 @@ impl RowExerciseName {
             "chest_supported_dumbbell_row" => Some(RowExerciseName::ChestSupportedDumbbellRow),
             "decline_ring_row" => Some(RowExerciseName::DeclineRingRow),
             "elevated_ring_row" => Some(RowExerciseName::ElevatedRingRow),
-            "rdl_bent_over_row_with_barbell_dumbbell" => Some(RowExerciseName::RdlBentOverRowWithBarbellDumbbell),
+            "rdl_bent_over_row_with_barbell_dumbbell" => {
+                Some(RowExerciseName::RdlBentOverRowWithBarbellDumbbell)
+            }
             "ring_row" => Some(RowExerciseName::RingRow),
             "barbell_row" => Some(RowExerciseName::BarbellRow),
             "bent_over_row_with_barbell" => Some(RowExerciseName::BentOverRowWithBarbell),
@@ -17582,37 +18594,65 @@ impl ShoulderPressExerciseName {
     /// Snake-case canonical name from Profile.xlsx.
     pub fn as_str(&self) -> &'static str {
         match self {
-            ShoulderPressExerciseName::AlternatingDumbbellShoulderPress => "alternating_dumbbell_shoulder_press",
+            ShoulderPressExerciseName::AlternatingDumbbellShoulderPress => {
+                "alternating_dumbbell_shoulder_press"
+            }
             ShoulderPressExerciseName::ArnoldPress => "arnold_press",
-            ShoulderPressExerciseName::BarbellFrontSquatToPushPress => "barbell_front_squat_to_push_press",
+            ShoulderPressExerciseName::BarbellFrontSquatToPushPress => {
+                "barbell_front_squat_to_push_press"
+            }
             ShoulderPressExerciseName::BarbellPushPress => "barbell_push_press",
             ShoulderPressExerciseName::BarbellShoulderPress => "barbell_shoulder_press",
             ShoulderPressExerciseName::DeadCurlPress => "dead_curl_press",
-            ShoulderPressExerciseName::DumbbellAlternatingShoulderPressAndTwist => "dumbbell_alternating_shoulder_press_and_twist",
-            ShoulderPressExerciseName::DumbbellHammerCurlToLungeToPress => "dumbbell_hammer_curl_to_lunge_to_press",
+            ShoulderPressExerciseName::DumbbellAlternatingShoulderPressAndTwist => {
+                "dumbbell_alternating_shoulder_press_and_twist"
+            }
+            ShoulderPressExerciseName::DumbbellHammerCurlToLungeToPress => {
+                "dumbbell_hammer_curl_to_lunge_to_press"
+            }
             ShoulderPressExerciseName::DumbbellPushPress => "dumbbell_push_press",
-            ShoulderPressExerciseName::FloorInvertedShoulderPress => "floor_inverted_shoulder_press",
-            ShoulderPressExerciseName::WeightedFloorInvertedShoulderPress => "weighted_floor_inverted_shoulder_press",
+            ShoulderPressExerciseName::FloorInvertedShoulderPress => {
+                "floor_inverted_shoulder_press"
+            }
+            ShoulderPressExerciseName::WeightedFloorInvertedShoulderPress => {
+                "weighted_floor_inverted_shoulder_press"
+            }
             ShoulderPressExerciseName::InvertedShoulderPress => "inverted_shoulder_press",
-            ShoulderPressExerciseName::WeightedInvertedShoulderPress => "weighted_inverted_shoulder_press",
+            ShoulderPressExerciseName::WeightedInvertedShoulderPress => {
+                "weighted_inverted_shoulder_press"
+            }
             ShoulderPressExerciseName::OneArmPushPress => "one_arm_push_press",
             ShoulderPressExerciseName::OverheadBarbellPress => "overhead_barbell_press",
             ShoulderPressExerciseName::OverheadDumbbellPress => "overhead_dumbbell_press",
-            ShoulderPressExerciseName::SeatedBarbellShoulderPress => "seated_barbell_shoulder_press",
-            ShoulderPressExerciseName::SeatedDumbbellShoulderPress => "seated_dumbbell_shoulder_press",
-            ShoulderPressExerciseName::SingleArmDumbbellShoulderPress => "single_arm_dumbbell_shoulder_press",
+            ShoulderPressExerciseName::SeatedBarbellShoulderPress => {
+                "seated_barbell_shoulder_press"
+            }
+            ShoulderPressExerciseName::SeatedDumbbellShoulderPress => {
+                "seated_dumbbell_shoulder_press"
+            }
+            ShoulderPressExerciseName::SingleArmDumbbellShoulderPress => {
+                "single_arm_dumbbell_shoulder_press"
+            }
             ShoulderPressExerciseName::SingleArmStepUpAndPress => "single_arm_step_up_and_press",
             ShoulderPressExerciseName::SmithMachineOverheadPress => "smith_machine_overhead_press",
-            ShoulderPressExerciseName::SplitStanceHammerCurlToPress => "split_stance_hammer_curl_to_press",
-            ShoulderPressExerciseName::SwissBallDumbbellShoulderPress => "swiss_ball_dumbbell_shoulder_press",
+            ShoulderPressExerciseName::SplitStanceHammerCurlToPress => {
+                "split_stance_hammer_curl_to_press"
+            }
+            ShoulderPressExerciseName::SwissBallDumbbellShoulderPress => {
+                "swiss_ball_dumbbell_shoulder_press"
+            }
             ShoulderPressExerciseName::WeightPlateFrontRaise => "weight_plate_front_raise",
             ShoulderPressExerciseName::DumbbellShoulderPress => "dumbbell_shoulder_press",
             ShoulderPressExerciseName::MilitaryPress => "military_press",
             ShoulderPressExerciseName::StrictPress => "strict_press",
             ShoulderPressExerciseName::DumbbellFrontRaise => "dumbbell_front_raise",
-            ShoulderPressExerciseName::DumbbellCurlToOverheadPressWheelchair => "dumbbell_curl_to_overhead_press_wheelchair",
+            ShoulderPressExerciseName::DumbbellCurlToOverheadPressWheelchair => {
+                "dumbbell_curl_to_overhead_press_wheelchair"
+            }
             ShoulderPressExerciseName::ArnoldPressWheelchair => "arnold_press_wheelchair",
-            ShoulderPressExerciseName::OverheadDumbbellPressWheelchair => "overhead_dumbbell_press_wheelchair",
+            ShoulderPressExerciseName::OverheadDumbbellPressWheelchair => {
+                "overhead_dumbbell_press_wheelchair"
+            }
         }
     }
 
@@ -17657,37 +18697,69 @@ impl ShoulderPressExerciseName {
     /// Try to construct from the snake-case canonical name.
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
-            "alternating_dumbbell_shoulder_press" => Some(ShoulderPressExerciseName::AlternatingDumbbellShoulderPress),
+            "alternating_dumbbell_shoulder_press" => {
+                Some(ShoulderPressExerciseName::AlternatingDumbbellShoulderPress)
+            }
             "arnold_press" => Some(ShoulderPressExerciseName::ArnoldPress),
-            "barbell_front_squat_to_push_press" => Some(ShoulderPressExerciseName::BarbellFrontSquatToPushPress),
+            "barbell_front_squat_to_push_press" => {
+                Some(ShoulderPressExerciseName::BarbellFrontSquatToPushPress)
+            }
             "barbell_push_press" => Some(ShoulderPressExerciseName::BarbellPushPress),
             "barbell_shoulder_press" => Some(ShoulderPressExerciseName::BarbellShoulderPress),
             "dead_curl_press" => Some(ShoulderPressExerciseName::DeadCurlPress),
-            "dumbbell_alternating_shoulder_press_and_twist" => Some(ShoulderPressExerciseName::DumbbellAlternatingShoulderPressAndTwist),
-            "dumbbell_hammer_curl_to_lunge_to_press" => Some(ShoulderPressExerciseName::DumbbellHammerCurlToLungeToPress),
+            "dumbbell_alternating_shoulder_press_and_twist" => {
+                Some(ShoulderPressExerciseName::DumbbellAlternatingShoulderPressAndTwist)
+            }
+            "dumbbell_hammer_curl_to_lunge_to_press" => {
+                Some(ShoulderPressExerciseName::DumbbellHammerCurlToLungeToPress)
+            }
             "dumbbell_push_press" => Some(ShoulderPressExerciseName::DumbbellPushPress),
-            "floor_inverted_shoulder_press" => Some(ShoulderPressExerciseName::FloorInvertedShoulderPress),
-            "weighted_floor_inverted_shoulder_press" => Some(ShoulderPressExerciseName::WeightedFloorInvertedShoulderPress),
+            "floor_inverted_shoulder_press" => {
+                Some(ShoulderPressExerciseName::FloorInvertedShoulderPress)
+            }
+            "weighted_floor_inverted_shoulder_press" => {
+                Some(ShoulderPressExerciseName::WeightedFloorInvertedShoulderPress)
+            }
             "inverted_shoulder_press" => Some(ShoulderPressExerciseName::InvertedShoulderPress),
-            "weighted_inverted_shoulder_press" => Some(ShoulderPressExerciseName::WeightedInvertedShoulderPress),
+            "weighted_inverted_shoulder_press" => {
+                Some(ShoulderPressExerciseName::WeightedInvertedShoulderPress)
+            }
             "one_arm_push_press" => Some(ShoulderPressExerciseName::OneArmPushPress),
             "overhead_barbell_press" => Some(ShoulderPressExerciseName::OverheadBarbellPress),
             "overhead_dumbbell_press" => Some(ShoulderPressExerciseName::OverheadDumbbellPress),
-            "seated_barbell_shoulder_press" => Some(ShoulderPressExerciseName::SeatedBarbellShoulderPress),
-            "seated_dumbbell_shoulder_press" => Some(ShoulderPressExerciseName::SeatedDumbbellShoulderPress),
-            "single_arm_dumbbell_shoulder_press" => Some(ShoulderPressExerciseName::SingleArmDumbbellShoulderPress),
-            "single_arm_step_up_and_press" => Some(ShoulderPressExerciseName::SingleArmStepUpAndPress),
-            "smith_machine_overhead_press" => Some(ShoulderPressExerciseName::SmithMachineOverheadPress),
-            "split_stance_hammer_curl_to_press" => Some(ShoulderPressExerciseName::SplitStanceHammerCurlToPress),
-            "swiss_ball_dumbbell_shoulder_press" => Some(ShoulderPressExerciseName::SwissBallDumbbellShoulderPress),
+            "seated_barbell_shoulder_press" => {
+                Some(ShoulderPressExerciseName::SeatedBarbellShoulderPress)
+            }
+            "seated_dumbbell_shoulder_press" => {
+                Some(ShoulderPressExerciseName::SeatedDumbbellShoulderPress)
+            }
+            "single_arm_dumbbell_shoulder_press" => {
+                Some(ShoulderPressExerciseName::SingleArmDumbbellShoulderPress)
+            }
+            "single_arm_step_up_and_press" => {
+                Some(ShoulderPressExerciseName::SingleArmStepUpAndPress)
+            }
+            "smith_machine_overhead_press" => {
+                Some(ShoulderPressExerciseName::SmithMachineOverheadPress)
+            }
+            "split_stance_hammer_curl_to_press" => {
+                Some(ShoulderPressExerciseName::SplitStanceHammerCurlToPress)
+            }
+            "swiss_ball_dumbbell_shoulder_press" => {
+                Some(ShoulderPressExerciseName::SwissBallDumbbellShoulderPress)
+            }
             "weight_plate_front_raise" => Some(ShoulderPressExerciseName::WeightPlateFrontRaise),
             "dumbbell_shoulder_press" => Some(ShoulderPressExerciseName::DumbbellShoulderPress),
             "military_press" => Some(ShoulderPressExerciseName::MilitaryPress),
             "strict_press" => Some(ShoulderPressExerciseName::StrictPress),
             "dumbbell_front_raise" => Some(ShoulderPressExerciseName::DumbbellFrontRaise),
-            "dumbbell_curl_to_overhead_press_wheelchair" => Some(ShoulderPressExerciseName::DumbbellCurlToOverheadPressWheelchair),
+            "dumbbell_curl_to_overhead_press_wheelchair" => {
+                Some(ShoulderPressExerciseName::DumbbellCurlToOverheadPressWheelchair)
+            }
             "arnold_press_wheelchair" => Some(ShoulderPressExerciseName::ArnoldPressWheelchair),
-            "overhead_dumbbell_press_wheelchair" => Some(ShoulderPressExerciseName::OverheadDumbbellPressWheelchair),
+            "overhead_dumbbell_press_wheelchair" => {
+                Some(ShoulderPressExerciseName::OverheadDumbbellPressWheelchair)
+            }
             _ => None,
         }
     }
@@ -17739,12 +18811,18 @@ impl ShoulderStabilityExerciseName {
     /// Snake-case canonical name from Profile.xlsx.
     pub fn as_str(&self) -> &'static str {
         match self {
-            ShoulderStabilityExerciseName::_90DegreeCableExternalRotation => "90_degree_cable_external_rotation",
+            ShoulderStabilityExerciseName::_90DegreeCableExternalRotation => {
+                "90_degree_cable_external_rotation"
+            }
             ShoulderStabilityExerciseName::BandExternalRotation => "band_external_rotation",
             ShoulderStabilityExerciseName::BandInternalRotation => "band_internal_rotation",
-            ShoulderStabilityExerciseName::BentArmLateralRaiseAndExternalRotation => "bent_arm_lateral_raise_and_external_rotation",
+            ShoulderStabilityExerciseName::BentArmLateralRaiseAndExternalRotation => {
+                "bent_arm_lateral_raise_and_external_rotation"
+            }
             ShoulderStabilityExerciseName::CableExternalRotation => "cable_external_rotation",
-            ShoulderStabilityExerciseName::DumbbellFacePullWithExternalRotation => "dumbbell_face_pull_with_external_rotation",
+            ShoulderStabilityExerciseName::DumbbellFacePullWithExternalRotation => {
+                "dumbbell_face_pull_with_external_rotation"
+            }
             ShoulderStabilityExerciseName::FloorIRaise => "floor_i_raise",
             ShoulderStabilityExerciseName::WeightedFloorIRaise => "weighted_floor_i_raise",
             ShoulderStabilityExerciseName::FloorTRaise => "floor_t_raise",
@@ -17762,7 +18840,9 @@ impl ShoulderStabilityExerciseName {
             ShoulderStabilityExerciseName::InclineYRaise => "incline_y_raise",
             ShoulderStabilityExerciseName::WeightedInclineYRaise => "weighted_incline_y_raise",
             ShoulderStabilityExerciseName::LyingExternalRotation => "lying_external_rotation",
-            ShoulderStabilityExerciseName::SeatedDumbbellExternalRotation => "seated_dumbbell_external_rotation",
+            ShoulderStabilityExerciseName::SeatedDumbbellExternalRotation => {
+                "seated_dumbbell_external_rotation"
+            }
             ShoulderStabilityExerciseName::StandingLRaise => "standing_l_raise",
             ShoulderStabilityExerciseName::SwissBallIRaise => "swiss_ball_i_raise",
             ShoulderStabilityExerciseName::WeightedSwissBallIRaise => "weighted_swiss_ball_i_raise",
@@ -17774,7 +18854,9 @@ impl ShoulderStabilityExerciseName {
             ShoulderStabilityExerciseName::WeightedSwissBallYRaise => "weighted_swiss_ball_y_raise",
             ShoulderStabilityExerciseName::CableInternalRotation => "cable_internal_rotation",
             ShoulderStabilityExerciseName::LyingInternalRotation => "lying_internal_rotation",
-            ShoulderStabilityExerciseName::SeatedDumbbellInternalRotation => "seated_dumbbell_internal_rotation",
+            ShoulderStabilityExerciseName::SeatedDumbbellInternalRotation => {
+                "seated_dumbbell_internal_rotation"
+            }
         }
     }
 
@@ -17824,12 +18906,18 @@ impl ShoulderStabilityExerciseName {
     /// Try to construct from the snake-case canonical name.
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
-            "90_degree_cable_external_rotation" => Some(ShoulderStabilityExerciseName::_90DegreeCableExternalRotation),
+            "90_degree_cable_external_rotation" => {
+                Some(ShoulderStabilityExerciseName::_90DegreeCableExternalRotation)
+            }
             "band_external_rotation" => Some(ShoulderStabilityExerciseName::BandExternalRotation),
             "band_internal_rotation" => Some(ShoulderStabilityExerciseName::BandInternalRotation),
-            "bent_arm_lateral_raise_and_external_rotation" => Some(ShoulderStabilityExerciseName::BentArmLateralRaiseAndExternalRotation),
+            "bent_arm_lateral_raise_and_external_rotation" => {
+                Some(ShoulderStabilityExerciseName::BentArmLateralRaiseAndExternalRotation)
+            }
             "cable_external_rotation" => Some(ShoulderStabilityExerciseName::CableExternalRotation),
-            "dumbbell_face_pull_with_external_rotation" => Some(ShoulderStabilityExerciseName::DumbbellFacePullWithExternalRotation),
+            "dumbbell_face_pull_with_external_rotation" => {
+                Some(ShoulderStabilityExerciseName::DumbbellFacePullWithExternalRotation)
+            }
             "floor_i_raise" => Some(ShoulderStabilityExerciseName::FloorIRaise),
             "weighted_floor_i_raise" => Some(ShoulderStabilityExerciseName::WeightedFloorIRaise),
             "floor_t_raise" => Some(ShoulderStabilityExerciseName::FloorTRaise),
@@ -17837,29 +18925,51 @@ impl ShoulderStabilityExerciseName {
             "floor_y_raise" => Some(ShoulderStabilityExerciseName::FloorYRaise),
             "weighted_floor_y_raise" => Some(ShoulderStabilityExerciseName::WeightedFloorYRaise),
             "incline_i_raise" => Some(ShoulderStabilityExerciseName::InclineIRaise),
-            "weighted_incline_i_raise" => Some(ShoulderStabilityExerciseName::WeightedInclineIRaise),
+            "weighted_incline_i_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedInclineIRaise)
+            }
             "incline_l_raise" => Some(ShoulderStabilityExerciseName::InclineLRaise),
-            "weighted_incline_l_raise" => Some(ShoulderStabilityExerciseName::WeightedInclineLRaise),
+            "weighted_incline_l_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedInclineLRaise)
+            }
             "incline_t_raise" => Some(ShoulderStabilityExerciseName::InclineTRaise),
-            "weighted_incline_t_raise" => Some(ShoulderStabilityExerciseName::WeightedInclineTRaise),
+            "weighted_incline_t_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedInclineTRaise)
+            }
             "incline_w_raise" => Some(ShoulderStabilityExerciseName::InclineWRaise),
-            "weighted_incline_w_raise" => Some(ShoulderStabilityExerciseName::WeightedInclineWRaise),
+            "weighted_incline_w_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedInclineWRaise)
+            }
             "incline_y_raise" => Some(ShoulderStabilityExerciseName::InclineYRaise),
-            "weighted_incline_y_raise" => Some(ShoulderStabilityExerciseName::WeightedInclineYRaise),
+            "weighted_incline_y_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedInclineYRaise)
+            }
             "lying_external_rotation" => Some(ShoulderStabilityExerciseName::LyingExternalRotation),
-            "seated_dumbbell_external_rotation" => Some(ShoulderStabilityExerciseName::SeatedDumbbellExternalRotation),
+            "seated_dumbbell_external_rotation" => {
+                Some(ShoulderStabilityExerciseName::SeatedDumbbellExternalRotation)
+            }
             "standing_l_raise" => Some(ShoulderStabilityExerciseName::StandingLRaise),
             "swiss_ball_i_raise" => Some(ShoulderStabilityExerciseName::SwissBallIRaise),
-            "weighted_swiss_ball_i_raise" => Some(ShoulderStabilityExerciseName::WeightedSwissBallIRaise),
+            "weighted_swiss_ball_i_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedSwissBallIRaise)
+            }
             "swiss_ball_t_raise" => Some(ShoulderStabilityExerciseName::SwissBallTRaise),
-            "weighted_swiss_ball_t_raise" => Some(ShoulderStabilityExerciseName::WeightedSwissBallTRaise),
+            "weighted_swiss_ball_t_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedSwissBallTRaise)
+            }
             "swiss_ball_w_raise" => Some(ShoulderStabilityExerciseName::SwissBallWRaise),
-            "weighted_swiss_ball_w_raise" => Some(ShoulderStabilityExerciseName::WeightedSwissBallWRaise),
+            "weighted_swiss_ball_w_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedSwissBallWRaise)
+            }
             "swiss_ball_y_raise" => Some(ShoulderStabilityExerciseName::SwissBallYRaise),
-            "weighted_swiss_ball_y_raise" => Some(ShoulderStabilityExerciseName::WeightedSwissBallYRaise),
+            "weighted_swiss_ball_y_raise" => {
+                Some(ShoulderStabilityExerciseName::WeightedSwissBallYRaise)
+            }
             "cable_internal_rotation" => Some(ShoulderStabilityExerciseName::CableInternalRotation),
             "lying_internal_rotation" => Some(ShoulderStabilityExerciseName::LyingInternalRotation),
-            "seated_dumbbell_internal_rotation" => Some(ShoulderStabilityExerciseName::SeatedDumbbellInternalRotation),
+            "seated_dumbbell_internal_rotation" => {
+                Some(ShoulderStabilityExerciseName::SeatedDumbbellInternalRotation)
+            }
             _ => None,
         }
     }
@@ -17903,7 +19013,9 @@ impl ShrugExerciseName {
             ShrugExerciseName::BarbellJumpShrug => "barbell_jump_shrug",
             ShrugExerciseName::BarbellShrug => "barbell_shrug",
             ShrugExerciseName::BarbellUprightRow => "barbell_upright_row",
-            ShrugExerciseName::BehindTheBackSmithMachineShrug => "behind_the_back_smith_machine_shrug",
+            ShrugExerciseName::BehindTheBackSmithMachineShrug => {
+                "behind_the_back_smith_machine_shrug"
+            }
             ShrugExerciseName::DumbbellJumpShrug => "dumbbell_jump_shrug",
             ShrugExerciseName::DumbbellShrug => "dumbbell_shrug",
             ShrugExerciseName::DumbbellUprightRow => "dumbbell_upright_row",
@@ -17966,7 +19078,9 @@ impl ShrugExerciseName {
             "barbell_jump_shrug" => Some(ShrugExerciseName::BarbellJumpShrug),
             "barbell_shrug" => Some(ShrugExerciseName::BarbellShrug),
             "barbell_upright_row" => Some(ShrugExerciseName::BarbellUprightRow),
-            "behind_the_back_smith_machine_shrug" => Some(ShrugExerciseName::BehindTheBackSmithMachineShrug),
+            "behind_the_back_smith_machine_shrug" => {
+                Some(ShrugExerciseName::BehindTheBackSmithMachineShrug)
+            }
             "dumbbell_jump_shrug" => Some(ShrugExerciseName::DumbbellJumpShrug),
             "dumbbell_shrug" => Some(ShrugExerciseName::DumbbellShrug),
             "dumbbell_upright_row" => Some(ShrugExerciseName::DumbbellUprightRow),
@@ -18070,14 +19184,18 @@ impl SitUpExerciseName {
             SitUpExerciseName::ReverseCurlUp => "reverse_curl_up",
             SitUpExerciseName::WeightedReverseCurlUp => "weighted_reverse_curl_up",
             SitUpExerciseName::SingleLegSwissBallJackknife => "single_leg_swiss_ball_jackknife",
-            SitUpExerciseName::WeightedSingleLegSwissBallJackknife => "weighted_single_leg_swiss_ball_jackknife",
+            SitUpExerciseName::WeightedSingleLegSwissBallJackknife => {
+                "weighted_single_leg_swiss_ball_jackknife"
+            }
             SitUpExerciseName::TheTeaser => "the_teaser",
             SitUpExerciseName::TheTeaserWeighted => "the_teaser_weighted",
             SitUpExerciseName::ThreePartRollDown => "three_part_roll_down",
             SitUpExerciseName::WeightedThreePartRollDown => "weighted_three_part_roll_down",
             SitUpExerciseName::VUp => "v_up",
             SitUpExerciseName::WeightedVUp => "weighted_v_up",
-            SitUpExerciseName::WeightedRussianTwistOnSwissBall => "weighted_russian_twist_on_swiss_ball",
+            SitUpExerciseName::WeightedRussianTwistOnSwissBall => {
+                "weighted_russian_twist_on_swiss_ball"
+            }
             SitUpExerciseName::WeightedSitUp => "weighted_sit_up",
             SitUpExerciseName::XAbs => "x_abs",
             SitUpExerciseName::WeightedXAbs => "weighted_x_abs",
@@ -18164,15 +19282,21 @@ impl SitUpExerciseName {
             "weighted_reclining_circle" => Some(SitUpExerciseName::WeightedRecliningCircle),
             "reverse_curl_up" => Some(SitUpExerciseName::ReverseCurlUp),
             "weighted_reverse_curl_up" => Some(SitUpExerciseName::WeightedReverseCurlUp),
-            "single_leg_swiss_ball_jackknife" => Some(SitUpExerciseName::SingleLegSwissBallJackknife),
-            "weighted_single_leg_swiss_ball_jackknife" => Some(SitUpExerciseName::WeightedSingleLegSwissBallJackknife),
+            "single_leg_swiss_ball_jackknife" => {
+                Some(SitUpExerciseName::SingleLegSwissBallJackknife)
+            }
+            "weighted_single_leg_swiss_ball_jackknife" => {
+                Some(SitUpExerciseName::WeightedSingleLegSwissBallJackknife)
+            }
             "the_teaser" => Some(SitUpExerciseName::TheTeaser),
             "the_teaser_weighted" => Some(SitUpExerciseName::TheTeaserWeighted),
             "three_part_roll_down" => Some(SitUpExerciseName::ThreePartRollDown),
             "weighted_three_part_roll_down" => Some(SitUpExerciseName::WeightedThreePartRollDown),
             "v_up" => Some(SitUpExerciseName::VUp),
             "weighted_v_up" => Some(SitUpExerciseName::WeightedVUp),
-            "weighted_russian_twist_on_swiss_ball" => Some(SitUpExerciseName::WeightedRussianTwistOnSwissBall),
+            "weighted_russian_twist_on_swiss_ball" => {
+                Some(SitUpExerciseName::WeightedRussianTwistOnSwissBall)
+            }
             "weighted_sit_up" => Some(SitUpExerciseName::WeightedSitUp),
             "x_abs" => Some(SitUpExerciseName::XAbs),
             "weighted_x_abs" => Some(SitUpExerciseName::WeightedXAbs),
@@ -18315,7 +19439,9 @@ impl SquatExerciseName {
             SquatExerciseName::BarbellStepover => "barbell_stepover",
             SquatExerciseName::BarbellStepUp => "barbell_step_up",
             SquatExerciseName::BenchSquatWithRotationalChop => "bench_squat_with_rotational_chop",
-            SquatExerciseName::WeightedBenchSquatWithRotationalChop => "weighted_bench_squat_with_rotational_chop",
+            SquatExerciseName::WeightedBenchSquatWithRotationalChop => {
+                "weighted_bench_squat_with_rotational_chop"
+            }
             SquatExerciseName::BodyWeightWallSquat => "body_weight_wall_squat",
             SquatExerciseName::WeightedWallSquat => "weighted_wall_squat",
             SquatExerciseName::BoxStepSquat => "box_step_squat",
@@ -18330,13 +19456,17 @@ impl SquatExerciseName {
             SquatExerciseName::DumbbellStepover => "dumbbell_stepover",
             SquatExerciseName::DumbbellStepUp => "dumbbell_step_up",
             SquatExerciseName::ElevatedSingleLegSquat => "elevated_single_leg_squat",
-            SquatExerciseName::WeightedElevatedSingleLegSquat => "weighted_elevated_single_leg_squat",
+            SquatExerciseName::WeightedElevatedSingleLegSquat => {
+                "weighted_elevated_single_leg_squat"
+            }
             SquatExerciseName::FigureFourSquats => "figure_four_squats",
             SquatExerciseName::WeightedFigureFourSquats => "weighted_figure_four_squats",
             SquatExerciseName::GobletSquat => "goblet_squat",
             SquatExerciseName::KettlebellSquat => "kettlebell_squat",
             SquatExerciseName::KettlebellSwingOverhead => "kettlebell_swing_overhead",
-            SquatExerciseName::KettlebellSwingWithFlipToSquat => "kettlebell_swing_with_flip_to_squat",
+            SquatExerciseName::KettlebellSwingWithFlipToSquat => {
+                "kettlebell_swing_with_flip_to_squat"
+            }
             SquatExerciseName::LateralDumbbellStepUp => "lateral_dumbbell_step_up",
             SquatExerciseName::OneLeggedSquat => "one_legged_squat",
             SquatExerciseName::OverheadDumbbellSquat => "overhead_dumbbell_squat",
@@ -18356,7 +19486,9 @@ impl SquatExerciseName {
             SquatExerciseName::SingleLegBenchSquat => "single_leg_bench_squat",
             SquatExerciseName::WeightedSingleLegBenchSquat => "weighted_single_leg_bench_squat",
             SquatExerciseName::SingleLegSquatOnSwissBall => "single_leg_squat_on_swiss_ball",
-            SquatExerciseName::WeightedSingleLegSquatOnSwissBall => "weighted_single_leg_squat_on_swiss_ball",
+            SquatExerciseName::WeightedSingleLegSquatOnSwissBall => {
+                "weighted_single_leg_squat_on_swiss_ball"
+            }
             SquatExerciseName::Squat => "squat",
             SquatExerciseName::WeightedSquat => "weighted_squat",
             SquatExerciseName::SquatsWithBand => "squats_with_band",
@@ -18386,10 +19518,16 @@ impl SquatExerciseName {
             SquatExerciseName::KbsOverhead => "kbs_overhead",
             SquatExerciseName::SquatAndSideKick => "squat_and_side_kick",
             SquatExerciseName::SquatJumpsInNOut => "squat_jumps_in_n_out",
-            SquatExerciseName::PilatesPlieSquatsParallelTurnedOutFlatAndHeels => "pilates_plie_squats_parallel_turned_out_flat_and_heels",
-            SquatExerciseName::ReleveStraightLegAndKneeBentWithOneLegVariation => "releve_straight_leg_and_knee_bent_with_one_leg_variation",
+            SquatExerciseName::PilatesPlieSquatsParallelTurnedOutFlatAndHeels => {
+                "pilates_plie_squats_parallel_turned_out_flat_and_heels"
+            }
+            SquatExerciseName::ReleveStraightLegAndKneeBentWithOneLegVariation => {
+                "releve_straight_leg_and_knee_bent_with_one_leg_variation"
+            }
             SquatExerciseName::AlternatingBoxDumbbellStepUps => "alternating_box_dumbbell_step_ups",
-            SquatExerciseName::DumbbellOverheadSquatSingleArm => "dumbbell_overhead_squat_single_arm",
+            SquatExerciseName::DumbbellOverheadSquatSingleArm => {
+                "dumbbell_overhead_squat_single_arm"
+            }
             SquatExerciseName::DumbbellSquatSnatch => "dumbbell_squat_snatch",
             SquatExerciseName::MedicineBallSquat => "medicine_ball_squat",
             SquatExerciseName::WallBallSquatAndPress => "wall_ball_squat_and_press",
@@ -18526,17 +19664,25 @@ impl SquatExerciseName {
             "barbell_quarter_squat" => Some(SquatExerciseName::BarbellQuarterSquat),
             "barbell_siff_squat" => Some(SquatExerciseName::BarbellSiffSquat),
             "barbell_squat_snatch" => Some(SquatExerciseName::BarbellSquatSnatch),
-            "barbell_squat_with_heels_raised" => Some(SquatExerciseName::BarbellSquatWithHeelsRaised),
+            "barbell_squat_with_heels_raised" => {
+                Some(SquatExerciseName::BarbellSquatWithHeelsRaised)
+            }
             "barbell_stepover" => Some(SquatExerciseName::BarbellStepover),
             "barbell_step_up" => Some(SquatExerciseName::BarbellStepUp),
-            "bench_squat_with_rotational_chop" => Some(SquatExerciseName::BenchSquatWithRotationalChop),
-            "weighted_bench_squat_with_rotational_chop" => Some(SquatExerciseName::WeightedBenchSquatWithRotationalChop),
+            "bench_squat_with_rotational_chop" => {
+                Some(SquatExerciseName::BenchSquatWithRotationalChop)
+            }
+            "weighted_bench_squat_with_rotational_chop" => {
+                Some(SquatExerciseName::WeightedBenchSquatWithRotationalChop)
+            }
             "body_weight_wall_squat" => Some(SquatExerciseName::BodyWeightWallSquat),
             "weighted_wall_squat" => Some(SquatExerciseName::WeightedWallSquat),
             "box_step_squat" => Some(SquatExerciseName::BoxStepSquat),
             "weighted_box_step_squat" => Some(SquatExerciseName::WeightedBoxStepSquat),
             "braced_squat" => Some(SquatExerciseName::BracedSquat),
-            "crossed_arm_barbell_front_squat" => Some(SquatExerciseName::CrossedArmBarbellFrontSquat),
+            "crossed_arm_barbell_front_squat" => {
+                Some(SquatExerciseName::CrossedArmBarbellFrontSquat)
+            }
             "crossover_dumbbell_step_up" => Some(SquatExerciseName::CrossoverDumbbellStepUp),
             "dumbbell_front_squat" => Some(SquatExerciseName::DumbbellFrontSquat),
             "dumbbell_split_squat" => Some(SquatExerciseName::DumbbellSplitSquat),
@@ -18545,19 +19691,25 @@ impl SquatExerciseName {
             "dumbbell_stepover" => Some(SquatExerciseName::DumbbellStepover),
             "dumbbell_step_up" => Some(SquatExerciseName::DumbbellStepUp),
             "elevated_single_leg_squat" => Some(SquatExerciseName::ElevatedSingleLegSquat),
-            "weighted_elevated_single_leg_squat" => Some(SquatExerciseName::WeightedElevatedSingleLegSquat),
+            "weighted_elevated_single_leg_squat" => {
+                Some(SquatExerciseName::WeightedElevatedSingleLegSquat)
+            }
             "figure_four_squats" => Some(SquatExerciseName::FigureFourSquats),
             "weighted_figure_four_squats" => Some(SquatExerciseName::WeightedFigureFourSquats),
             "goblet_squat" => Some(SquatExerciseName::GobletSquat),
             "kettlebell_squat" => Some(SquatExerciseName::KettlebellSquat),
             "kettlebell_swing_overhead" => Some(SquatExerciseName::KettlebellSwingOverhead),
-            "kettlebell_swing_with_flip_to_squat" => Some(SquatExerciseName::KettlebellSwingWithFlipToSquat),
+            "kettlebell_swing_with_flip_to_squat" => {
+                Some(SquatExerciseName::KettlebellSwingWithFlipToSquat)
+            }
             "lateral_dumbbell_step_up" => Some(SquatExerciseName::LateralDumbbellStepUp),
             "one_legged_squat" => Some(SquatExerciseName::OneLeggedSquat),
             "overhead_dumbbell_squat" => Some(SquatExerciseName::OverheadDumbbellSquat),
             "overhead_squat" => Some(SquatExerciseName::OverheadSquat),
             "partial_single_leg_squat" => Some(SquatExerciseName::PartialSingleLegSquat),
-            "weighted_partial_single_leg_squat" => Some(SquatExerciseName::WeightedPartialSingleLegSquat),
+            "weighted_partial_single_leg_squat" => {
+                Some(SquatExerciseName::WeightedPartialSingleLegSquat)
+            }
             "pistol_squat" => Some(SquatExerciseName::PistolSquat),
             "weighted_pistol_squat" => Some(SquatExerciseName::WeightedPistolSquat),
             "plie_slides" => Some(SquatExerciseName::PlieSlides),
@@ -18567,11 +19719,17 @@ impl SquatExerciseName {
             "prisoner_squat" => Some(SquatExerciseName::PrisonerSquat),
             "weighted_prisoner_squat" => Some(SquatExerciseName::WeightedPrisonerSquat),
             "single_leg_bench_get_up" => Some(SquatExerciseName::SingleLegBenchGetUp),
-            "weighted_single_leg_bench_get_up" => Some(SquatExerciseName::WeightedSingleLegBenchGetUp),
+            "weighted_single_leg_bench_get_up" => {
+                Some(SquatExerciseName::WeightedSingleLegBenchGetUp)
+            }
             "single_leg_bench_squat" => Some(SquatExerciseName::SingleLegBenchSquat),
-            "weighted_single_leg_bench_squat" => Some(SquatExerciseName::WeightedSingleLegBenchSquat),
+            "weighted_single_leg_bench_squat" => {
+                Some(SquatExerciseName::WeightedSingleLegBenchSquat)
+            }
             "single_leg_squat_on_swiss_ball" => Some(SquatExerciseName::SingleLegSquatOnSwissBall),
-            "weighted_single_leg_squat_on_swiss_ball" => Some(SquatExerciseName::WeightedSingleLegSquatOnSwissBall),
+            "weighted_single_leg_squat_on_swiss_ball" => {
+                Some(SquatExerciseName::WeightedSingleLegSquatOnSwissBall)
+            }
             "squat" => Some(SquatExerciseName::Squat),
             "weighted_squat" => Some(SquatExerciseName::WeightedSquat),
             "squats_with_band" => Some(SquatExerciseName::SquatsWithBand),
@@ -18587,8 +19745,12 @@ impl SquatExerciseName {
             "sumo_squat_to_stand" => Some(SquatExerciseName::SumoSquatToStand),
             "weighted_sumo_squat_to_stand" => Some(SquatExerciseName::WeightedSumoSquatToStand),
             "sumo_squat_with_rotation" => Some(SquatExerciseName::SumoSquatWithRotation),
-            "weighted_sumo_squat_with_rotation" => Some(SquatExerciseName::WeightedSumoSquatWithRotation),
-            "swiss_ball_body_weight_wall_squat" => Some(SquatExerciseName::SwissBallBodyWeightWallSquat),
+            "weighted_sumo_squat_with_rotation" => {
+                Some(SquatExerciseName::WeightedSumoSquatWithRotation)
+            }
+            "swiss_ball_body_weight_wall_squat" => {
+                Some(SquatExerciseName::SwissBallBodyWeightWallSquat)
+            }
             "weighted_swiss_ball_wall_squat" => Some(SquatExerciseName::WeightedSwissBallWallSquat),
             "thrusters" => Some(SquatExerciseName::Thrusters),
             "uneven_squat" => Some(SquatExerciseName::UnevenSquat),
@@ -18601,10 +19763,18 @@ impl SquatExerciseName {
             "kbs_overhead" => Some(SquatExerciseName::KbsOverhead),
             "squat_and_side_kick" => Some(SquatExerciseName::SquatAndSideKick),
             "squat_jumps_in_n_out" => Some(SquatExerciseName::SquatJumpsInNOut),
-            "pilates_plie_squats_parallel_turned_out_flat_and_heels" => Some(SquatExerciseName::PilatesPlieSquatsParallelTurnedOutFlatAndHeels),
-            "releve_straight_leg_and_knee_bent_with_one_leg_variation" => Some(SquatExerciseName::ReleveStraightLegAndKneeBentWithOneLegVariation),
-            "alternating_box_dumbbell_step_ups" => Some(SquatExerciseName::AlternatingBoxDumbbellStepUps),
-            "dumbbell_overhead_squat_single_arm" => Some(SquatExerciseName::DumbbellOverheadSquatSingleArm),
+            "pilates_plie_squats_parallel_turned_out_flat_and_heels" => {
+                Some(SquatExerciseName::PilatesPlieSquatsParallelTurnedOutFlatAndHeels)
+            }
+            "releve_straight_leg_and_knee_bent_with_one_leg_variation" => {
+                Some(SquatExerciseName::ReleveStraightLegAndKneeBentWithOneLegVariation)
+            }
+            "alternating_box_dumbbell_step_ups" => {
+                Some(SquatExerciseName::AlternatingBoxDumbbellStepUps)
+            }
+            "dumbbell_overhead_squat_single_arm" => {
+                Some(SquatExerciseName::DumbbellOverheadSquatSingleArm)
+            }
             "dumbbell_squat_snatch" => Some(SquatExerciseName::DumbbellSquatSnatch),
             "medicine_ball_squat" => Some(SquatExerciseName::MedicineBallSquat),
             "wall_ball_squat_and_press" => Some(SquatExerciseName::WallBallSquatAndPress),
@@ -18659,9 +19829,13 @@ impl TotalBodyExerciseName {
             TotalBodyExerciseName::SquatPlankPushUp => "squat_plank_push_up",
             TotalBodyExerciseName::WeightedSquatPlankPushUp => "weighted_squat_plank_push_up",
             TotalBodyExerciseName::StandingTRotationBalance => "standing_t_rotation_balance",
-            TotalBodyExerciseName::WeightedStandingTRotationBalance => "weighted_standing_t_rotation_balance",
+            TotalBodyExerciseName::WeightedStandingTRotationBalance => {
+                "weighted_standing_t_rotation_balance"
+            }
             TotalBodyExerciseName::BarbellBurpee => "barbell_burpee",
-            TotalBodyExerciseName::BurpeeBoxJumpOverYesLiterallyJumpingOverTheBox => "burpee_box_jump_over_yes_literally_jumping_over_the_box",
+            TotalBodyExerciseName::BurpeeBoxJumpOverYesLiterallyJumpingOverTheBox => {
+                "burpee_box_jump_over_yes_literally_jumping_over_the_box"
+            }
             TotalBodyExerciseName::BurpeeBoxJumpStepUpOver => "burpee_box_jump_step_up_over",
             TotalBodyExerciseName::LateralBarbellBurpee => "lateral_barbell_burpee",
             TotalBodyExerciseName::TotalBodyBurpeeOverBar => "total_body_burpee_over_bar",
@@ -18712,9 +19886,13 @@ impl TotalBodyExerciseName {
             "squat_plank_push_up" => Some(TotalBodyExerciseName::SquatPlankPushUp),
             "weighted_squat_plank_push_up" => Some(TotalBodyExerciseName::WeightedSquatPlankPushUp),
             "standing_t_rotation_balance" => Some(TotalBodyExerciseName::StandingTRotationBalance),
-            "weighted_standing_t_rotation_balance" => Some(TotalBodyExerciseName::WeightedStandingTRotationBalance),
+            "weighted_standing_t_rotation_balance" => {
+                Some(TotalBodyExerciseName::WeightedStandingTRotationBalance)
+            }
             "barbell_burpee" => Some(TotalBodyExerciseName::BarbellBurpee),
-            "burpee_box_jump_over_yes_literally_jumping_over_the_box" => Some(TotalBodyExerciseName::BurpeeBoxJumpOverYesLiterallyJumpingOverTheBox),
+            "burpee_box_jump_over_yes_literally_jumping_over_the_box" => {
+                Some(TotalBodyExerciseName::BurpeeBoxJumpOverYesLiterallyJumpingOverTheBox)
+            }
             "burpee_box_jump_step_up_over" => Some(TotalBodyExerciseName::BurpeeBoxJumpStepUpOver),
             "lateral_barbell_burpee" => Some(TotalBodyExerciseName::LateralBarbellBurpee),
             "total_body_burpee_over_bar" => Some(TotalBodyExerciseName::TotalBodyBurpeeOverBar),
@@ -18821,7 +19999,9 @@ impl MoveExerciseName {
     pub fn as_str(&self) -> &'static str {
         match self {
             MoveExerciseName::ArchAndCurl => "arch_and_curl",
-            MoveExerciseName::ArmCirclesWithBallBandAndWeight => "arm_circles_with_ball_band_and_weight",
+            MoveExerciseName::ArmCirclesWithBallBandAndWeight => {
+                "arm_circles_with_ball_band_and_weight"
+            }
             MoveExerciseName::ArmStretch => "arm_stretch",
             MoveExerciseName::BackMassage => "back_massage",
             MoveExerciseName::BellyBreathing => "belly_breathing",
@@ -18838,7 +20018,9 @@ impl MoveExerciseName {
             MoveExerciseName::HamstringCurl => "hamstring_curl",
             MoveExerciseName::HamstringStretch => "hamstring_stretch",
             MoveExerciseName::HipStretch => "hip_stretch",
-            MoveExerciseName::HugATreeWithBallBandAndWeight => "hug_a_tree_with_ball_band_and_weight",
+            MoveExerciseName::HugATreeWithBallBandAndWeight => {
+                "hug_a_tree_with_ball_band_and_weight"
+            }
             MoveExerciseName::KneeCircles => "knee_circles",
             MoveExerciseName::KneeFoldsOnDisc => "knee_folds_on_disc",
             MoveExerciseName::LateralFlexion => "lateral_flexion",
@@ -18850,7 +20032,9 @@ impl MoveExerciseName {
             MoveExerciseName::MermaidStretch => "mermaid_stretch",
             MoveExerciseName::NeutralPelvicPosition => "neutral_pelvic_position",
             MoveExerciseName::PelvicClocksOnDisc => "pelvic_clocks_on_disc",
-            MoveExerciseName::PilatesPlieSquatsParallelTurnedOutFlatAndHeelsWithChair => "pilates_plie_squats_parallel_turned_out_flat_and_heels_with_chair",
+            MoveExerciseName::PilatesPlieSquatsParallelTurnedOutFlatAndHeelsWithChair => {
+                "pilates_plie_squats_parallel_turned_out_flat_and_heels_with_chair"
+            }
             MoveExerciseName::PiriformisStretch => "piriformis_stretch",
             MoveExerciseName::PlankKneeCrosses => "plank_knee_crosses",
             MoveExerciseName::PlankKneePulls => "plank_knee_pulls",
@@ -18865,7 +20049,9 @@ impl MoveExerciseName {
             MoveExerciseName::ScissorsOnDisc => "scissors_on_disc",
             MoveExerciseName::SeatedHipStretchup => "seated_hip_stretchup",
             MoveExerciseName::SeatedTwist => "seated_twist",
-            MoveExerciseName::ShavingTheHeadWithBallBandAndWeight => "shaving_the_head_with_ball_band_and_weight",
+            MoveExerciseName::ShavingTheHeadWithBallBandAndWeight => {
+                "shaving_the_head_with_ball_band_and_weight"
+            }
             MoveExerciseName::SpinalTwist => "spinal_twist",
             MoveExerciseName::SpinalTwistStretch => "spinal_twist_stretch",
             MoveExerciseName::SpineStretchForward => "spine_stretch_forward",
@@ -18873,13 +20059,23 @@ impl MoveExerciseName {
             MoveExerciseName::SquatsWithBall => "squats_with_ball",
             MoveExerciseName::StandAndHang => "stand_and_hang",
             MoveExerciseName::StandingSideStretch => "standing_side_stretch",
-            MoveExerciseName::StandingSingleLegForwardBendWithItBandOpener => "standing_single_leg_forward_bend_with_it_band_opener",
+            MoveExerciseName::StandingSingleLegForwardBendWithItBandOpener => {
+                "standing_single_leg_forward_bend_with_it_band_opener"
+            }
             MoveExerciseName::StraightLegCrunchWithLegLift => "straight_leg_crunch_with_leg_lift",
-            MoveExerciseName::StraightLegCrunchWithLegLiftWithBall => "straight_leg_crunch_with_leg_lift_with_ball",
-            MoveExerciseName::StraightLegCrunchWithLegsCrossed => "straight_leg_crunch_with_legs_crossed",
-            MoveExerciseName::StraightLegCrunchWithLegsCrossedWithBall => "straight_leg_crunch_with_legs_crossed_with_ball",
+            MoveExerciseName::StraightLegCrunchWithLegLiftWithBall => {
+                "straight_leg_crunch_with_leg_lift_with_ball"
+            }
+            MoveExerciseName::StraightLegCrunchWithLegsCrossed => {
+                "straight_leg_crunch_with_legs_crossed"
+            }
+            MoveExerciseName::StraightLegCrunchWithLegsCrossedWithBall => {
+                "straight_leg_crunch_with_legs_crossed_with_ball"
+            }
             MoveExerciseName::StraightLegDiagonalCrunch => "straight_leg_diagonal_crunch",
-            MoveExerciseName::StraightLegDiagonalCrunchWithBall => "straight_leg_diagonal_crunch_with_ball",
+            MoveExerciseName::StraightLegDiagonalCrunchWithBall => {
+                "straight_leg_diagonal_crunch_with_ball"
+            }
             MoveExerciseName::TailboneCurl => "tailbone_curl",
             MoveExerciseName::ThroatLock => "throat_lock",
             MoveExerciseName::TickTockSideRoll => "tick_tock_side_roll",
@@ -18888,12 +20084,24 @@ impl MoveExerciseName {
             MoveExerciseName::VSit => "v_sit",
             MoveExerciseName::ForwardFoldWheelchair => "forward_fold_wheelchair",
             MoveExerciseName::ForwardFoldPlusWheelchair => "forward_fold_plus_wheelchair",
-            MoveExerciseName::ArmCirclesLowForwardWheelchair => "arm_circles_low_forward_wheelchair",
-            MoveExerciseName::ArmCirclesMidForwardWheelchair => "arm_circles_mid_forward_wheelchair",
-            MoveExerciseName::ArmCirclesHighForwardWheelchair => "arm_circles_high_forward_wheelchair",
-            MoveExerciseName::ArmCirclesLowBackwardWheelchair => "arm_circles_low_backward_wheelchair",
-            MoveExerciseName::ArmCirclesMidBackwardWheelchair => "arm_circles_mid_backward_wheelchair",
-            MoveExerciseName::ArmCirclesHighBackwardWheelchair => "arm_circles_high_backward_wheelchair",
+            MoveExerciseName::ArmCirclesLowForwardWheelchair => {
+                "arm_circles_low_forward_wheelchair"
+            }
+            MoveExerciseName::ArmCirclesMidForwardWheelchair => {
+                "arm_circles_mid_forward_wheelchair"
+            }
+            MoveExerciseName::ArmCirclesHighForwardWheelchair => {
+                "arm_circles_high_forward_wheelchair"
+            }
+            MoveExerciseName::ArmCirclesLowBackwardWheelchair => {
+                "arm_circles_low_backward_wheelchair"
+            }
+            MoveExerciseName::ArmCirclesMidBackwardWheelchair => {
+                "arm_circles_mid_backward_wheelchair"
+            }
+            MoveExerciseName::ArmCirclesHighBackwardWheelchair => {
+                "arm_circles_high_backward_wheelchair"
+            }
             MoveExerciseName::CoreTwistsWheelchair => "core_twists_wheelchair",
             MoveExerciseName::ArmRaiseWheelchair => "arm_raise_wheelchair",
             MoveExerciseName::ChestExpandWheelchair => "chest_expand_wheelchair",
@@ -19004,7 +20212,9 @@ impl MoveExerciseName {
     pub fn from_str(name: &str) -> Option<Self> {
         match name {
             "arch_and_curl" => Some(MoveExerciseName::ArchAndCurl),
-            "arm_circles_with_ball_band_and_weight" => Some(MoveExerciseName::ArmCirclesWithBallBandAndWeight),
+            "arm_circles_with_ball_band_and_weight" => {
+                Some(MoveExerciseName::ArmCirclesWithBallBandAndWeight)
+            }
             "arm_stretch" => Some(MoveExerciseName::ArmStretch),
             "back_massage" => Some(MoveExerciseName::BackMassage),
             "belly_breathing" => Some(MoveExerciseName::BellyBreathing),
@@ -19021,7 +20231,9 @@ impl MoveExerciseName {
             "hamstring_curl" => Some(MoveExerciseName::HamstringCurl),
             "hamstring_stretch" => Some(MoveExerciseName::HamstringStretch),
             "hip_stretch" => Some(MoveExerciseName::HipStretch),
-            "hug_a_tree_with_ball_band_and_weight" => Some(MoveExerciseName::HugATreeWithBallBandAndWeight),
+            "hug_a_tree_with_ball_band_and_weight" => {
+                Some(MoveExerciseName::HugATreeWithBallBandAndWeight)
+            }
             "knee_circles" => Some(MoveExerciseName::KneeCircles),
             "knee_folds_on_disc" => Some(MoveExerciseName::KneeFoldsOnDisc),
             "lateral_flexion" => Some(MoveExerciseName::LateralFlexion),
@@ -19033,7 +20245,9 @@ impl MoveExerciseName {
             "mermaid_stretch" => Some(MoveExerciseName::MermaidStretch),
             "neutral_pelvic_position" => Some(MoveExerciseName::NeutralPelvicPosition),
             "pelvic_clocks_on_disc" => Some(MoveExerciseName::PelvicClocksOnDisc),
-            "pilates_plie_squats_parallel_turned_out_flat_and_heels_with_chair" => Some(MoveExerciseName::PilatesPlieSquatsParallelTurnedOutFlatAndHeelsWithChair),
+            "pilates_plie_squats_parallel_turned_out_flat_and_heels_with_chair" => {
+                Some(MoveExerciseName::PilatesPlieSquatsParallelTurnedOutFlatAndHeelsWithChair)
+            }
             "piriformis_stretch" => Some(MoveExerciseName::PiriformisStretch),
             "plank_knee_crosses" => Some(MoveExerciseName::PlankKneeCrosses),
             "plank_knee_pulls" => Some(MoveExerciseName::PlankKneePulls),
@@ -19048,7 +20262,9 @@ impl MoveExerciseName {
             "scissors_on_disc" => Some(MoveExerciseName::ScissorsOnDisc),
             "seated_hip_stretchup" => Some(MoveExerciseName::SeatedHipStretchup),
             "seated_twist" => Some(MoveExerciseName::SeatedTwist),
-            "shaving_the_head_with_ball_band_and_weight" => Some(MoveExerciseName::ShavingTheHeadWithBallBandAndWeight),
+            "shaving_the_head_with_ball_band_and_weight" => {
+                Some(MoveExerciseName::ShavingTheHeadWithBallBandAndWeight)
+            }
             "spinal_twist" => Some(MoveExerciseName::SpinalTwist),
             "spinal_twist_stretch" => Some(MoveExerciseName::SpinalTwistStretch),
             "spine_stretch_forward" => Some(MoveExerciseName::SpineStretchForward),
@@ -19056,13 +20272,25 @@ impl MoveExerciseName {
             "squats_with_ball" => Some(MoveExerciseName::SquatsWithBall),
             "stand_and_hang" => Some(MoveExerciseName::StandAndHang),
             "standing_side_stretch" => Some(MoveExerciseName::StandingSideStretch),
-            "standing_single_leg_forward_bend_with_it_band_opener" => Some(MoveExerciseName::StandingSingleLegForwardBendWithItBandOpener),
-            "straight_leg_crunch_with_leg_lift" => Some(MoveExerciseName::StraightLegCrunchWithLegLift),
-            "straight_leg_crunch_with_leg_lift_with_ball" => Some(MoveExerciseName::StraightLegCrunchWithLegLiftWithBall),
-            "straight_leg_crunch_with_legs_crossed" => Some(MoveExerciseName::StraightLegCrunchWithLegsCrossed),
-            "straight_leg_crunch_with_legs_crossed_with_ball" => Some(MoveExerciseName::StraightLegCrunchWithLegsCrossedWithBall),
+            "standing_single_leg_forward_bend_with_it_band_opener" => {
+                Some(MoveExerciseName::StandingSingleLegForwardBendWithItBandOpener)
+            }
+            "straight_leg_crunch_with_leg_lift" => {
+                Some(MoveExerciseName::StraightLegCrunchWithLegLift)
+            }
+            "straight_leg_crunch_with_leg_lift_with_ball" => {
+                Some(MoveExerciseName::StraightLegCrunchWithLegLiftWithBall)
+            }
+            "straight_leg_crunch_with_legs_crossed" => {
+                Some(MoveExerciseName::StraightLegCrunchWithLegsCrossed)
+            }
+            "straight_leg_crunch_with_legs_crossed_with_ball" => {
+                Some(MoveExerciseName::StraightLegCrunchWithLegsCrossedWithBall)
+            }
             "straight_leg_diagonal_crunch" => Some(MoveExerciseName::StraightLegDiagonalCrunch),
-            "straight_leg_diagonal_crunch_with_ball" => Some(MoveExerciseName::StraightLegDiagonalCrunchWithBall),
+            "straight_leg_diagonal_crunch_with_ball" => {
+                Some(MoveExerciseName::StraightLegDiagonalCrunchWithBall)
+            }
             "tailbone_curl" => Some(MoveExerciseName::TailboneCurl),
             "throat_lock" => Some(MoveExerciseName::ThroatLock),
             "tick_tock_side_roll" => Some(MoveExerciseName::TickTockSideRoll),
@@ -19071,12 +20299,24 @@ impl MoveExerciseName {
             "v_sit" => Some(MoveExerciseName::VSit),
             "forward_fold_wheelchair" => Some(MoveExerciseName::ForwardFoldWheelchair),
             "forward_fold_plus_wheelchair" => Some(MoveExerciseName::ForwardFoldPlusWheelchair),
-            "arm_circles_low_forward_wheelchair" => Some(MoveExerciseName::ArmCirclesLowForwardWheelchair),
-            "arm_circles_mid_forward_wheelchair" => Some(MoveExerciseName::ArmCirclesMidForwardWheelchair),
-            "arm_circles_high_forward_wheelchair" => Some(MoveExerciseName::ArmCirclesHighForwardWheelchair),
-            "arm_circles_low_backward_wheelchair" => Some(MoveExerciseName::ArmCirclesLowBackwardWheelchair),
-            "arm_circles_mid_backward_wheelchair" => Some(MoveExerciseName::ArmCirclesMidBackwardWheelchair),
-            "arm_circles_high_backward_wheelchair" => Some(MoveExerciseName::ArmCirclesHighBackwardWheelchair),
+            "arm_circles_low_forward_wheelchair" => {
+                Some(MoveExerciseName::ArmCirclesLowForwardWheelchair)
+            }
+            "arm_circles_mid_forward_wheelchair" => {
+                Some(MoveExerciseName::ArmCirclesMidForwardWheelchair)
+            }
+            "arm_circles_high_forward_wheelchair" => {
+                Some(MoveExerciseName::ArmCirclesHighForwardWheelchair)
+            }
+            "arm_circles_low_backward_wheelchair" => {
+                Some(MoveExerciseName::ArmCirclesLowBackwardWheelchair)
+            }
+            "arm_circles_mid_backward_wheelchair" => {
+                Some(MoveExerciseName::ArmCirclesMidBackwardWheelchair)
+            }
+            "arm_circles_high_backward_wheelchair" => {
+                Some(MoveExerciseName::ArmCirclesHighBackwardWheelchair)
+            }
             "core_twists_wheelchair" => Some(MoveExerciseName::CoreTwistsWheelchair),
             "arm_raise_wheelchair" => Some(MoveExerciseName::ArmRaiseWheelchair),
             "chest_expand_wheelchair" => Some(MoveExerciseName::ChestExpandWheelchair),
@@ -19224,7 +20464,9 @@ impl PoseExerciseName {
             PoseExerciseName::BabyCobra => "baby_cobra",
             PoseExerciseName::Boat => "boat",
             PoseExerciseName::BoundAngle => "bound_angle",
-            PoseExerciseName::BoundSeatedSingleLegForwardBend => "bound_seated_single_leg_forward_bend",
+            PoseExerciseName::BoundSeatedSingleLegForwardBend => {
+                "bound_seated_single_leg_forward_bend"
+            }
             PoseExerciseName::Bow => "bow",
             PoseExerciseName::BowedHalfMoon => "bowed_half_moon",
             PoseExerciseName::Bridge => "bridge",
@@ -19263,7 +20505,9 @@ impl PoseExerciseName {
             PoseExerciseName::LowLungeWithKneeDown => "low_lunge_with_knee_down",
             PoseExerciseName::Mermaid => "mermaid",
             PoseExerciseName::Mountain => "mountain",
-            PoseExerciseName::OneLeggedDownwardFacingPoseOpenHipBentKnee => "one_legged_downward_facing_pose_open_hip_bent_knee",
+            PoseExerciseName::OneLeggedDownwardFacingPoseOpenHipBentKnee => {
+                "one_legged_downward_facing_pose_open_hip_bent_knee"
+            }
             PoseExerciseName::OneLeggedPigeon => "one_legged_pigeon",
             PoseExerciseName::PeacefulWarrior => "peaceful_warrior",
             PoseExerciseName::Plank => "plank",
@@ -19291,12 +20535,16 @@ impl PoseExerciseName {
             PoseExerciseName::StandingSingleLegForwardBend => "standing_single_leg_forward_bend",
             PoseExerciseName::StandingSplit => "standing_split",
             PoseExerciseName::StandingWideLegForwardBend => "standing_wide_leg_forward_bend",
-            PoseExerciseName::StandingWideLegForwardBendWithTwist => "standing_wide_leg_forward_bend_with_twist",
+            PoseExerciseName::StandingWideLegForwardBendWithTwist => {
+                "standing_wide_leg_forward_bend_with_twist"
+            }
             PoseExerciseName::SupineSpinalTwist => "supine_spinal_twist",
             PoseExerciseName::TableTop => "table_top",
             PoseExerciseName::ThreadTheNeedle => "thread_the_needle",
             PoseExerciseName::Thunderbolt => "thunderbolt",
-            PoseExerciseName::ThunderboltPoseBothSidesArmStretch => "thunderbolt_pose_both_sides_arm_stretch",
+            PoseExerciseName::ThunderboltPoseBothSidesArmStretch => {
+                "thunderbolt_pose_both_sides_arm_stretch"
+            }
             PoseExerciseName::Tree => "tree",
             PoseExerciseName::Triangle => "triangle",
             PoseExerciseName::UpDog => "up_dog",
@@ -19314,19 +20562,35 @@ impl PoseExerciseName {
             PoseExerciseName::OverheadPrayerWheelchair => "overhead_prayer_wheelchair",
             PoseExerciseName::CactusWheelchair => "cactus_wheelchair",
             PoseExerciseName::BreathingPunchesWheelchair => "breathing_punches_wheelchair",
-            PoseExerciseName::BreathingPunchesExtendedWheelchair => "breathing_punches_extended_wheelchair",
-            PoseExerciseName::BreathingPunchesOverheadWheelchair => "breathing_punches_overhead_wheelchair",
-            PoseExerciseName::BreathingPunchesOverheadAndDownWheelchair => "breathing_punches_overhead_and_down_wheelchair",
+            PoseExerciseName::BreathingPunchesExtendedWheelchair => {
+                "breathing_punches_extended_wheelchair"
+            }
+            PoseExerciseName::BreathingPunchesOverheadWheelchair => {
+                "breathing_punches_overhead_wheelchair"
+            }
+            PoseExerciseName::BreathingPunchesOverheadAndDownWheelchair => {
+                "breathing_punches_overhead_and_down_wheelchair"
+            }
             PoseExerciseName::BreathingPunchesSideWheelchair => "breathing_punches_side_wheelchair",
-            PoseExerciseName::BreathingPunchesExtendedSideWheelchair => "breathing_punches_extended_side_wheelchair",
-            PoseExerciseName::BreathingPunchesOverheadSideWheelchair => "breathing_punches_overhead_side_wheelchair",
-            PoseExerciseName::BreathingPunchesOverheadAndDownSideWheelchair => "breathing_punches_overhead_and_down_side_wheelchair",
+            PoseExerciseName::BreathingPunchesExtendedSideWheelchair => {
+                "breathing_punches_extended_side_wheelchair"
+            }
+            PoseExerciseName::BreathingPunchesOverheadSideWheelchair => {
+                "breathing_punches_overhead_side_wheelchair"
+            }
+            PoseExerciseName::BreathingPunchesOverheadAndDownSideWheelchair => {
+                "breathing_punches_overhead_and_down_side_wheelchair"
+            }
             PoseExerciseName::LeftHandBackWheelchair => "left_hand_back_wheelchair",
             PoseExerciseName::TriangleWheelchair => "triangle_wheelchair",
             PoseExerciseName::ThreadTheNeedleWheelchair => "thread_the_needle_wheelchair",
-            PoseExerciseName::NeckFlexionAndExtensionWheelchair => "neck_flexion_and_extension_wheelchair",
+            PoseExerciseName::NeckFlexionAndExtensionWheelchair => {
+                "neck_flexion_and_extension_wheelchair"
+            }
             PoseExerciseName::NeckLateralFlexionWheelchair => "neck_lateral_flexion_wheelchair",
-            PoseExerciseName::SpineFlexionAndExtensionWheelchair => "spine_flexion_and_extension_wheelchair",
+            PoseExerciseName::SpineFlexionAndExtensionWheelchair => {
+                "spine_flexion_and_extension_wheelchair"
+            }
             PoseExerciseName::SpineRotationWheelchair => "spine_rotation_wheelchair",
             PoseExerciseName::SpineLateralFlexionWheelchair => "spine_lateral_flexion_wheelchair",
             PoseExerciseName::AlternativeSkiingWheelchair => "alternative_skiing_wheelchair",
@@ -19469,7 +20733,9 @@ impl PoseExerciseName {
             "baby_cobra" => Some(PoseExerciseName::BabyCobra),
             "boat" => Some(PoseExerciseName::Boat),
             "bound_angle" => Some(PoseExerciseName::BoundAngle),
-            "bound_seated_single_leg_forward_bend" => Some(PoseExerciseName::BoundSeatedSingleLegForwardBend),
+            "bound_seated_single_leg_forward_bend" => {
+                Some(PoseExerciseName::BoundSeatedSingleLegForwardBend)
+            }
             "bow" => Some(PoseExerciseName::Bow),
             "bowed_half_moon" => Some(PoseExerciseName::BowedHalfMoon),
             "bridge" => Some(PoseExerciseName::Bridge),
@@ -19484,7 +20750,9 @@ impl PoseExerciseName {
             "dolphin" => Some(PoseExerciseName::Dolphin),
             "down_dog_knee_to_nose" => Some(PoseExerciseName::DownDogKneeToNose),
             "down_dog_split" => Some(PoseExerciseName::DownDogSplit),
-            "down_dog_split_open_hip_bent_knee" => Some(PoseExerciseName::DownDogSplitOpenHipBentKnee),
+            "down_dog_split_open_hip_bent_knee" => {
+                Some(PoseExerciseName::DownDogSplitOpenHipBentKnee)
+            }
             "downward_facing_dog" => Some(PoseExerciseName::DownwardFacingDog),
             "eagle" => Some(PoseExerciseName::Eagle),
             "easy_seated" => Some(PoseExerciseName::EasySeated),
@@ -19508,7 +20776,9 @@ impl PoseExerciseName {
             "low_lunge_with_knee_down" => Some(PoseExerciseName::LowLungeWithKneeDown),
             "mermaid" => Some(PoseExerciseName::Mermaid),
             "mountain" => Some(PoseExerciseName::Mountain),
-            "one_legged_downward_facing_pose_open_hip_bent_knee" => Some(PoseExerciseName::OneLeggedDownwardFacingPoseOpenHipBentKnee),
+            "one_legged_downward_facing_pose_open_hip_bent_knee" => {
+                Some(PoseExerciseName::OneLeggedDownwardFacingPoseOpenHipBentKnee)
+            }
             "one_legged_pigeon" => Some(PoseExerciseName::OneLeggedPigeon),
             "peaceful_warrior" => Some(PoseExerciseName::PeacefulWarrior),
             "plank" => Some(PoseExerciseName::Plank),
@@ -19530,18 +20800,26 @@ impl PoseExerciseName {
             "squat_palm_press" => Some(PoseExerciseName::SquatPalmPress),
             "staff" => Some(PoseExerciseName::Staff),
             "standing_arms_up" => Some(PoseExerciseName::StandingArmsUp),
-            "standing_forward_bend_halfway_up" => Some(PoseExerciseName::StandingForwardBendHalfwayUp),
+            "standing_forward_bend_halfway_up" => {
+                Some(PoseExerciseName::StandingForwardBendHalfwayUp)
+            }
             "standing_forward_bend" => Some(PoseExerciseName::StandingForwardBend),
             "standing_side_opener" => Some(PoseExerciseName::StandingSideOpener),
-            "standing_single_leg_forward_bend" => Some(PoseExerciseName::StandingSingleLegForwardBend),
+            "standing_single_leg_forward_bend" => {
+                Some(PoseExerciseName::StandingSingleLegForwardBend)
+            }
             "standing_split" => Some(PoseExerciseName::StandingSplit),
             "standing_wide_leg_forward_bend" => Some(PoseExerciseName::StandingWideLegForwardBend),
-            "standing_wide_leg_forward_bend_with_twist" => Some(PoseExerciseName::StandingWideLegForwardBendWithTwist),
+            "standing_wide_leg_forward_bend_with_twist" => {
+                Some(PoseExerciseName::StandingWideLegForwardBendWithTwist)
+            }
             "supine_spinal_twist" => Some(PoseExerciseName::SupineSpinalTwist),
             "table_top" => Some(PoseExerciseName::TableTop),
             "thread_the_needle" => Some(PoseExerciseName::ThreadTheNeedle),
             "thunderbolt" => Some(PoseExerciseName::Thunderbolt),
-            "thunderbolt_pose_both_sides_arm_stretch" => Some(PoseExerciseName::ThunderboltPoseBothSidesArmStretch),
+            "thunderbolt_pose_both_sides_arm_stretch" => {
+                Some(PoseExerciseName::ThunderboltPoseBothSidesArmStretch)
+            }
             "tree" => Some(PoseExerciseName::Tree),
             "triangle" => Some(PoseExerciseName::Triangle),
             "up_dog" => Some(PoseExerciseName::UpDog),
@@ -19559,21 +20837,43 @@ impl PoseExerciseName {
             "overhead_prayer_wheelchair" => Some(PoseExerciseName::OverheadPrayerWheelchair),
             "cactus_wheelchair" => Some(PoseExerciseName::CactusWheelchair),
             "breathing_punches_wheelchair" => Some(PoseExerciseName::BreathingPunchesWheelchair),
-            "breathing_punches_extended_wheelchair" => Some(PoseExerciseName::BreathingPunchesExtendedWheelchair),
-            "breathing_punches_overhead_wheelchair" => Some(PoseExerciseName::BreathingPunchesOverheadWheelchair),
-            "breathing_punches_overhead_and_down_wheelchair" => Some(PoseExerciseName::BreathingPunchesOverheadAndDownWheelchair),
-            "breathing_punches_side_wheelchair" => Some(PoseExerciseName::BreathingPunchesSideWheelchair),
-            "breathing_punches_extended_side_wheelchair" => Some(PoseExerciseName::BreathingPunchesExtendedSideWheelchair),
-            "breathing_punches_overhead_side_wheelchair" => Some(PoseExerciseName::BreathingPunchesOverheadSideWheelchair),
-            "breathing_punches_overhead_and_down_side_wheelchair" => Some(PoseExerciseName::BreathingPunchesOverheadAndDownSideWheelchair),
+            "breathing_punches_extended_wheelchair" => {
+                Some(PoseExerciseName::BreathingPunchesExtendedWheelchair)
+            }
+            "breathing_punches_overhead_wheelchair" => {
+                Some(PoseExerciseName::BreathingPunchesOverheadWheelchair)
+            }
+            "breathing_punches_overhead_and_down_wheelchair" => {
+                Some(PoseExerciseName::BreathingPunchesOverheadAndDownWheelchair)
+            }
+            "breathing_punches_side_wheelchair" => {
+                Some(PoseExerciseName::BreathingPunchesSideWheelchair)
+            }
+            "breathing_punches_extended_side_wheelchair" => {
+                Some(PoseExerciseName::BreathingPunchesExtendedSideWheelchair)
+            }
+            "breathing_punches_overhead_side_wheelchair" => {
+                Some(PoseExerciseName::BreathingPunchesOverheadSideWheelchair)
+            }
+            "breathing_punches_overhead_and_down_side_wheelchair" => {
+                Some(PoseExerciseName::BreathingPunchesOverheadAndDownSideWheelchair)
+            }
             "left_hand_back_wheelchair" => Some(PoseExerciseName::LeftHandBackWheelchair),
             "triangle_wheelchair" => Some(PoseExerciseName::TriangleWheelchair),
             "thread_the_needle_wheelchair" => Some(PoseExerciseName::ThreadTheNeedleWheelchair),
-            "neck_flexion_and_extension_wheelchair" => Some(PoseExerciseName::NeckFlexionAndExtensionWheelchair),
-            "neck_lateral_flexion_wheelchair" => Some(PoseExerciseName::NeckLateralFlexionWheelchair),
-            "spine_flexion_and_extension_wheelchair" => Some(PoseExerciseName::SpineFlexionAndExtensionWheelchair),
+            "neck_flexion_and_extension_wheelchair" => {
+                Some(PoseExerciseName::NeckFlexionAndExtensionWheelchair)
+            }
+            "neck_lateral_flexion_wheelchair" => {
+                Some(PoseExerciseName::NeckLateralFlexionWheelchair)
+            }
+            "spine_flexion_and_extension_wheelchair" => {
+                Some(PoseExerciseName::SpineFlexionAndExtensionWheelchair)
+            }
             "spine_rotation_wheelchair" => Some(PoseExerciseName::SpineRotationWheelchair),
-            "spine_lateral_flexion_wheelchair" => Some(PoseExerciseName::SpineLateralFlexionWheelchair),
+            "spine_lateral_flexion_wheelchair" => {
+                Some(PoseExerciseName::SpineLateralFlexionWheelchair)
+            }
             "alternative_skiing_wheelchair" => Some(PoseExerciseName::AlternativeSkiingWheelchair),
             "reach_forward_wheelchair" => Some(PoseExerciseName::ReachForwardWheelchair),
             "warrior_wheelchair" => Some(PoseExerciseName::WarriorWheelchair),
@@ -19644,47 +20944,97 @@ impl TricepsExtensionExerciseName {
             TricepsExtensionExerciseName::WeightedBenchDip => "weighted_bench_dip",
             TricepsExtensionExerciseName::BodyWeightDip => "body_weight_dip",
             TricepsExtensionExerciseName::CableKickback => "cable_kickback",
-            TricepsExtensionExerciseName::CableLyingTricepsExtension => "cable_lying_triceps_extension",
-            TricepsExtensionExerciseName::CableOverheadTricepsExtension => "cable_overhead_triceps_extension",
+            TricepsExtensionExerciseName::CableLyingTricepsExtension => {
+                "cable_lying_triceps_extension"
+            }
+            TricepsExtensionExerciseName::CableOverheadTricepsExtension => {
+                "cable_overhead_triceps_extension"
+            }
             TricepsExtensionExerciseName::DumbbellKickback => "dumbbell_kickback",
-            TricepsExtensionExerciseName::DumbbellLyingTricepsExtension => "dumbbell_lying_triceps_extension",
-            TricepsExtensionExerciseName::EzBarOverheadTricepsExtension => "ez_bar_overhead_triceps_extension",
+            TricepsExtensionExerciseName::DumbbellLyingTricepsExtension => {
+                "dumbbell_lying_triceps_extension"
+            }
+            TricepsExtensionExerciseName::EzBarOverheadTricepsExtension => {
+                "ez_bar_overhead_triceps_extension"
+            }
             TricepsExtensionExerciseName::InclineDip => "incline_dip",
             TricepsExtensionExerciseName::WeightedInclineDip => "weighted_incline_dip",
-            TricepsExtensionExerciseName::InclineEzBarLyingTricepsExtension => "incline_ez_bar_lying_triceps_extension",
-            TricepsExtensionExerciseName::LyingDumbbellPulloverToExtension => "lying_dumbbell_pullover_to_extension",
-            TricepsExtensionExerciseName::LyingEzBarTricepsExtension => "lying_ez_bar_triceps_extension",
-            TricepsExtensionExerciseName::LyingTricepsExtensionToCloseGripBenchPress => "lying_triceps_extension_to_close_grip_bench_press",
-            TricepsExtensionExerciseName::OverheadDumbbellTricepsExtension => "overhead_dumbbell_triceps_extension",
+            TricepsExtensionExerciseName::InclineEzBarLyingTricepsExtension => {
+                "incline_ez_bar_lying_triceps_extension"
+            }
+            TricepsExtensionExerciseName::LyingDumbbellPulloverToExtension => {
+                "lying_dumbbell_pullover_to_extension"
+            }
+            TricepsExtensionExerciseName::LyingEzBarTricepsExtension => {
+                "lying_ez_bar_triceps_extension"
+            }
+            TricepsExtensionExerciseName::LyingTricepsExtensionToCloseGripBenchPress => {
+                "lying_triceps_extension_to_close_grip_bench_press"
+            }
+            TricepsExtensionExerciseName::OverheadDumbbellTricepsExtension => {
+                "overhead_dumbbell_triceps_extension"
+            }
             TricepsExtensionExerciseName::RecliningTricepsPress => "reclining_triceps_press",
             TricepsExtensionExerciseName::ReverseGripPressdown => "reverse_grip_pressdown",
-            TricepsExtensionExerciseName::ReverseGripTricepsPressdown => "reverse_grip_triceps_pressdown",
+            TricepsExtensionExerciseName::ReverseGripTricepsPressdown => {
+                "reverse_grip_triceps_pressdown"
+            }
             TricepsExtensionExerciseName::RopePressdown => "rope_pressdown",
-            TricepsExtensionExerciseName::SeatedBarbellOverheadTricepsExtension => "seated_barbell_overhead_triceps_extension",
-            TricepsExtensionExerciseName::SeatedDumbbellOverheadTricepsExtension => "seated_dumbbell_overhead_triceps_extension",
-            TricepsExtensionExerciseName::SeatedEzBarOverheadTricepsExtension => "seated_ez_bar_overhead_triceps_extension",
-            TricepsExtensionExerciseName::SeatedSingleArmOverheadDumbbellExtension => "seated_single_arm_overhead_dumbbell_extension",
-            TricepsExtensionExerciseName::SingleArmDumbbellOverheadTricepsExtension => "single_arm_dumbbell_overhead_triceps_extension",
-            TricepsExtensionExerciseName::SingleDumbbellSeatedOverheadTricepsExtension => "single_dumbbell_seated_overhead_triceps_extension",
-            TricepsExtensionExerciseName::SingleLegBenchDipAndKick => "single_leg_bench_dip_and_kick",
-            TricepsExtensionExerciseName::WeightedSingleLegBenchDipAndKick => "weighted_single_leg_bench_dip_and_kick",
+            TricepsExtensionExerciseName::SeatedBarbellOverheadTricepsExtension => {
+                "seated_barbell_overhead_triceps_extension"
+            }
+            TricepsExtensionExerciseName::SeatedDumbbellOverheadTricepsExtension => {
+                "seated_dumbbell_overhead_triceps_extension"
+            }
+            TricepsExtensionExerciseName::SeatedEzBarOverheadTricepsExtension => {
+                "seated_ez_bar_overhead_triceps_extension"
+            }
+            TricepsExtensionExerciseName::SeatedSingleArmOverheadDumbbellExtension => {
+                "seated_single_arm_overhead_dumbbell_extension"
+            }
+            TricepsExtensionExerciseName::SingleArmDumbbellOverheadTricepsExtension => {
+                "single_arm_dumbbell_overhead_triceps_extension"
+            }
+            TricepsExtensionExerciseName::SingleDumbbellSeatedOverheadTricepsExtension => {
+                "single_dumbbell_seated_overhead_triceps_extension"
+            }
+            TricepsExtensionExerciseName::SingleLegBenchDipAndKick => {
+                "single_leg_bench_dip_and_kick"
+            }
+            TricepsExtensionExerciseName::WeightedSingleLegBenchDipAndKick => {
+                "weighted_single_leg_bench_dip_and_kick"
+            }
             TricepsExtensionExerciseName::SingleLegDip => "single_leg_dip",
             TricepsExtensionExerciseName::WeightedSingleLegDip => "weighted_single_leg_dip",
-            TricepsExtensionExerciseName::StaticLyingTricepsExtension => "static_lying_triceps_extension",
+            TricepsExtensionExerciseName::StaticLyingTricepsExtension => {
+                "static_lying_triceps_extension"
+            }
             TricepsExtensionExerciseName::SuspendedDip => "suspended_dip",
             TricepsExtensionExerciseName::WeightedSuspendedDip => "weighted_suspended_dip",
-            TricepsExtensionExerciseName::SwissBallDumbbellLyingTricepsExtension => "swiss_ball_dumbbell_lying_triceps_extension",
-            TricepsExtensionExerciseName::SwissBallEzBarLyingTricepsExtension => "swiss_ball_ez_bar_lying_triceps_extension",
-            TricepsExtensionExerciseName::SwissBallEzBarOverheadTricepsExtension => "swiss_ball_ez_bar_overhead_triceps_extension",
+            TricepsExtensionExerciseName::SwissBallDumbbellLyingTricepsExtension => {
+                "swiss_ball_dumbbell_lying_triceps_extension"
+            }
+            TricepsExtensionExerciseName::SwissBallEzBarLyingTricepsExtension => {
+                "swiss_ball_ez_bar_lying_triceps_extension"
+            }
+            TricepsExtensionExerciseName::SwissBallEzBarOverheadTricepsExtension => {
+                "swiss_ball_ez_bar_overhead_triceps_extension"
+            }
             TricepsExtensionExerciseName::TabletopDip => "tabletop_dip",
             TricepsExtensionExerciseName::WeightedTabletopDip => "weighted_tabletop_dip",
             TricepsExtensionExerciseName::TricepsExtensionOnFloor => "triceps_extension_on_floor",
             TricepsExtensionExerciseName::TricepsPressdown => "triceps_pressdown",
             TricepsExtensionExerciseName::WeightedDip => "weighted_dip",
-            TricepsExtensionExerciseName::AlternatingDumbbellLyingTricepsExtension => "alternating_dumbbell_lying_triceps_extension",
+            TricepsExtensionExerciseName::AlternatingDumbbellLyingTricepsExtension => {
+                "alternating_dumbbell_lying_triceps_extension"
+            }
             TricepsExtensionExerciseName::TricepsPress => "triceps_press",
-            TricepsExtensionExerciseName::DumbbellKickbackWheelchair => "dumbbell_kickback_wheelchair",
-            TricepsExtensionExerciseName::OverheadDumbbellTricepsExtensionWheelchair => "overhead_dumbbell_triceps_extension_wheelchair",
+            TricepsExtensionExerciseName::DumbbellKickbackWheelchair => {
+                "dumbbell_kickback_wheelchair"
+            }
+            TricepsExtensionExerciseName::OverheadDumbbellTricepsExtensionWheelchair => {
+                "overhead_dumbbell_triceps_extension_wheelchair"
+            }
         }
     }
 
@@ -19747,47 +21097,99 @@ impl TricepsExtensionExerciseName {
             "weighted_bench_dip" => Some(TricepsExtensionExerciseName::WeightedBenchDip),
             "body_weight_dip" => Some(TricepsExtensionExerciseName::BodyWeightDip),
             "cable_kickback" => Some(TricepsExtensionExerciseName::CableKickback),
-            "cable_lying_triceps_extension" => Some(TricepsExtensionExerciseName::CableLyingTricepsExtension),
-            "cable_overhead_triceps_extension" => Some(TricepsExtensionExerciseName::CableOverheadTricepsExtension),
+            "cable_lying_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::CableLyingTricepsExtension)
+            }
+            "cable_overhead_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::CableOverheadTricepsExtension)
+            }
             "dumbbell_kickback" => Some(TricepsExtensionExerciseName::DumbbellKickback),
-            "dumbbell_lying_triceps_extension" => Some(TricepsExtensionExerciseName::DumbbellLyingTricepsExtension),
-            "ez_bar_overhead_triceps_extension" => Some(TricepsExtensionExerciseName::EzBarOverheadTricepsExtension),
+            "dumbbell_lying_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::DumbbellLyingTricepsExtension)
+            }
+            "ez_bar_overhead_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::EzBarOverheadTricepsExtension)
+            }
             "incline_dip" => Some(TricepsExtensionExerciseName::InclineDip),
             "weighted_incline_dip" => Some(TricepsExtensionExerciseName::WeightedInclineDip),
-            "incline_ez_bar_lying_triceps_extension" => Some(TricepsExtensionExerciseName::InclineEzBarLyingTricepsExtension),
-            "lying_dumbbell_pullover_to_extension" => Some(TricepsExtensionExerciseName::LyingDumbbellPulloverToExtension),
-            "lying_ez_bar_triceps_extension" => Some(TricepsExtensionExerciseName::LyingEzBarTricepsExtension),
-            "lying_triceps_extension_to_close_grip_bench_press" => Some(TricepsExtensionExerciseName::LyingTricepsExtensionToCloseGripBenchPress),
-            "overhead_dumbbell_triceps_extension" => Some(TricepsExtensionExerciseName::OverheadDumbbellTricepsExtension),
+            "incline_ez_bar_lying_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::InclineEzBarLyingTricepsExtension)
+            }
+            "lying_dumbbell_pullover_to_extension" => {
+                Some(TricepsExtensionExerciseName::LyingDumbbellPulloverToExtension)
+            }
+            "lying_ez_bar_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::LyingEzBarTricepsExtension)
+            }
+            "lying_triceps_extension_to_close_grip_bench_press" => {
+                Some(TricepsExtensionExerciseName::LyingTricepsExtensionToCloseGripBenchPress)
+            }
+            "overhead_dumbbell_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::OverheadDumbbellTricepsExtension)
+            }
             "reclining_triceps_press" => Some(TricepsExtensionExerciseName::RecliningTricepsPress),
             "reverse_grip_pressdown" => Some(TricepsExtensionExerciseName::ReverseGripPressdown),
-            "reverse_grip_triceps_pressdown" => Some(TricepsExtensionExerciseName::ReverseGripTricepsPressdown),
+            "reverse_grip_triceps_pressdown" => {
+                Some(TricepsExtensionExerciseName::ReverseGripTricepsPressdown)
+            }
             "rope_pressdown" => Some(TricepsExtensionExerciseName::RopePressdown),
-            "seated_barbell_overhead_triceps_extension" => Some(TricepsExtensionExerciseName::SeatedBarbellOverheadTricepsExtension),
-            "seated_dumbbell_overhead_triceps_extension" => Some(TricepsExtensionExerciseName::SeatedDumbbellOverheadTricepsExtension),
-            "seated_ez_bar_overhead_triceps_extension" => Some(TricepsExtensionExerciseName::SeatedEzBarOverheadTricepsExtension),
-            "seated_single_arm_overhead_dumbbell_extension" => Some(TricepsExtensionExerciseName::SeatedSingleArmOverheadDumbbellExtension),
-            "single_arm_dumbbell_overhead_triceps_extension" => Some(TricepsExtensionExerciseName::SingleArmDumbbellOverheadTricepsExtension),
-            "single_dumbbell_seated_overhead_triceps_extension" => Some(TricepsExtensionExerciseName::SingleDumbbellSeatedOverheadTricepsExtension),
-            "single_leg_bench_dip_and_kick" => Some(TricepsExtensionExerciseName::SingleLegBenchDipAndKick),
-            "weighted_single_leg_bench_dip_and_kick" => Some(TricepsExtensionExerciseName::WeightedSingleLegBenchDipAndKick),
+            "seated_barbell_overhead_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::SeatedBarbellOverheadTricepsExtension)
+            }
+            "seated_dumbbell_overhead_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::SeatedDumbbellOverheadTricepsExtension)
+            }
+            "seated_ez_bar_overhead_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::SeatedEzBarOverheadTricepsExtension)
+            }
+            "seated_single_arm_overhead_dumbbell_extension" => {
+                Some(TricepsExtensionExerciseName::SeatedSingleArmOverheadDumbbellExtension)
+            }
+            "single_arm_dumbbell_overhead_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::SingleArmDumbbellOverheadTricepsExtension)
+            }
+            "single_dumbbell_seated_overhead_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::SingleDumbbellSeatedOverheadTricepsExtension)
+            }
+            "single_leg_bench_dip_and_kick" => {
+                Some(TricepsExtensionExerciseName::SingleLegBenchDipAndKick)
+            }
+            "weighted_single_leg_bench_dip_and_kick" => {
+                Some(TricepsExtensionExerciseName::WeightedSingleLegBenchDipAndKick)
+            }
             "single_leg_dip" => Some(TricepsExtensionExerciseName::SingleLegDip),
             "weighted_single_leg_dip" => Some(TricepsExtensionExerciseName::WeightedSingleLegDip),
-            "static_lying_triceps_extension" => Some(TricepsExtensionExerciseName::StaticLyingTricepsExtension),
+            "static_lying_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::StaticLyingTricepsExtension)
+            }
             "suspended_dip" => Some(TricepsExtensionExerciseName::SuspendedDip),
             "weighted_suspended_dip" => Some(TricepsExtensionExerciseName::WeightedSuspendedDip),
-            "swiss_ball_dumbbell_lying_triceps_extension" => Some(TricepsExtensionExerciseName::SwissBallDumbbellLyingTricepsExtension),
-            "swiss_ball_ez_bar_lying_triceps_extension" => Some(TricepsExtensionExerciseName::SwissBallEzBarLyingTricepsExtension),
-            "swiss_ball_ez_bar_overhead_triceps_extension" => Some(TricepsExtensionExerciseName::SwissBallEzBarOverheadTricepsExtension),
+            "swiss_ball_dumbbell_lying_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::SwissBallDumbbellLyingTricepsExtension)
+            }
+            "swiss_ball_ez_bar_lying_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::SwissBallEzBarLyingTricepsExtension)
+            }
+            "swiss_ball_ez_bar_overhead_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::SwissBallEzBarOverheadTricepsExtension)
+            }
             "tabletop_dip" => Some(TricepsExtensionExerciseName::TabletopDip),
             "weighted_tabletop_dip" => Some(TricepsExtensionExerciseName::WeightedTabletopDip),
-            "triceps_extension_on_floor" => Some(TricepsExtensionExerciseName::TricepsExtensionOnFloor),
+            "triceps_extension_on_floor" => {
+                Some(TricepsExtensionExerciseName::TricepsExtensionOnFloor)
+            }
             "triceps_pressdown" => Some(TricepsExtensionExerciseName::TricepsPressdown),
             "weighted_dip" => Some(TricepsExtensionExerciseName::WeightedDip),
-            "alternating_dumbbell_lying_triceps_extension" => Some(TricepsExtensionExerciseName::AlternatingDumbbellLyingTricepsExtension),
+            "alternating_dumbbell_lying_triceps_extension" => {
+                Some(TricepsExtensionExerciseName::AlternatingDumbbellLyingTricepsExtension)
+            }
             "triceps_press" => Some(TricepsExtensionExerciseName::TricepsPress),
-            "dumbbell_kickback_wheelchair" => Some(TricepsExtensionExerciseName::DumbbellKickbackWheelchair),
-            "overhead_dumbbell_triceps_extension_wheelchair" => Some(TricepsExtensionExerciseName::OverheadDumbbellTricepsExtensionWheelchair),
+            "dumbbell_kickback_wheelchair" => {
+                Some(TricepsExtensionExerciseName::DumbbellKickbackWheelchair)
+            }
+            "overhead_dumbbell_triceps_extension_wheelchair" => {
+                Some(TricepsExtensionExerciseName::OverheadDumbbellTricepsExtensionWheelchair)
+            }
             _ => None,
         }
     }
@@ -20098,7 +21500,9 @@ impl WarmUpExerciseName {
             "bent_over_reach_to_sky" => Some(WarmUpExerciseName::BentOverReachToSky),
             "cat_camel" => Some(WarmUpExerciseName::CatCamel),
             "elbow_to_foot_lunge" => Some(WarmUpExerciseName::ElbowToFootLunge),
-            "forward_and_backward_leg_swings" => Some(WarmUpExerciseName::ForwardAndBackwardLegSwings),
+            "forward_and_backward_leg_swings" => {
+                Some(WarmUpExerciseName::ForwardAndBackwardLegSwings)
+            }
             "groiners" => Some(WarmUpExerciseName::Groiners),
             "inverted_hamstring_stretch" => Some(WarmUpExerciseName::InvertedHamstringStretch),
             "lateral_duck_under" => Some(WarmUpExerciseName::LateralDuckUnder),
@@ -20137,7 +21541,9 @@ impl WarmUpExerciseName {
             "stretch_hip_flexor_and_quad" => Some(WarmUpExerciseName::StretchHipFlexorAndQuad),
             "stretch_lat" => Some(WarmUpExerciseName::StretchLat),
             "stretch_levator_scapulae" => Some(WarmUpExerciseName::StretchLevatorScapulae),
-            "stretch_lunge_with_spinal_twist" => Some(WarmUpExerciseName::StretchLungeWithSpinalTwist),
+            "stretch_lunge_with_spinal_twist" => {
+                Some(WarmUpExerciseName::StretchLungeWithSpinalTwist)
+            }
             "stretch_lunging_hip_flexor" => Some(WarmUpExerciseName::StretchLungingHipFlexor),
             "stretch_lying_abduction" => Some(WarmUpExerciseName::StretchLyingAbduction),
             "stretch_lying_it_band" => Some(WarmUpExerciseName::StretchLyingItBand),
@@ -20159,7 +21565,9 @@ impl WarmUpExerciseName {
             "stretch_standing_it_band" => Some(WarmUpExerciseName::StretchStandingItBand),
             "stretch_straddle" => Some(WarmUpExerciseName::StretchStraddle),
             "stretch_triceps" => Some(WarmUpExerciseName::StretchTriceps),
-            "stretch_wall_chest_and_shoulder" => Some(WarmUpExerciseName::StretchWallChestAndShoulder),
+            "stretch_wall_chest_and_shoulder" => {
+                Some(WarmUpExerciseName::StretchWallChestAndShoulder)
+            }
             "neck_rotations_wheelchair" => Some(WarmUpExerciseName::NeckRotationsWheelchair),
             "half_kneeling_arm_rotation" => Some(WarmUpExerciseName::HalfKneelingArmRotation),
             "three_way_ankle_mobilization" => Some(WarmUpExerciseName::ThreeWayAnkleMobilization),
@@ -20362,7 +21770,9 @@ impl BandedExercisesExerciseName {
             BandedExercisesExerciseName::Deadlift => "deadlift",
             BandedExercisesExerciseName::DonkeyKick => "donkey_kick",
             BandedExercisesExerciseName::ExternalRotation => "external_rotation",
-            BandedExercisesExerciseName::ExternalRotationAt90DegreeAbduction => "external_rotation_at_90_degree_abduction",
+            BandedExercisesExerciseName::ExternalRotationAt90DegreeAbduction => {
+                "external_rotation_at_90_degree_abduction"
+            }
             BandedExercisesExerciseName::FacePull => "face_pull",
             BandedExercisesExerciseName::FireHydrant => "fire_hydrant",
             BandedExercisesExerciseName::Fly => "fly",
@@ -20389,7 +21799,9 @@ impl BandedExercisesExerciseName {
             BandedExercisesExerciseName::ShoulderAbduction => "shoulder_abduction",
             BandedExercisesExerciseName::ShoulderExtension => "shoulder_extension",
             BandedExercisesExerciseName::ShoulderExternalRotation => "shoulder_external_rotation",
-            BandedExercisesExerciseName::ShoulderFlexionTo90Degrees => "shoulder_flexion_to_90_degrees",
+            BandedExercisesExerciseName::ShoulderFlexionTo90Degrees => {
+                "shoulder_flexion_to_90_degrees"
+            }
             BandedExercisesExerciseName::SidePlankLegLifts => "side_plank_leg_lifts",
             BandedExercisesExerciseName::SideRaise => "side_raise",
             BandedExercisesExerciseName::Squat => "squat",
@@ -20397,13 +21809,23 @@ impl BandedExercisesExerciseName {
             BandedExercisesExerciseName::TricepExtension => "tricep_extension",
             BandedExercisesExerciseName::TricepKickback => "tricep_kickback",
             BandedExercisesExerciseName::UprightRow => "upright_row",
-            BandedExercisesExerciseName::WallCrawlWithExternalRotation => "wall_crawl_with_external_rotation",
+            BandedExercisesExerciseName::WallCrawlWithExternalRotation => {
+                "wall_crawl_with_external_rotation"
+            }
             BandedExercisesExerciseName::LateralRaiseWheelchair => "lateral_raise_wheelchair",
-            BandedExercisesExerciseName::TricepsExtensionWheelchair => "triceps_extension_wheelchair",
-            BandedExercisesExerciseName::ChestFlyInclineWheelchair => "chest_fly_incline_wheelchair",
-            BandedExercisesExerciseName::ChestFlyDeclineWheelchair => "chest_fly_decline_wheelchair",
+            BandedExercisesExerciseName::TricepsExtensionWheelchair => {
+                "triceps_extension_wheelchair"
+            }
+            BandedExercisesExerciseName::ChestFlyInclineWheelchair => {
+                "chest_fly_incline_wheelchair"
+            }
+            BandedExercisesExerciseName::ChestFlyDeclineWheelchair => {
+                "chest_fly_decline_wheelchair"
+            }
             BandedExercisesExerciseName::PullDownWheelchair => "pull_down_wheelchair",
-            BandedExercisesExerciseName::StraightArmPullDownWheelchair => "straight_arm_pull_down_wheelchair",
+            BandedExercisesExerciseName::StraightArmPullDownWheelchair => {
+                "straight_arm_pull_down_wheelchair"
+            }
             BandedExercisesExerciseName::CurlWheelchair => "curl_wheelchair",
             BandedExercisesExerciseName::OverheadCurlWheelchair => "overhead_curl_wheelchair",
             BandedExercisesExerciseName::FacePullWheelchair => "face_pull_wheelchair",
@@ -20495,7 +21917,9 @@ impl BandedExercisesExerciseName {
             "deadlift" => Some(BandedExercisesExerciseName::Deadlift),
             "donkey_kick" => Some(BandedExercisesExerciseName::DonkeyKick),
             "external_rotation" => Some(BandedExercisesExerciseName::ExternalRotation),
-            "external_rotation_at_90_degree_abduction" => Some(BandedExercisesExerciseName::ExternalRotationAt90DegreeAbduction),
+            "external_rotation_at_90_degree_abduction" => {
+                Some(BandedExercisesExerciseName::ExternalRotationAt90DegreeAbduction)
+            }
             "face_pull" => Some(BandedExercisesExerciseName::FacePull),
             "fire_hydrant" => Some(BandedExercisesExerciseName::FireHydrant),
             "fly" => Some(BandedExercisesExerciseName::Fly),
@@ -20521,8 +21945,12 @@ impl BandedExercisesExerciseName {
             "row" => Some(BandedExercisesExerciseName::Row),
             "shoulder_abduction" => Some(BandedExercisesExerciseName::ShoulderAbduction),
             "shoulder_extension" => Some(BandedExercisesExerciseName::ShoulderExtension),
-            "shoulder_external_rotation" => Some(BandedExercisesExerciseName::ShoulderExternalRotation),
-            "shoulder_flexion_to_90_degrees" => Some(BandedExercisesExerciseName::ShoulderFlexionTo90Degrees),
+            "shoulder_external_rotation" => {
+                Some(BandedExercisesExerciseName::ShoulderExternalRotation)
+            }
+            "shoulder_flexion_to_90_degrees" => {
+                Some(BandedExercisesExerciseName::ShoulderFlexionTo90Degrees)
+            }
             "side_plank_leg_lifts" => Some(BandedExercisesExerciseName::SidePlankLegLifts),
             "side_raise" => Some(BandedExercisesExerciseName::SideRaise),
             "squat" => Some(BandedExercisesExerciseName::Squat),
@@ -20530,20 +21958,34 @@ impl BandedExercisesExerciseName {
             "tricep_extension" => Some(BandedExercisesExerciseName::TricepExtension),
             "tricep_kickback" => Some(BandedExercisesExerciseName::TricepKickback),
             "upright_row" => Some(BandedExercisesExerciseName::UprightRow),
-            "wall_crawl_with_external_rotation" => Some(BandedExercisesExerciseName::WallCrawlWithExternalRotation),
+            "wall_crawl_with_external_rotation" => {
+                Some(BandedExercisesExerciseName::WallCrawlWithExternalRotation)
+            }
             "lateral_raise_wheelchair" => Some(BandedExercisesExerciseName::LateralRaiseWheelchair),
-            "triceps_extension_wheelchair" => Some(BandedExercisesExerciseName::TricepsExtensionWheelchair),
-            "chest_fly_incline_wheelchair" => Some(BandedExercisesExerciseName::ChestFlyInclineWheelchair),
-            "chest_fly_decline_wheelchair" => Some(BandedExercisesExerciseName::ChestFlyDeclineWheelchair),
+            "triceps_extension_wheelchair" => {
+                Some(BandedExercisesExerciseName::TricepsExtensionWheelchair)
+            }
+            "chest_fly_incline_wheelchair" => {
+                Some(BandedExercisesExerciseName::ChestFlyInclineWheelchair)
+            }
+            "chest_fly_decline_wheelchair" => {
+                Some(BandedExercisesExerciseName::ChestFlyDeclineWheelchair)
+            }
             "pull_down_wheelchair" => Some(BandedExercisesExerciseName::PullDownWheelchair),
-            "straight_arm_pull_down_wheelchair" => Some(BandedExercisesExerciseName::StraightArmPullDownWheelchair),
+            "straight_arm_pull_down_wheelchair" => {
+                Some(BandedExercisesExerciseName::StraightArmPullDownWheelchair)
+            }
             "curl_wheelchair" => Some(BandedExercisesExerciseName::CurlWheelchair),
             "overhead_curl_wheelchair" => Some(BandedExercisesExerciseName::OverheadCurlWheelchair),
             "face_pull_wheelchair" => Some(BandedExercisesExerciseName::FacePullWheelchair),
-            "around_the_world_wheelchair" => Some(BandedExercisesExerciseName::AroundTheWorldWheelchair),
+            "around_the_world_wheelchair" => {
+                Some(BandedExercisesExerciseName::AroundTheWorldWheelchair)
+            }
             "pull_apart_wheelchair" => Some(BandedExercisesExerciseName::PullApartWheelchair),
             "side_curl_wheelchair" => Some(BandedExercisesExerciseName::SideCurlWheelchair),
-            "overhead_press_wheelchair" => Some(BandedExercisesExerciseName::OverheadPressWheelchair),
+            "overhead_press_wheelchair" => {
+                Some(BandedExercisesExerciseName::OverheadPressWheelchair)
+            }
             _ => None,
         }
     }
@@ -20589,11 +22031,15 @@ impl BattleRopeExerciseName {
         match self {
             BattleRopeExerciseName::AlternatingFigureEight => "alternating_figure_eight",
             BattleRopeExerciseName::AlternatingJumpWave => "alternating_jump_wave",
-            BattleRopeExerciseName::AlternatingKneelingToStandingWave => "alternating_kneeling_to_standing_wave",
+            BattleRopeExerciseName::AlternatingKneelingToStandingWave => {
+                "alternating_kneeling_to_standing_wave"
+            }
             BattleRopeExerciseName::AlternatingLungeWave => "alternating_lunge_wave",
             BattleRopeExerciseName::AlternatingSquatWave => "alternating_squat_wave",
             BattleRopeExerciseName::AlternatingWave => "alternating_wave",
-            BattleRopeExerciseName::AlternatingWaveWithLateralShuffle => "alternating_wave_with_lateral_shuffle",
+            BattleRopeExerciseName::AlternatingWaveWithLateralShuffle => {
+                "alternating_wave_with_lateral_shuffle"
+            }
             BattleRopeExerciseName::ClapWave => "clap_wave",
             BattleRopeExerciseName::DoubleArmFigureEight => "double_arm_figure_eight",
             BattleRopeExerciseName::DoubleArmSideToSideSnake => "double_arm_side_to_side_snake",
@@ -20658,14 +22104,20 @@ impl BattleRopeExerciseName {
         match name {
             "alternating_figure_eight" => Some(BattleRopeExerciseName::AlternatingFigureEight),
             "alternating_jump_wave" => Some(BattleRopeExerciseName::AlternatingJumpWave),
-            "alternating_kneeling_to_standing_wave" => Some(BattleRopeExerciseName::AlternatingKneelingToStandingWave),
+            "alternating_kneeling_to_standing_wave" => {
+                Some(BattleRopeExerciseName::AlternatingKneelingToStandingWave)
+            }
             "alternating_lunge_wave" => Some(BattleRopeExerciseName::AlternatingLungeWave),
             "alternating_squat_wave" => Some(BattleRopeExerciseName::AlternatingSquatWave),
             "alternating_wave" => Some(BattleRopeExerciseName::AlternatingWave),
-            "alternating_wave_with_lateral_shuffle" => Some(BattleRopeExerciseName::AlternatingWaveWithLateralShuffle),
+            "alternating_wave_with_lateral_shuffle" => {
+                Some(BattleRopeExerciseName::AlternatingWaveWithLateralShuffle)
+            }
             "clap_wave" => Some(BattleRopeExerciseName::ClapWave),
             "double_arm_figure_eight" => Some(BattleRopeExerciseName::DoubleArmFigureEight),
-            "double_arm_side_to_side_snake" => Some(BattleRopeExerciseName::DoubleArmSideToSideSnake),
+            "double_arm_side_to_side_snake" => {
+                Some(BattleRopeExerciseName::DoubleArmSideToSideSnake)
+            }
             "double_arm_side_wave" => Some(BattleRopeExerciseName::DoubleArmSideWave),
             "double_arm_slam" => Some(BattleRopeExerciseName::DoubleArmSlam),
             "double_arm_wave" => Some(BattleRopeExerciseName::DoubleArmWave),
@@ -22335,18 +23787,36 @@ impl NapPeriodFeedback {
         match self {
             NapPeriodFeedback::None => "none",
             NapPeriodFeedback::MultipleNapsDuringDay => "multiple_naps_during_day",
-            NapPeriodFeedback::JetlagIdealTimingIdealDuration => "jetlag_ideal_timing_ideal_duration",
+            NapPeriodFeedback::JetlagIdealTimingIdealDuration => {
+                "jetlag_ideal_timing_ideal_duration"
+            }
             NapPeriodFeedback::JetlagIdealTimingLongDuration => "jetlag_ideal_timing_long_duration",
             NapPeriodFeedback::JetlagLateTimingIdealDuration => "jetlag_late_timing_ideal_duration",
             NapPeriodFeedback::JetlagLateTimingLongDuration => "jetlag_late_timing_long_duration",
-            NapPeriodFeedback::IdealTimingIdealDurationLowNeed => "ideal_timing_ideal_duration_low_need",
-            NapPeriodFeedback::IdealTimingIdealDurationHighNeed => "ideal_timing_ideal_duration_high_need",
-            NapPeriodFeedback::IdealTimingLongDurationLowNeed => "ideal_timing_long_duration_low_need",
-            NapPeriodFeedback::IdealTimingLongDurationHighNeed => "ideal_timing_long_duration_high_need",
-            NapPeriodFeedback::LateTimingIdealDurationLowNeed => "late_timing_ideal_duration_low_need",
-            NapPeriodFeedback::LateTimingIdealDurationHighNeed => "late_timing_ideal_duration_high_need",
-            NapPeriodFeedback::LateTimingLongDurationLowNeed => "late_timing_long_duration_low_need",
-            NapPeriodFeedback::LateTimingLongDurationHighNeed => "late_timing_long_duration_high_need",
+            NapPeriodFeedback::IdealTimingIdealDurationLowNeed => {
+                "ideal_timing_ideal_duration_low_need"
+            }
+            NapPeriodFeedback::IdealTimingIdealDurationHighNeed => {
+                "ideal_timing_ideal_duration_high_need"
+            }
+            NapPeriodFeedback::IdealTimingLongDurationLowNeed => {
+                "ideal_timing_long_duration_low_need"
+            }
+            NapPeriodFeedback::IdealTimingLongDurationHighNeed => {
+                "ideal_timing_long_duration_high_need"
+            }
+            NapPeriodFeedback::LateTimingIdealDurationLowNeed => {
+                "late_timing_ideal_duration_low_need"
+            }
+            NapPeriodFeedback::LateTimingIdealDurationHighNeed => {
+                "late_timing_ideal_duration_high_need"
+            }
+            NapPeriodFeedback::LateTimingLongDurationLowNeed => {
+                "late_timing_long_duration_low_need"
+            }
+            NapPeriodFeedback::LateTimingLongDurationHighNeed => {
+                "late_timing_long_duration_high_need"
+            }
             NapPeriodFeedback::IdealDurationLowNeed => "ideal_duration_low_need",
             NapPeriodFeedback::IdealDurationHighNeed => "ideal_duration_high_need",
             NapPeriodFeedback::LongDurationLowNeed => "long_duration_low_need",
@@ -22384,18 +23854,42 @@ impl NapPeriodFeedback {
         match name {
             "none" => Some(NapPeriodFeedback::None),
             "multiple_naps_during_day" => Some(NapPeriodFeedback::MultipleNapsDuringDay),
-            "jetlag_ideal_timing_ideal_duration" => Some(NapPeriodFeedback::JetlagIdealTimingIdealDuration),
-            "jetlag_ideal_timing_long_duration" => Some(NapPeriodFeedback::JetlagIdealTimingLongDuration),
-            "jetlag_late_timing_ideal_duration" => Some(NapPeriodFeedback::JetlagLateTimingIdealDuration),
-            "jetlag_late_timing_long_duration" => Some(NapPeriodFeedback::JetlagLateTimingLongDuration),
-            "ideal_timing_ideal_duration_low_need" => Some(NapPeriodFeedback::IdealTimingIdealDurationLowNeed),
-            "ideal_timing_ideal_duration_high_need" => Some(NapPeriodFeedback::IdealTimingIdealDurationHighNeed),
-            "ideal_timing_long_duration_low_need" => Some(NapPeriodFeedback::IdealTimingLongDurationLowNeed),
-            "ideal_timing_long_duration_high_need" => Some(NapPeriodFeedback::IdealTimingLongDurationHighNeed),
-            "late_timing_ideal_duration_low_need" => Some(NapPeriodFeedback::LateTimingIdealDurationLowNeed),
-            "late_timing_ideal_duration_high_need" => Some(NapPeriodFeedback::LateTimingIdealDurationHighNeed),
-            "late_timing_long_duration_low_need" => Some(NapPeriodFeedback::LateTimingLongDurationLowNeed),
-            "late_timing_long_duration_high_need" => Some(NapPeriodFeedback::LateTimingLongDurationHighNeed),
+            "jetlag_ideal_timing_ideal_duration" => {
+                Some(NapPeriodFeedback::JetlagIdealTimingIdealDuration)
+            }
+            "jetlag_ideal_timing_long_duration" => {
+                Some(NapPeriodFeedback::JetlagIdealTimingLongDuration)
+            }
+            "jetlag_late_timing_ideal_duration" => {
+                Some(NapPeriodFeedback::JetlagLateTimingIdealDuration)
+            }
+            "jetlag_late_timing_long_duration" => {
+                Some(NapPeriodFeedback::JetlagLateTimingLongDuration)
+            }
+            "ideal_timing_ideal_duration_low_need" => {
+                Some(NapPeriodFeedback::IdealTimingIdealDurationLowNeed)
+            }
+            "ideal_timing_ideal_duration_high_need" => {
+                Some(NapPeriodFeedback::IdealTimingIdealDurationHighNeed)
+            }
+            "ideal_timing_long_duration_low_need" => {
+                Some(NapPeriodFeedback::IdealTimingLongDurationLowNeed)
+            }
+            "ideal_timing_long_duration_high_need" => {
+                Some(NapPeriodFeedback::IdealTimingLongDurationHighNeed)
+            }
+            "late_timing_ideal_duration_low_need" => {
+                Some(NapPeriodFeedback::LateTimingIdealDurationLowNeed)
+            }
+            "late_timing_ideal_duration_high_need" => {
+                Some(NapPeriodFeedback::LateTimingIdealDurationHighNeed)
+            }
+            "late_timing_long_duration_low_need" => {
+                Some(NapPeriodFeedback::LateTimingLongDurationLowNeed)
+            }
+            "late_timing_long_duration_high_need" => {
+                Some(NapPeriodFeedback::LateTimingLongDurationHighNeed)
+            }
             "ideal_duration_low_need" => Some(NapPeriodFeedback::IdealDurationLowNeed),
             "ideal_duration_high_need" => Some(NapPeriodFeedback::IdealDurationHighNeed),
             "long_duration_low_need" => Some(NapPeriodFeedback::LongDurationLowNeed),
@@ -22653,7 +24147,9 @@ pub fn enum_str_by_value(type_name: &str, value: u64) -> Option<&'static str> {
         "event" => Event::from_value(value as u8).map(|v| v.as_str()),
         "event_type" => EventType::from_value(value as u8).map(|v| v.as_str()),
         "timer_trigger" => TimerTrigger::from_value(value as u8).map(|v| v.as_str()),
-        "fitness_equipment_state" => FitnessEquipmentState::from_value(value as u8).map(|v| v.as_str()),
+        "fitness_equipment_state" => {
+            FitnessEquipmentState::from_value(value as u8).map(|v| v.as_str())
+        }
         "tone" => Tone::from_value(value as u8).map(|v| v.as_str()),
         "autoscroll" => Autoscroll::from_value(value as u8).map(|v| v.as_str()),
         "activity_class" => ActivityClass::from_value(value as u8).map(|v| v.as_str()),
@@ -22685,10 +24181,14 @@ pub fn enum_str_by_value(type_name: &str, value: u64) -> Option<&'static str> {
         "activity_level" => ActivityLevel::from_value(value as u8).map(|v| v.as_str()),
         "side" => Side::from_value(value as u8).map(|v| v.as_str()),
         "left_right_balance" => LeftRightBalance::from_value(value as u8).map(|v| v.as_str()),
-        "left_right_balance_100" => LeftRightBalance100::from_value(value as u16).map(|v| v.as_str()),
+        "left_right_balance_100" => {
+            LeftRightBalance100::from_value(value as u16).map(|v| v.as_str())
+        }
         "length_type" => LengthType::from_value(value as u8).map(|v| v.as_str()),
         "day_of_week" => DayOfWeek::from_value(value as u8).map(|v| v.as_str()),
-        "connectivity_capabilities" => ConnectivityCapabilities::from_value(value as u32).map(|v| v.as_str()),
+        "connectivity_capabilities" => {
+            ConnectivityCapabilities::from_value(value as u32).map(|v| v.as_str())
+        }
         "weather_report" => WeatherReport::from_value(value as u8).map(|v| v.as_str()),
         "weather_status" => WeatherStatus::from_value(value as u8).map(|v| v.as_str()),
         "weather_severity" => WeatherSeverity::from_value(value as u8).map(|v| v.as_str()),
@@ -22696,9 +24196,13 @@ pub fn enum_str_by_value(type_name: &str, value: u64) -> Option<&'static str> {
         "stroke_type" => StrokeType::from_value(value as u8).map(|v| v.as_str()),
         "body_location" => BodyLocation::from_value(value as u8).map(|v| v.as_str()),
         "segment_lap_status" => SegmentLapStatus::from_value(value as u8).map(|v| v.as_str()),
-        "segment_leaderboard_type" => SegmentLeaderboardType::from_value(value as u8).map(|v| v.as_str()),
+        "segment_leaderboard_type" => {
+            SegmentLeaderboardType::from_value(value as u8).map(|v| v.as_str())
+        }
         "segment_delete_status" => SegmentDeleteStatus::from_value(value as u8).map(|v| v.as_str()),
-        "segment_selection_type" => SegmentSelectionType::from_value(value as u8).map(|v| v.as_str()),
+        "segment_selection_type" => {
+            SegmentSelectionType::from_value(value as u8).map(|v| v.as_str())
+        }
         "source_type" => SourceType::from_value(value as u8).map(|v| v.as_str()),
         "local_device_type" => LocalDeviceType::from_value(value as u8).map(|v| v.as_str()),
         "ble_device_type" => BleDeviceType::from_value(value as u8).map(|v| v.as_str()),
@@ -22706,15 +24210,23 @@ pub fn enum_str_by_value(type_name: &str, value: u64) -> Option<&'static str> {
         "display_orientation" => DisplayOrientation::from_value(value as u8).map(|v| v.as_str()),
         "workout_equipment" => WorkoutEquipment::from_value(value as u8).map(|v| v.as_str()),
         "watchface_mode" => WatchfaceMode::from_value(value as u8).map(|v| v.as_str()),
-        "digital_watchface_layout" => DigitalWatchfaceLayout::from_value(value as u8).map(|v| v.as_str()),
-        "analog_watchface_layout" => AnalogWatchfaceLayout::from_value(value as u8).map(|v| v.as_str()),
+        "digital_watchface_layout" => {
+            DigitalWatchfaceLayout::from_value(value as u8).map(|v| v.as_str())
+        }
+        "analog_watchface_layout" => {
+            AnalogWatchfaceLayout::from_value(value as u8).map(|v| v.as_str())
+        }
         "rider_position_type" => RiderPositionType::from_value(value as u8).map(|v| v.as_str()),
         "power_phase_type" => PowerPhaseType::from_value(value as u8).map(|v| v.as_str()),
         "camera_event_type" => CameraEventType::from_value(value as u8).map(|v| v.as_str()),
         "sensor_type" => SensorType::from_value(value as u8).map(|v| v.as_str()),
-        "bike_light_network_config_type" => BikeLightNetworkConfigType::from_value(value as u8).map(|v| v.as_str()),
+        "bike_light_network_config_type" => {
+            BikeLightNetworkConfigType::from_value(value as u8).map(|v| v.as_str())
+        }
         "comm_timeout_type" => CommTimeoutType::from_value(value as u16).map(|v| v.as_str()),
-        "camera_orientation_type" => CameraOrientationType::from_value(value as u8).map(|v| v.as_str()),
+        "camera_orientation_type" => {
+            CameraOrientationType::from_value(value as u8).map(|v| v.as_str())
+        }
         "attitude_stage" => AttitudeStage::from_value(value as u8).map(|v| v.as_str()),
         "attitude_validity" => AttitudeValidity::from_value(value as u16).map(|v| v.as_str()),
         "auto_sync_frequency" => AutoSyncFrequency::from_value(value as u8).map(|v| v.as_str()),
@@ -22724,65 +24236,123 @@ pub fn enum_str_by_value(type_name: &str, value: u64) -> Option<&'static str> {
         "exd_qualifiers" => ExdQualifiers::from_value(value as u8).map(|v| v.as_str()),
         "exd_descriptors" => ExdDescriptors::from_value(value as u8).map(|v| v.as_str()),
         "auto_activity_detect" => AutoActivityDetect::from_value(value as u32).map(|v| v.as_str()),
-        "supported_exd_screen_layouts" => SupportedExdScreenLayouts::from_value(value as u32).map(|v| v.as_str()),
+        "supported_exd_screen_layouts" => {
+            SupportedExdScreenLayouts::from_value(value as u32).map(|v| v.as_str())
+        }
         "fit_base_type" => FitBaseType::from_value(value as u8).map(|v| v.as_str()),
         "turn_type" => TurnType::from_value(value as u8).map(|v| v.as_str()),
-        "bike_light_beam_angle_mode" => BikeLightBeamAngleMode::from_value(value as u8).map(|v| v.as_str()),
+        "bike_light_beam_angle_mode" => {
+            BikeLightBeamAngleMode::from_value(value as u8).map(|v| v.as_str())
+        }
         "fit_base_unit" => FitBaseUnit::from_value(value as u16).map(|v| v.as_str()),
         "set_type" => SetType::from_value(value as u8).map(|v| v.as_str()),
         "max_met_category" => MaxMetCategory::from_value(value as u8).map(|v| v.as_str()),
         "exercise_category" => ExerciseCategory::from_value(value as u16).map(|v| v.as_str()),
-        "bench_press_exercise_name" => BenchPressExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "calf_raise_exercise_name" => CalfRaiseExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "bench_press_exercise_name" => {
+            BenchPressExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "calf_raise_exercise_name" => {
+            CalfRaiseExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "cardio_exercise_name" => CardioExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "carry_exercise_name" => CarryExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "chop_exercise_name" => ChopExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "core_exercise_name" => CoreExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "crunch_exercise_name" => CrunchExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "curl_exercise_name" => CurlExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "deadlift_exercise_name" => DeadliftExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "deadlift_exercise_name" => {
+            DeadliftExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "flye_exercise_name" => FlyeExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "hip_raise_exercise_name" => HipRaiseExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "hip_stability_exercise_name" => HipStabilityExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "hip_swing_exercise_name" => HipSwingExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "hyperextension_exercise_name" => HyperextensionExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "lateral_raise_exercise_name" => LateralRaiseExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "leg_curl_exercise_name" => LegCurlExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "leg_raise_exercise_name" => LegRaiseExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "hip_raise_exercise_name" => {
+            HipRaiseExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "hip_stability_exercise_name" => {
+            HipStabilityExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "hip_swing_exercise_name" => {
+            HipSwingExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "hyperextension_exercise_name" => {
+            HyperextensionExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "lateral_raise_exercise_name" => {
+            LateralRaiseExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "leg_curl_exercise_name" => {
+            LegCurlExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "leg_raise_exercise_name" => {
+            LegRaiseExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "lunge_exercise_name" => LungeExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "olympic_lift_exercise_name" => OlympicLiftExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "olympic_lift_exercise_name" => {
+            OlympicLiftExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "plank_exercise_name" => PlankExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "plyo_exercise_name" => PlyoExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "pull_up_exercise_name" => PullUpExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "push_up_exercise_name" => PushUpExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "row_exercise_name" => RowExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "shoulder_press_exercise_name" => ShoulderPressExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "shoulder_stability_exercise_name" => ShoulderStabilityExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "shoulder_press_exercise_name" => {
+            ShoulderPressExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "shoulder_stability_exercise_name" => {
+            ShoulderStabilityExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "shrug_exercise_name" => ShrugExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "sit_up_exercise_name" => SitUpExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "squat_exercise_name" => SquatExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "total_body_exercise_name" => TotalBodyExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "total_body_exercise_name" => {
+            TotalBodyExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "move_exercise_name" => MoveExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "pose_exercise_name" => PoseExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "triceps_extension_exercise_name" => TricepsExtensionExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "triceps_extension_exercise_name" => {
+            TricepsExtensionExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "warm_up_exercise_name" => WarmUpExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "run_exercise_name" => RunExerciseName::from_value(value as u16).map(|v| v.as_str()),
         "bike_exercise_name" => BikeExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "banded_exercises_exercise_name" => BandedExercisesExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "battle_rope_exercise_name" => BattleRopeExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "elliptical_exercise_name" => EllipticalExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "floor_climb_exercise_name" => FloorClimbExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "indoor_bike_exercise_name" => IndoorBikeExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "indoor_row_exercise_name" => IndoorRowExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "banded_exercises_exercise_name" => {
+            BandedExercisesExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "battle_rope_exercise_name" => {
+            BattleRopeExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "elliptical_exercise_name" => {
+            EllipticalExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "floor_climb_exercise_name" => {
+            FloorClimbExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "indoor_bike_exercise_name" => {
+            IndoorBikeExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "indoor_row_exercise_name" => {
+            IndoorRowExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "ladder_exercise_name" => LadderExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "sandbag_exercise_name" => SandbagExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "sandbag_exercise_name" => {
+            SandbagExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "sled_exercise_name" => SledExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "sledge_hammer_exercise_name" => SledgeHammerExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "stair_stepper_exercise_name" => StairStepperExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "suspension_exercise_name" => SuspensionExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "sledge_hammer_exercise_name" => {
+            SledgeHammerExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "stair_stepper_exercise_name" => {
+            StairStepperExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "suspension_exercise_name" => {
+            SuspensionExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "tire_exercise_name" => TireExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "bike_outdoor_exercise_name" => BikeOutdoorExerciseName::from_value(value as u16).map(|v| v.as_str()),
-        "run_indoor_exercise_name" => RunIndoorExerciseName::from_value(value as u16).map(|v| v.as_str()),
+        "bike_outdoor_exercise_name" => {
+            BikeOutdoorExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
+        "run_indoor_exercise_name" => {
+            RunIndoorExerciseName::from_value(value as u16).map(|v| v.as_str())
+        }
         "water_type" => WaterType::from_value(value as u8).map(|v| v.as_str()),
         "tissue_model_type" => TissueModelType::from_value(value as u8).map(|v| v.as_str()),
         "dive_gas_status" => DiveGasStatus::from_value(value as u8).map(|v| v.as_str()),
@@ -22791,20 +24361,30 @@ pub fn enum_str_by_value(type_name: &str, value: u64) -> Option<&'static str> {
         "dive_backlight_mode" => DiveBacklightMode::from_value(value as u8).map(|v| v.as_str()),
         "sleep_level" => SleepLevel::from_value(value as u8).map(|v| v.as_str()),
         "spo2_measurement_type" => Spo2MeasurementType::from_value(value as u8).map(|v| v.as_str()),
-        "ccr_setpoint_switch_mode" => CcrSetpointSwitchMode::from_value(value as u8).map(|v| v.as_str()),
+        "ccr_setpoint_switch_mode" => {
+            CcrSetpointSwitchMode::from_value(value as u8).map(|v| v.as_str())
+        }
         "dive_gas_mode" => DiveGasMode::from_value(value as u8).map(|v| v.as_str()),
         "projectile_type" => ProjectileType::from_value(value as u8).map(|v| v.as_str()),
         "favero_product" => FaveroProduct::from_value(value as u16).map(|v| v.as_str()),
         "split_type" => SplitType::from_value(value as u8).map(|v| v.as_str()),
         "climb_pro_event" => ClimbProEvent::from_value(value as u8).map(|v| v.as_str()),
-        "gas_consumption_rate_type" => GasConsumptionRateType::from_value(value as u8).map(|v| v.as_str()),
+        "gas_consumption_rate_type" => {
+            GasConsumptionRateType::from_value(value as u8).map(|v| v.as_str())
+        }
         "tap_sensitivity" => TapSensitivity::from_value(value as u8).map(|v| v.as_str()),
-        "radar_threat_level_type" => RadarThreatLevelType::from_value(value as u8).map(|v| v.as_str()),
-        "sleep_disruption_severity" => SleepDisruptionSeverity::from_value(value as u8).map(|v| v.as_str()),
+        "radar_threat_level_type" => {
+            RadarThreatLevelType::from_value(value as u8).map(|v| v.as_str())
+        }
+        "sleep_disruption_severity" => {
+            SleepDisruptionSeverity::from_value(value as u8).map(|v| v.as_str())
+        }
         "nap_period_feedback" => NapPeriodFeedback::from_value(value as u8).map(|v| v.as_str()),
         "nap_source" => NapSource::from_value(value as u8).map(|v| v.as_str()),
         "max_met_speed_source" => MaxMetSpeedSource::from_value(value as u8).map(|v| v.as_str()),
-        "max_met_heart_rate_source" => MaxMetHeartRateSource::from_value(value as u8).map(|v| v.as_str()),
+        "max_met_heart_rate_source" => {
+            MaxMetHeartRateSource::from_value(value as u8).map(|v| v.as_str())
+        }
         "hrv_status" => HrvStatus::from_value(value as u8).map(|v| v.as_str()),
         "no_fly_time_mode" => NoFlyTimeMode::from_value(value as u8).map(|v| v.as_str()),
         _ => None,
@@ -22918,7 +24498,9 @@ pub fn enum_value_by_str(type_name: &str, name: &str) -> Option<u64> {
         "power_phase_type" => PowerPhaseType::from_str(name).map(|v| v as u64),
         "camera_event_type" => CameraEventType::from_str(name).map(|v| v as u64),
         "sensor_type" => SensorType::from_str(name).map(|v| v as u64),
-        "bike_light_network_config_type" => BikeLightNetworkConfigType::from_str(name).map(|v| v as u64),
+        "bike_light_network_config_type" => {
+            BikeLightNetworkConfigType::from_str(name).map(|v| v as u64)
+        }
         "comm_timeout_type" => CommTimeoutType::from_str(name).map(|v| v as u64),
         "camera_orientation_type" => CameraOrientationType::from_str(name).map(|v| v as u64),
         "attitude_stage" => AttitudeStage::from_str(name).map(|v| v as u64),
@@ -22930,7 +24512,9 @@ pub fn enum_value_by_str(type_name: &str, name: &str) -> Option<u64> {
         "exd_qualifiers" => ExdQualifiers::from_str(name).map(|v| v as u64),
         "exd_descriptors" => ExdDescriptors::from_str(name).map(|v| v as u64),
         "auto_activity_detect" => AutoActivityDetect::from_str(name).map(|v| v as u64),
-        "supported_exd_screen_layouts" => SupportedExdScreenLayouts::from_str(name).map(|v| v as u64),
+        "supported_exd_screen_layouts" => {
+            SupportedExdScreenLayouts::from_str(name).map(|v| v as u64)
+        }
         "fit_base_type" => FitBaseType::from_str(name).map(|v| v as u64),
         "turn_type" => TurnType::from_str(name).map(|v| v as u64),
         "bike_light_beam_angle_mode" => BikeLightBeamAngleMode::from_str(name).map(|v| v as u64),
@@ -22951,7 +24535,9 @@ pub fn enum_value_by_str(type_name: &str, name: &str) -> Option<u64> {
         "hip_raise_exercise_name" => HipRaiseExerciseName::from_str(name).map(|v| v as u64),
         "hip_stability_exercise_name" => HipStabilityExerciseName::from_str(name).map(|v| v as u64),
         "hip_swing_exercise_name" => HipSwingExerciseName::from_str(name).map(|v| v as u64),
-        "hyperextension_exercise_name" => HyperextensionExerciseName::from_str(name).map(|v| v as u64),
+        "hyperextension_exercise_name" => {
+            HyperextensionExerciseName::from_str(name).map(|v| v as u64)
+        }
         "lateral_raise_exercise_name" => LateralRaiseExerciseName::from_str(name).map(|v| v as u64),
         "leg_curl_exercise_name" => LegCurlExerciseName::from_str(name).map(|v| v as u64),
         "leg_raise_exercise_name" => LegRaiseExerciseName::from_str(name).map(|v| v as u64),
@@ -22962,19 +24548,27 @@ pub fn enum_value_by_str(type_name: &str, name: &str) -> Option<u64> {
         "pull_up_exercise_name" => PullUpExerciseName::from_str(name).map(|v| v as u64),
         "push_up_exercise_name" => PushUpExerciseName::from_str(name).map(|v| v as u64),
         "row_exercise_name" => RowExerciseName::from_str(name).map(|v| v as u64),
-        "shoulder_press_exercise_name" => ShoulderPressExerciseName::from_str(name).map(|v| v as u64),
-        "shoulder_stability_exercise_name" => ShoulderStabilityExerciseName::from_str(name).map(|v| v as u64),
+        "shoulder_press_exercise_name" => {
+            ShoulderPressExerciseName::from_str(name).map(|v| v as u64)
+        }
+        "shoulder_stability_exercise_name" => {
+            ShoulderStabilityExerciseName::from_str(name).map(|v| v as u64)
+        }
         "shrug_exercise_name" => ShrugExerciseName::from_str(name).map(|v| v as u64),
         "sit_up_exercise_name" => SitUpExerciseName::from_str(name).map(|v| v as u64),
         "squat_exercise_name" => SquatExerciseName::from_str(name).map(|v| v as u64),
         "total_body_exercise_name" => TotalBodyExerciseName::from_str(name).map(|v| v as u64),
         "move_exercise_name" => MoveExerciseName::from_str(name).map(|v| v as u64),
         "pose_exercise_name" => PoseExerciseName::from_str(name).map(|v| v as u64),
-        "triceps_extension_exercise_name" => TricepsExtensionExerciseName::from_str(name).map(|v| v as u64),
+        "triceps_extension_exercise_name" => {
+            TricepsExtensionExerciseName::from_str(name).map(|v| v as u64)
+        }
         "warm_up_exercise_name" => WarmUpExerciseName::from_str(name).map(|v| v as u64),
         "run_exercise_name" => RunExerciseName::from_str(name).map(|v| v as u64),
         "bike_exercise_name" => BikeExerciseName::from_str(name).map(|v| v as u64),
-        "banded_exercises_exercise_name" => BandedExercisesExerciseName::from_str(name).map(|v| v as u64),
+        "banded_exercises_exercise_name" => {
+            BandedExercisesExerciseName::from_str(name).map(|v| v as u64)
+        }
         "battle_rope_exercise_name" => BattleRopeExerciseName::from_str(name).map(|v| v as u64),
         "elliptical_exercise_name" => EllipticalExerciseName::from_str(name).map(|v| v as u64),
         "floor_climb_exercise_name" => FloorClimbExerciseName::from_str(name).map(|v| v as u64),

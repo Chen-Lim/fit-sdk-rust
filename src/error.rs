@@ -88,7 +88,9 @@ pub enum FitError {
     /// The encoder was asked to emit more than 16 distinct global message
     /// numbers in a single FIT segment. Local definition slots are limited to
     /// 4 bits (0..=15) by the protocol; LRU eviction will arrive in M9.
-    #[error("encoder: too many distinct mesg_nums ({0}); only 16 local definition slots are available")]
+    #[error(
+        "encoder: too many distinct mesg_nums ({0}); only 16 local definition slots are available"
+    )]
     TooManyLocalDefinitions(usize),
 
     /// A field's wire size or count exceeds 255 bytes (u8 limit).

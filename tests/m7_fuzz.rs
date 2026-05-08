@@ -47,7 +47,7 @@ fn build_one_record_fit() -> Vec<u8> {
     records.extend_from_slice(&[
         0x00, 0x00, // reserved, arch=LE
         0x00, 0x00, // global_mesg_num = 0
-        0x01,       // field count
+        0x01, // field count
         0x00, 0x04, 0x06, // fdn=0, size=4, base=UInt32
     ]);
     // Data: header=0x00

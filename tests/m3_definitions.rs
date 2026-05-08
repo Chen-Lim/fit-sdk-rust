@@ -49,9 +49,9 @@ fn walk(bytes: &[u8]) -> (usize, usize, Vec<u16>) {
                 def_count += 1;
             }
             RecordHeader::Data { local_mesg_num } => {
-                let def = defs.require(local_mesg_num).expect(
-                    "every Data record must reference an already-defined local mesg num",
-                );
+                let def = defs
+                    .require(local_mesg_num)
+                    .expect("every Data record must reference an already-defined local mesg num");
                 let size = def.data_size();
                 let _payload = stream.read_bytes(size).unwrap();
                 data_count += 1;
@@ -83,7 +83,10 @@ fn activity_definition_count_matches_csv() {
     // From `awk -F',' '/^Definition,/' tests/fixtures/example_files/Activity.csv | wc -l`.
     // Pinning the exact number guards against parser drift (e.g., if we ever
     // mis-count a Definition as a Data record, this fires immediately).
-    assert_eq!(def_count, 11, "expected 11 Definition messages in Activity.fit");
+    assert_eq!(
+        def_count, 11,
+        "expected 11 Definition messages in Activity.fit"
+    );
     assert!(data_count > 0, "must have produced some Data records too");
 }
 

@@ -26,7 +26,10 @@ fn activity_typed_decode_total_count_matches_raw() {
     let bytes = read_fixture("Activity.fit");
     let raw_count = Decoder::new(&bytes).read_all().0.len();
     let typed_count = Decoder::builder(&bytes).build().read_all().0.len();
-    assert_eq!(typed_count, raw_count, "typed pipeline must not drop messages");
+    assert_eq!(
+        typed_count, raw_count,
+        "typed pipeline must not drop messages"
+    );
     assert_eq!(typed_count, 3611);
 }
 
@@ -45,7 +48,10 @@ fn activity_first_record_has_datetime_and_known_fields() {
     // timestamp → DateTime (after FIT epoch conversion)
     let ts = first_record.field("timestamp").expect("record.timestamp");
     let dt = ts.value.as_datetime().expect("timestamp must be DateTime");
-    assert_eq!(dt.timestamp(), 995_749_880 + fit::datetime::FIT_EPOCH_OFFSET_SECS);
+    assert_eq!(
+        dt.timestamp(),
+        995_749_880 + fit::datetime::FIT_EPOCH_OFFSET_SECS
+    );
 
     // heart_rate is a uint8 with no scale, no enum: stays as UInt(126)
     let hr = first_record.field("heart_rate").expect("record.heart_rate");
@@ -164,9 +170,9 @@ fn gear_change_fixture_renames_event_data_via_subfield() {
 
     // Find at least one event message whose `data` field has been renamed
     // to `gear_change_data` by SubField resolution (event_type == 0x10/0x11).
-    let renamed = msgs.iter().any(|m| {
-        m.name == "event" && m.fields.iter().any(|f| f.name == "gear_change_data")
-    });
+    let renamed = msgs
+        .iter()
+        .any(|m| m.name == "event" && m.fields.iter().any(|f| f.name == "gear_change_data"));
     assert!(
         renamed,
         "event.data must be renamed to `gear_change_data` when event_type is a gear-change kind"
@@ -232,7 +238,10 @@ fn dev_fields_are_resolved_not_raw_bytes() {
     // Resolved dev fields should have a non-generic name.
     for f in &dev_fields {
         if !matches!(f.value, Value::Bytes(_)) {
-            assert_ne!(f.name, "developer_field", "resolved dev field should have its real name");
+            assert_ne!(
+                f.name, "developer_field",
+                "resolved dev field should have its real name"
+            );
         }
     }
 }

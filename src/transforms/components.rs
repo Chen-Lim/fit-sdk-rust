@@ -35,10 +35,7 @@ pub struct UnpackedComponent {
 /// `RawValue`, but Components specifically read **bit-by-bit LSB-first
 /// from the original byte sequence** — independent of the parent's logical
 /// endianness, because the operation is on a contiguous bit string).
-pub fn unpack_bytes(
-    components: &'static [Component],
-    wire_bytes: &[u8],
-) -> Vec<UnpackedComponent> {
+pub fn unpack_bytes(components: &'static [Component], wire_bytes: &[u8]) -> Vec<UnpackedComponent> {
     if components.is_empty() {
         return Vec::new();
     }
@@ -63,7 +60,9 @@ pub fn unpack_bytes(
 pub fn unpack_scalar(components: &'static [Component], scalar: u64) -> Vec<UnpackedComponent> {
     let total_bits: u32 = components.iter().map(|c| c.bits as u32).sum();
     let nbytes = total_bits.div_ceil(8).max(1) as usize;
-    let bytes: Vec<u8> = (0..nbytes).map(|i| ((scalar >> (i * 8)) & 0xFF) as u8).collect();
+    let bytes: Vec<u8> = (0..nbytes)
+        .map(|i| ((scalar >> (i * 8)) & 0xFF) as u8)
+        .collect();
     unpack_bytes(components, &bytes)
 }
 
@@ -158,7 +157,10 @@ mod tests {
     fn scalar_as_u64_handles_common_cases() {
         assert_eq!(scalar_as_u64(&RawValue::UInt8(vec![42])), Some(42));
         assert_eq!(scalar_as_u64(&RawValue::UInt16(vec![1234])), Some(1234));
-        assert_eq!(scalar_as_u64(&RawValue::UInt32(vec![995749880])), Some(995749880));
+        assert_eq!(
+            scalar_as_u64(&RawValue::UInt32(vec![995749880])),
+            Some(995749880)
+        );
         assert_eq!(scalar_as_u64(&RawValue::Invalid), None);
         assert_eq!(scalar_as_u64(&RawValue::String("foo".into())), None);
         // Multi-element arrays are not scalars.

@@ -532,7 +532,9 @@ impl MesgNum {
             "hsa_wrist_temperature_data" => Some(MesgNum::HsaWristTemperatureData),
             "nap_event" => Some(MesgNum::NapEvent),
             "sleep_disruption_severity_period" => Some(MesgNum::SleepDisruptionSeverityPeriod),
-            "sleep_disruption_overnight_severity" => Some(MesgNum::SleepDisruptionOvernightSeverity),
+            "sleep_disruption_overnight_severity" => {
+                Some(MesgNum::SleepDisruptionOvernightSeverity)
+            }
             "mfg_range_min" => Some(MesgNum::MfgRangeMin),
             "mfg_range_max" => Some(MesgNum::MfgRangeMax),
             _ => None,
@@ -546,4 +548,3 @@ impl MesgNum {
         Self::from_str(name)
     }
 }
-

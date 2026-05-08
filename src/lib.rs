@@ -59,20 +59,20 @@ mod value;
 
 pub use base_type::BaseType;
 pub use decoder::{Decoder, RawDevField, RawField, RawMessage};
-pub use encoder::{Encoder, EncoderBuilder};
 pub use definition::{
     DeveloperFieldDefinition, FieldDefinition, LocalDefinitions, MessageDefinition,
     LOCAL_DEFINITION_SLOTS,
 };
 pub use dev_fields::{DevFieldInfo, DevFieldRegistry};
+pub use encoder::{Encoder, EncoderBuilder};
 pub use error::FitError;
 pub use header::FileHeader;
 pub use raw_value::RawValue;
 pub use record_header::RecordHeader;
 pub use stream::{ByteStream, Endian};
-pub use typed_decoder::{DecoderBuilder, TransformOptions, TypedDecoder};
 pub use transforms::decode_memo_glob;
 pub use transforms::merge_heart_rates;
+pub use typed_decoder::{DecoderBuilder, TransformOptions, TypedDecoder};
 pub use value::{Field, FieldKind, Message, Value};
 
 /// Compute the CRC-16 over a byte slice. Thin wrapper around [`crc::calculate`].

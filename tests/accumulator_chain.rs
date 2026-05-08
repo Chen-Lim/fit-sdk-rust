@@ -59,7 +59,11 @@ fn accumulator_resets_at_chained_fit_boundary() {
 
     let (messages, errors) = Decoder::builder(&chained).build().read_all();
     assert!(errors.is_empty(), "decode errors: {errors:?}");
-    assert_eq!(messages.len(), 3, "expected 3 record messages across 2 segments");
+    assert_eq!(
+        messages.len(),
+        3,
+        "expected 3 record messages across 2 segments"
+    );
 
     let cycles: Vec<u64> = messages
         .iter()
@@ -91,5 +95,8 @@ fn raw_decoder_flags_starts_new_chain_only_at_boundary() {
     // Only the first message of segment 2 should be flagged.
     assert!(!messages[0].starts_new_chain, "seg1 msg 0");
     assert!(!messages[1].starts_new_chain, "seg1 msg 1");
-    assert!(messages[2].starts_new_chain, "seg2 msg 0 must flag boundary");
+    assert!(
+        messages[2].starts_new_chain,
+        "seg2 msg 0 must flag boundary"
+    );
 }

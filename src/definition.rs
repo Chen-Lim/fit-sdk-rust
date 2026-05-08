@@ -100,7 +100,11 @@ impl MessageDefinition {
     pub fn parse(stream: &mut ByteStream<'_>, has_dev_data: bool) -> Result<Self, FitError> {
         let reserved = stream.read_u8()?;
         let architecture = stream.read_u8()?;
-        let endian = if architecture == 0 { Endian::Little } else { Endian::Big };
+        let endian = if architecture == 0 {
+            Endian::Little
+        } else {
+            Endian::Big
+        };
 
         let global_mesg_num = stream.read_u16(endian)?;
         let field_count = stream.read_u8()? as usize;
@@ -116,7 +120,8 @@ impl MessageDefinition {
             // construction so any non-zero size is allowed; numeric types
             // must have `size` be a positive multiple of their element size.
             let stride = base_type.element_size();
-            if !base_type.is_string() && !base_type.is_byte()
+            if !base_type.is_string()
+                && !base_type.is_byte()
                 && (size == 0 || (size as usize) % stride != 0)
             {
                 return Err(FitError::MalformedField {
@@ -168,7 +173,9 @@ impl MessageDefinition {
 
     /// Look up a standard field by its definition number.
     pub fn field(&self, field_def_num: u8) -> Option<&FieldDefinition> {
-        self.fields.iter().find(|f| f.field_def_num == field_def_num)
+        self.fields
+            .iter()
+            .find(|f| f.field_def_num == field_def_num)
     }
 }
 
@@ -195,7 +202,9 @@ impl LocalDefinitions {
 
     /// Borrow the definition stored in `local_mesg_num`'s slot, if any.
     pub fn get(&self, local_mesg_num: u8) -> Option<&MessageDefinition> {
-        self.slots.get(local_mesg_num as usize).and_then(Option::as_ref)
+        self.slots
+            .get(local_mesg_num as usize)
+            .and_then(Option::as_ref)
     }
 
     /// Borrow or error with [`FitError::UndefinedLocalMesgNum`].
@@ -277,7 +286,7 @@ mod tests {
         // Same as LE but architecture = 0x01 and global_mesg_num bytes flipped.
         let bytes = vec![
             0x00, 0x01, 0x00, 0x14, 0x01, // arch=BE, mesg_num=0x0014 (record), field_count=1
-            253, 0x04, 0x86,              // timestamp: fdn=253, size=4, base=UInt32 (BE flag)
+            253, 0x04, 0x86, // timestamp: fdn=253, size=4, base=UInt32 (BE flag)
         ];
         let mut stream = ByteStream::new(&bytes);
         let def = MessageDefinition::parse(&mut stream, false).unwrap();
@@ -338,13 +347,16 @@ mod tests {
         assert_eq!(tbl.occupied(), 1);
 
         // Out-of-range writes are silently ignored (mask in record_header keeps us safe).
-        tbl.set(99, MessageDefinition {
-            global_mesg_num: 0,
-            endian: Endian::Little,
-            fields: Vec::new(),
-            dev_fields: Vec::new(),
-            reserved: 0,
-        });
+        tbl.set(
+            99,
+            MessageDefinition {
+                global_mesg_num: 0,
+                endian: Endian::Little,
+                fields: Vec::new(),
+                dev_fields: Vec::new(),
+                reserved: 0,
+            },
+        );
         assert_eq!(tbl.occupied(), 1);
 
         tbl.clear();

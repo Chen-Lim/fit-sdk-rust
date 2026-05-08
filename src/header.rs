@@ -144,7 +144,10 @@ mod tests {
     fn rejects_invalid_header_size() {
         let mut bytes = make_14_byte_header(0, 0);
         bytes[0] = 13; // not 12 or 14
-        assert_eq!(FileHeader::parse(&bytes), Err(FitError::InvalidHeaderSize(13)));
+        assert_eq!(
+            FileHeader::parse(&bytes),
+            Err(FitError::InvalidHeaderSize(13))
+        );
     }
 
     #[test]

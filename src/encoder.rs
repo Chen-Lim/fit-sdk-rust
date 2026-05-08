@@ -77,11 +77,7 @@ impl Encoder {
 
     // ─── internals ─────────────────────────────────────────────────────
 
-    fn write_segment(
-        &self,
-        out: &mut OutputStream,
-        messages: &[Message],
-    ) -> Result<(), FitError> {
+    fn write_segment(&self, out: &mut OutputStream, messages: &[Message]) -> Result<(), FitError> {
         if messages.is_empty() {
             self.write_empty_segment(out);
             return Ok(());
@@ -385,7 +381,11 @@ fn infer_base_type(value: &Value) -> BaseType {
     }
 }
 
-fn compute_wire_size(fi: Option<&profile::FieldInfo>, value: &Value, base_type: BaseType) -> Result<u8, FitError> {
+fn compute_wire_size(
+    fi: Option<&profile::FieldInfo>,
+    value: &Value,
+    base_type: BaseType,
+) -> Result<u8, FitError> {
     if base_type == BaseType::String {
         return match value {
             Value::String(s) => u8::try_from(s.len() + 1)
@@ -484,12 +484,7 @@ impl LocalDefRegistry {
     /// Reserve a local_mesg_num for `(mesg_num, wire_def)`, allocating a fresh
     /// slot or evicting the LRU entry as needed. Caller must follow with
     /// [`Self::commit`] *only* when [`Self::needs_redefinition`] reports `true`.
-    fn acquire(
-        &mut self,
-        mesg_num: u16,
-        wire_def: &WireDef,
-        clock: u64,
-    ) -> Result<u8, FitError> {
+    fn acquire(&mut self, mesg_num: u16, wire_def: &WireDef, clock: u64) -> Result<u8, FitError> {
         if let Some(&local) = self.by_mesg_num.get(&mesg_num) {
             let slot = self.slots[local as usize]
                 .as_mut()
@@ -610,7 +605,11 @@ fn value_as_u8(f: &crate::value::Field) -> Option<u8> {
 // Wire emission
 // ────────────────────────────────────────────────────────────────────
 
-fn write_definition_record(out: &mut OutputStream, local_mesg_num: u8, def: &WireDef) -> Result<(), FitError> {
+fn write_definition_record(
+    out: &mut OutputStream,
+    local_mesg_num: u8,
+    def: &WireDef,
+) -> Result<(), FitError> {
     let header = if def.dev_fields.is_empty() {
         0x40 | (local_mesg_num & 0x0F)
     } else {
@@ -621,8 +620,9 @@ fn write_definition_record(out: &mut OutputStream, local_mesg_num: u8, def: &Wir
     out.write_u8(0x00); // reserved
     out.write_u8(0x00); // architecture: little-endian
     out.write_u16(def.global_mesg_num);
-    let field_count = u8::try_from(def.fields.len())
-        .map_err(|_| FitError::FieldTooLarge(format!("message with {} fields", def.fields.len())))?;
+    let field_count = u8::try_from(def.fields.len()).map_err(|_| {
+        FitError::FieldTooLarge(format!("message with {} fields", def.fields.len()))
+    })?;
     out.write_u8(field_count);
     for f in &def.fields {
         out.write_u8(f.field_def_num);
@@ -630,8 +630,9 @@ fn write_definition_record(out: &mut OutputStream, local_mesg_num: u8, def: &Wir
         out.write_u8(f.base_type_byte);
     }
     if !def.dev_fields.is_empty() {
-        let dev_count = u8::try_from(def.dev_fields.len())
-            .map_err(|_| FitError::FieldTooLarge(format!("message with {} dev fields", def.dev_fields.len())))?;
+        let dev_count = u8::try_from(def.dev_fields.len()).map_err(|_| {
+            FitError::FieldTooLarge(format!("message with {} dev fields", def.dev_fields.len()))
+        })?;
         out.write_u8(dev_count);
         for d in &def.dev_fields {
             out.write_u8(d.field_def_num);
@@ -673,9 +674,11 @@ fn write_data_record(
         let value = msg
             .fields
             .iter()
-            .find(|f| matches!(f.kind, FieldKind::Developer { field_def_num, developer_data_index }
+            .find(|f| {
+                matches!(f.kind, FieldKind::Developer { field_def_num, developer_data_index }
                 if field_def_num == wd.field_def_num
-                    && developer_data_index == wd.developer_data_index))
+                    && developer_data_index == wd.developer_data_index)
+            })
             .map(|f| &f.value);
         encode_dev_field_value(out, value, wd, dev_registry)?;
     }
@@ -760,9 +763,7 @@ fn encode_value_inner(
             } else {
                 type_name
             };
-            if let Some(v) =
-                crate::transforms::enum_strings::enum_value_by_str(lookup_name, name)
-            {
+            if let Some(v) = crate::transforms::enum_strings::enum_value_by_str(lookup_name, name) {
                 encode_int(out, v as i128, base_type);
             } else {
                 write_invalid(out, base_type, size);
@@ -827,7 +828,9 @@ fn encode_float(
 /// (they are routed through other paths and never reach this helper in practice).
 fn base_type_int_range(base_type: BaseType) -> (i128, i128) {
     match base_type {
-        BaseType::Enum | BaseType::UInt8 | BaseType::UInt8z | BaseType::Byte => (0, u8::MAX as i128),
+        BaseType::Enum | BaseType::UInt8 | BaseType::UInt8z | BaseType::Byte => {
+            (0, u8::MAX as i128)
+        }
         BaseType::UInt16 | BaseType::UInt16z => (0, u16::MAX as i128),
         BaseType::UInt32 | BaseType::UInt32z => (0, u32::MAX as i128),
         BaseType::UInt64 | BaseType::UInt64z => (0, u64::MAX as i128),

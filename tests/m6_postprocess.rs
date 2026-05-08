@@ -34,7 +34,10 @@ fn skip_header_removes_file_id_messages() {
         .0;
 
     // file_id is mesg_num 0
-    let header_count = with_header.iter().filter(|m| m.global_mesg_num == 0).count();
+    let header_count = with_header
+        .iter()
+        .filter(|m| m.global_mesg_num == 0)
+        .count();
     assert!(header_count > 0, "fixture should have file_id messages");
 
     let filtered_count = without_header

@@ -80,7 +80,9 @@ impl MesgInfo {
     /// Find a field by its definition number. O(n); messages have ≤ 50 fields
     /// in practice, so linear scan beats a hashmap for both code size and cache.
     pub fn field(&self, field_def_num: u8) -> Option<&FieldInfo> {
-        self.fields.iter().find(|f| f.field_def_num == field_def_num)
+        self.fields
+            .iter()
+            .find(|f| f.field_def_num == field_def_num)
     }
 
     /// Find a field by its snake-case name.

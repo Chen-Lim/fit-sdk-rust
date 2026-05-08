@@ -121,7 +121,10 @@ impl BaseType {
     /// True for the Z series — types whose invalid sentinel is **all zero**
     /// rather than all ones. Important for invalid-value detection in M4.
     pub fn is_z_type(&self) -> bool {
-        matches!(self, Self::UInt8z | Self::UInt16z | Self::UInt32z | Self::UInt64z)
+        matches!(
+            self,
+            Self::UInt8z | Self::UInt16z | Self::UInt32z | Self::UInt64z
+        )
     }
 
     /// True for [`BaseType::Byte`]. Required because the Byte type has a
@@ -171,7 +174,10 @@ mod tests {
     fn invalid_type_code_returns_error() {
         // 0x11..0x1F are reserved/invalid; 0x1F is the largest masked value.
         for bad in 0x11..=0x1F {
-            assert!(matches!(BaseType::from_byte(bad), Err(FitError::UnknownBaseType(_, _))));
+            assert!(matches!(
+                BaseType::from_byte(bad),
+                Err(FitError::UnknownBaseType(_, _))
+            ));
         }
     }
 

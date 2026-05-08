@@ -92,7 +92,13 @@ impl RecordHeader {
 
     /// True iff this is a Definition with the developer-data flag set.
     pub fn has_dev_data(&self) -> bool {
-        matches!(self, Self::Definition { has_dev_data: true, .. })
+        matches!(
+            self,
+            Self::Definition {
+                has_dev_data: true,
+                ..
+            }
+        )
     }
 }
 
@@ -205,7 +211,10 @@ mod tests {
             .local_mesg_num(),
             7
         );
-        assert_eq!(RecordHeader::Data { local_mesg_num: 12 }.local_mesg_num(), 12);
+        assert_eq!(
+            RecordHeader::Data { local_mesg_num: 12 }.local_mesg_num(),
+            12
+        );
         assert_eq!(
             RecordHeader::CompressedTimestamp {
                 local_mesg_num: 2,

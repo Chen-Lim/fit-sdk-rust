@@ -252,12 +252,23 @@ fn collect_dev_meta(raw: &RawMessage, registry: &mut DevFieldRegistry) {
                 .to_string();
             let scale_raw = raw.field(6).and_then(|f| f.value.as_u8());
             let offset_raw = raw.field(7).and_then(|f| f.value.as_u8());
-            let units_str = raw.field(8).and_then(|f| f.value.as_str()).map(|s| s.to_string());
+            let units_str = raw
+                .field(8)
+                .and_then(|f| f.value.as_str())
+                .map(|s| s.to_string());
 
             let scale = scale_raw.map(|v| v as f64).filter(|&s| s != 1.0);
             let offset = offset_raw.map(|v| v as f64).filter(|&o| o != 0.0);
 
-            registry.register_field(dev_idx, fdn, field_name, fit_base_type_id, scale, offset, units_str);
+            registry.register_field(
+                dev_idx,
+                fdn,
+                field_name,
+                fit_base_type_id,
+                scale,
+                offset,
+                units_str,
+            );
         }
         _ => {}
     }
@@ -299,7 +310,8 @@ fn transform_message(
         let raw_for_transform = if fi.accumulate {
             if let Some(scalar) = components::scalar_as_u64(&rf.value) {
                 let bits = resolve_accumulator_bits(fi.type_name);
-                let accumulated = acc.accumulate(raw.global_mesg_num, rf.field_def_num, scalar, bits);
+                let accumulated =
+                    acc.accumulate(raw.global_mesg_num, rf.field_def_num, scalar, bits);
                 RawValue::UInt64(vec![accumulated])
             } else {
                 rf.value.clone()
@@ -336,12 +348,11 @@ fn transform_message(
                             comp.raw
                         };
                         let raw_v = RawValue::UInt64(vec![comp_raw]);
-                        let cv = transform_value(&raw_v, "uint64", comp.scale, comp.offset, options);
+                        let cv =
+                            transform_value(&raw_v, "uint64", comp.scale, comp.offset, options);
                         fields.push(Field {
                             name: comp.target_name.to_string(),
-                            kind: FieldKind::Standard {
-                                field_def_num: 0,
-                            },
+                            kind: FieldKind::Standard { field_def_num: 0 },
                             value: cv,
                             units: comp.units.map(str::to_string),
                         });
@@ -364,12 +375,11 @@ fn transform_message(
                                 comp.raw
                             };
                             let raw_v = RawValue::UInt64(vec![comp_raw]);
-                            let cv = transform_value(&raw_v, "uint64", comp.scale, comp.offset, options);
+                            let cv =
+                                transform_value(&raw_v, "uint64", comp.scale, comp.offset, options);
                             fields.push(Field {
                                 name: comp.target_name.to_string(),
-                                kind: FieldKind::Standard {
-                                    field_def_num: 0,
-                                },
+                                kind: FieldKind::Standard { field_def_num: 0 },
                                 value: cv,
                                 units: comp.units.map(str::to_string),
                             });
@@ -438,7 +448,9 @@ fn resolve_accumulator_bits(type_name: &str) -> u32 {
     let bt = match type_name {
         "enum" | "sint8" | "uint8" | "uint8z" | "byte" | "string" | "bool" => BaseType::UInt8,
         "sint16" | "uint16" | "uint16z" => BaseType::UInt16,
-        "sint32" | "uint32" | "uint32z" | "float32" | "date_time" | "local_date_time" => BaseType::UInt32,
+        "sint32" | "uint32" | "uint32z" | "float32" | "date_time" | "local_date_time" => {
+            BaseType::UInt32
+        }
         "sint64" | "uint64" | "uint64z" | "float64" => BaseType::UInt64,
         _ => BaseType::UInt32,
     };

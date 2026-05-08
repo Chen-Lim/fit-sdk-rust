@@ -11,6 +11,7 @@ documentation = "https://docs.rs/fit-sdk-rust"
 readme = "README.md"
 keywords = ["fit", "garmin", "sport", "decoder", "encoder"]
 categories = ["parser-implementations", "encoding"]
+exclude = ["tests/fixtures/"]
 
 [lib]
 name = "fit"

@@ -106,10 +106,7 @@ pub fn decode_memo_glob(messages: &mut [Message]) {
     // Build a lookup: mesg_num → list of indices in `messages`.
     let mut mesg_indices: HashMap<u16, Vec<usize>> = HashMap::new();
     for (i, msg) in messages.iter().enumerate() {
-        mesg_indices
-            .entry(msg.global_mesg_num)
-            .or_default()
-            .push(i);
+        mesg_indices.entry(msg.global_mesg_num).or_default().push(i);
     }
 
     for (key, mut parts) in groups {
@@ -215,13 +212,20 @@ mod tests {
         }
     }
 
-    fn make_target_message(name: &'static str, global_mesg_num: u16, field_name: &str, field_fdn: u8) -> Message {
+    fn make_target_message(
+        name: &'static str,
+        global_mesg_num: u16,
+        field_name: &str,
+        field_fdn: u8,
+    ) -> Message {
         Message {
             global_mesg_num,
             name,
             fields: vec![Field {
                 name: field_name.to_string(),
-                kind: FieldKind::Standard { field_def_num: field_fdn },
+                kind: FieldKind::Standard {
+                    field_def_num: field_fdn,
+                },
                 value: Value::String("to be overwritten".to_string()),
                 units: None,
             }],

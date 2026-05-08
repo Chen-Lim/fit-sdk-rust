@@ -154,10 +154,7 @@ mod tests {
         let mut s = ByteStream::new(&[1, 2]);
         let _ = s.read_u8().unwrap();
         let _ = s.read_u8().unwrap();
-        assert_eq!(
-            s.read_u8(),
-            Err(FitError::UnexpectedEof { offset: 2 }),
-        );
+        assert_eq!(s.read_u8(), Err(FitError::UnexpectedEof { offset: 2 }),);
     }
 
     #[test]

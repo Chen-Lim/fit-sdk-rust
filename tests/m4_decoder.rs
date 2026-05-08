@@ -60,7 +60,11 @@ fn activity_full_decode_total_count() {
     // From `grep -c '^Data,' Activity.csv` (= 3611). Pinning the total acts
     // as a cheap canary: if decoding desyncs, this fires before the per-mesg
     // breakdown does.
-    assert_eq!(msgs.len(), 3611, "total message count must match CSV Data rows");
+    assert_eq!(
+        msgs.len(),
+        3611,
+        "total message count must match CSV Data rows"
+    );
 }
 
 #[test]
@@ -138,7 +142,11 @@ fn activity_first_file_id_decodes_with_correct_types() {
     // anonymisation in the FIT Cookbook example. Our decoder is byte-accurate
     // on the wire; verifying the *type* of serial_number is still useful.)
     assert_eq!(first.field(0).unwrap().value.as_u8(), Some(4), "type");
-    assert_eq!(first.field(1).unwrap().value.as_u16(), Some(255), "manufacturer");
+    assert_eq!(
+        first.field(1).unwrap().value.as_u16(),
+        Some(255),
+        "manufacturer"
+    );
     assert_eq!(first.field(2).unwrap().value.as_u16(), Some(0), "product");
     assert_eq!(
         first.field(4).unwrap().value.as_u32(),
@@ -185,7 +193,10 @@ fn multi_fit_chain_doubles_message_count() {
     let chained: Vec<u8> = single.iter().chain(single.iter()).copied().collect();
 
     let (msgs, errs) = Decoder::new(&chained).read_all();
-    assert!(errs.is_empty(), "chained file should decode cleanly: {errs:?}");
+    assert!(
+        errs.is_empty(),
+        "chained file should decode cleanly: {errs:?}"
+    );
     assert_eq!(
         msgs.len(),
         3611 * 2,

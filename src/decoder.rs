@@ -39,7 +39,9 @@ pub struct RawMessage {
 impl RawMessage {
     /// Look up a standard field by its definition number.
     pub fn field(&self, field_def_num: u8) -> Option<&RawField> {
-        self.fields.iter().find(|f| f.field_def_num == field_def_num)
+        self.fields
+            .iter()
+            .find(|f| f.field_def_num == field_def_num)
     }
 }
 
@@ -175,7 +177,12 @@ impl<'a> Decoder<'a> {
         // borrow checker complaining about &self.local_defs vs &mut self.stream.
         let (endian, global_mesg_num, fields, dev_fields) = {
             let def = self.local_defs.require(local_mesg_num)?;
-            (def.endian, def.global_mesg_num, def.fields.clone(), def.dev_fields.clone())
+            (
+                def.endian,
+                def.global_mesg_num,
+                def.fields.clone(),
+                def.dev_fields.clone(),
+            )
         };
 
         let mut out_fields = Vec::with_capacity(fields.len());
@@ -218,7 +225,12 @@ impl<'a> Decoder<'a> {
     ) -> Result<RawMessage, FitError> {
         let (endian, global_mesg_num, fields, dev_fields) = {
             let def = self.local_defs.require(local_mesg_num)?;
-            (def.endian, def.global_mesg_num, def.fields.clone(), def.dev_fields.clone())
+            (
+                def.endian,
+                def.global_mesg_num,
+                def.fields.clone(),
+                def.dev_fields.clone(),
+            )
         };
 
         let timestamp = self.decode_compressed_timestamp(timestamp_offset);
@@ -328,7 +340,9 @@ impl<'a> Iterator for Decoder<'a> {
                 RecordHeader::Data { local_mesg_num } => {
                     let mut result = self.decode_data(local_mesg_num);
                     match &mut result {
-                        Ok(msg) => msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset),
+                        Ok(msg) => {
+                            msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset)
+                        }
                         Err(_) => self.terminated = true,
                     }
                     return Some(result);
@@ -339,7 +353,9 @@ impl<'a> Iterator for Decoder<'a> {
                 } => {
                     let mut result = self.decode_data_compressed(local_mesg_num, timestamp_offset);
                     match &mut result {
-                        Ok(msg) => msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset),
+                        Ok(msg) => {
+                            msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset)
+                        }
                         Err(_) => self.terminated = true,
                     }
                     return Some(result);
@@ -491,7 +507,7 @@ mod tests {
         r.extend_from_slice(&[
             0x00, 0x00, // reserved, arch=LE
             0x14, 0x00, // global_mesg_num = 20 (record) LE
-            0x02,       // field count = 2
+            0x02, // field count = 2
             0x00, 0x01, 0x02, // fdn=0, size=1, base=uint8 (heart_rate)
             0xFD, 0x04, 0x86, // fdn=253, size=4, base=uint32 (timestamp)
         ]);
@@ -517,8 +533,8 @@ mod tests {
         records.push(0x00);
         records.push(120); // hr
         records.extend_from_slice(&u32_le(1000)); // timestamp
-        // CompressedTimestamp: header = 0x80 | (0 << 5) | 5 = 0x85
-        //   local=0 (bits 6:5 = 00), offset=5 (bits 4:0 = 00101)
+                                                  // CompressedTimestamp: header = 0x80 | (0 << 5) | 5 = 0x85
+                                                  //   local=0 (bits 6:5 = 00), offset=5 (bits 4:0 = 00101)
         records.push(0x85);
         records.push(130); // hr (only non-timestamp field)
 

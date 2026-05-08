@@ -50,7 +50,11 @@ impl<'a> BitStream<'a> {
         }
 
         let take = n.min(self.bits_in_buffer);
-        let mask = if take == 64 { u64::MAX } else { (1u64 << take) - 1 };
+        let mask = if take == 64 {
+            u64::MAX
+        } else {
+            (1u64 << take) - 1
+        };
         let value = self.buffer & mask;
 
         // Discard the bits we just consumed.

@@ -129,9 +129,7 @@ pub(crate) fn decode_value(
     let stride = base_type.element_size();
     // STRING and BYTE are stride-1 by construction; all other types must
     // have a wire size that is a positive multiple of their element size.
-    if !base_type.is_string()
-        && !base_type.is_byte()
-        && (raw.is_empty() || raw.len() % stride != 0)
+    if !base_type.is_string() && !base_type.is_byte() && (raw.is_empty() || raw.len() % stride != 0)
     {
         return Err(FitError::MalformedField {
             field_def_num,
@@ -148,17 +146,41 @@ pub(crate) fn decode_value(
         BaseType::Byte => decode_byte(raw),
         BaseType::String => decode_string(raw),
 
-        BaseType::UInt16 => collapse_or(decode_u16(raw, endian), |&v| v == u16::MAX, RawValue::UInt16),
+        BaseType::UInt16 => collapse_or(
+            decode_u16(raw, endian),
+            |&v| v == u16::MAX,
+            RawValue::UInt16,
+        ),
         BaseType::UInt16z => collapse_or(decode_u16(raw, endian), |&v| v == 0, RawValue::UInt16z),
-        BaseType::SInt16 => collapse_or(decode_i16(raw, endian), |&v| v == i16::MAX, RawValue::SInt16),
+        BaseType::SInt16 => collapse_or(
+            decode_i16(raw, endian),
+            |&v| v == i16::MAX,
+            RawValue::SInt16,
+        ),
 
-        BaseType::UInt32 => collapse_or(decode_u32(raw, endian), |&v| v == u32::MAX, RawValue::UInt32),
+        BaseType::UInt32 => collapse_or(
+            decode_u32(raw, endian),
+            |&v| v == u32::MAX,
+            RawValue::UInt32,
+        ),
         BaseType::UInt32z => collapse_or(decode_u32(raw, endian), |&v| v == 0, RawValue::UInt32z),
-        BaseType::SInt32 => collapse_or(decode_i32(raw, endian), |&v| v == i32::MAX, RawValue::SInt32),
+        BaseType::SInt32 => collapse_or(
+            decode_i32(raw, endian),
+            |&v| v == i32::MAX,
+            RawValue::SInt32,
+        ),
 
-        BaseType::UInt64 => collapse_or(decode_u64(raw, endian), |&v| v == u64::MAX, RawValue::UInt64),
+        BaseType::UInt64 => collapse_or(
+            decode_u64(raw, endian),
+            |&v| v == u64::MAX,
+            RawValue::UInt64,
+        ),
         BaseType::UInt64z => collapse_or(decode_u64(raw, endian), |&v| v == 0, RawValue::UInt64z),
-        BaseType::SInt64 => collapse_or(decode_i64(raw, endian), |&v| v == i64::MAX, RawValue::SInt64),
+        BaseType::SInt64 => collapse_or(
+            decode_i64(raw, endian),
+            |&v| v == i64::MAX,
+            RawValue::SInt64,
+        ),
 
         BaseType::Float32 => collapse_or(
             decode_f32(raw, endian),
@@ -328,7 +350,10 @@ mod tests {
 
     #[test]
     fn enum_invalid_when_all_ff() {
-        assert_eq!(dec(BaseType::Enum, &[0xFF], Endian::Little), RawValue::Invalid);
+        assert_eq!(
+            dec(BaseType::Enum, &[0xFF], Endian::Little),
+            RawValue::Invalid
+        );
         assert_eq!(
             dec(BaseType::Enum, &[0xFF, 0xFF], Endian::Little),
             RawValue::Invalid
@@ -346,7 +371,10 @@ mod tests {
 
     #[test]
     fn uint8z_invalid_is_zero_not_ff() {
-        assert_eq!(dec(BaseType::UInt8z, &[0], Endian::Little), RawValue::Invalid);
+        assert_eq!(
+            dec(BaseType::UInt8z, &[0], Endian::Little),
+            RawValue::Invalid
+        );
         assert_eq!(
             dec(BaseType::UInt8z, &[0xFF], Endian::Little),
             RawValue::UInt8z(vec![0xFF])
@@ -356,7 +384,10 @@ mod tests {
     #[test]
     fn byte_invalid_only_when_all_ff() {
         // Single element 0xFF is invalid (matches "all FF" rule for length 1).
-        assert_eq!(dec(BaseType::Byte, &[0xFF], Endian::Little), RawValue::Invalid);
+        assert_eq!(
+            dec(BaseType::Byte, &[0xFF], Endian::Little),
+            RawValue::Invalid
+        );
         // Mixed: any non-FF byte makes the field valid.
         assert_eq!(
             dec(BaseType::Byte, &[0xFF, 0x01, 0xFF], Endian::Little),
@@ -417,15 +448,27 @@ mod tests {
             dec(BaseType::String, b"FIT Cookbook\0\0\0", Endian::Little),
             RawValue::String("FIT Cookbook".into())
         );
-        assert_eq!(dec(BaseType::String, b"\0", Endian::Little), RawValue::Invalid);
-        assert_eq!(dec(BaseType::String, b"", Endian::Little), RawValue::Invalid);
+        assert_eq!(
+            dec(BaseType::String, b"\0", Endian::Little),
+            RawValue::Invalid
+        );
+        assert_eq!(
+            dec(BaseType::String, b"", Endian::Little),
+            RawValue::Invalid
+        );
     }
 
     #[test]
     fn malformed_size_returns_error() {
         // UInt32 with 3 bytes is malformed.
         let err = decode_value(BaseType::UInt32, &[0, 0, 0], Endian::Little, 42).unwrap_err();
-        assert!(matches!(err, FitError::MalformedField { field_def_num: 42, .. }));
+        assert!(matches!(
+            err,
+            FitError::MalformedField {
+                field_def_num: 42,
+                ..
+            }
+        ));
     }
 
     #[test]
@@ -444,7 +487,10 @@ mod tests {
 
     #[test]
     fn sint8_invalid_at_max() {
-        assert_eq!(dec(BaseType::SInt8, &[0x7F], Endian::Little), RawValue::Invalid);
+        assert_eq!(
+            dec(BaseType::SInt8, &[0x7F], Endian::Little),
+            RawValue::Invalid
+        );
         assert_eq!(
             dec(BaseType::SInt8, &[0x7E], Endian::Little),
             RawValue::SInt8(vec![126])
