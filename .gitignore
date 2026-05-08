@@ -1,0 +1,30 @@
+/target
+Cargo.lock
+**/*.rs.bk
+
+# Agent
+.claude
+.codex
+.gemini
+.cursor
+
+# IDE
+.vscode
+.idea
+.zed
+
+# macOS
+.DS_Store
+
+# Editor swap / backup files
+*~
+*.swp
+*.swo
+
+# Test / coverage
+tarpaulin-report.html
+lcov.info
+
+# Profiling
+flamegraph.svg
+perf.data*
