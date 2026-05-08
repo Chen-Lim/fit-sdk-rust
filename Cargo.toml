@@ -1,0 +1,24 @@
+[package]
+name = "fit-sdk-rust"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "Apache-2.0"
+authors = ["Chen <chenchemlim@gmail.com>"]
+description = "Pure-Rust implementation of the Garmin FIT (Flexible and Interoperable Data Transfer) protocol."
+repository = "https://github.com/Chen-Lim/fit-editor-rust"
+documentation = "https://docs.rs/fit-sdk-rust"
+
+[lib]
+name = "fit"
+readme = "README.md"
+keywords = ["fit", "garmin", "sport", "decoder", "encoder"]
+categories = ["parser-implementations", "encoding"]
+
+[dependencies]
+thiserror = "2.0"
+chrono = { version = "0.4", default-features = false, features = ["std"] }
+
+[dev-dependencies]
+proptest = "1.6"
+rand = "0.9"
