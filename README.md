@@ -155,4 +155,4 @@ Rust 1.75 or later.
 
 ## License
 
-Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
+Licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) for details.
