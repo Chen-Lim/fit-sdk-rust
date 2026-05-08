@@ -8,12 +8,12 @@ authors = ["Chen <chenchemlim@gmail.com>"]
 description = "Pure-Rust implementation of the Garmin FIT (Flexible and Interoperable Data Transfer) protocol."
 repository = "https://github.com/Chen-Lim/fit-editor-rust"
 documentation = "https://docs.rs/fit-sdk-rust"
-
-[lib]
-name = "fit"
 readme = "README.md"
 keywords = ["fit", "garmin", "sport", "decoder", "encoder"]
 categories = ["parser-implementations", "encoding"]
+
+[lib]
+name = "fit"
 
 [dependencies]
 thiserror = "2.0"
