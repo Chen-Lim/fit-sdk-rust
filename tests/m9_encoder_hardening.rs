@@ -111,6 +111,7 @@ fn lru_picks_least_recently_used() {
 // 3. Schema-change re-emits Definition
 // ────────────────────────────────────────────────────────────────────
 
+#[cfg(feature = "chrono")]
 #[test]
 fn schema_change_within_same_mesg_num_re_emits_definition() {
     use chrono::{TimeZone, Utc};
@@ -262,6 +263,7 @@ fn dev_field_round_trip_on_activity() {
 
 /// Build a random `file_id` message. Restricting ourselves to a profile-defined
 /// message guarantees the encoder/decoder agree on field widths.
+#[cfg(feature = "chrono")]
 fn arb_file_id() -> impl Strategy<Value = Message> {
     use chrono::{TimeZone, Utc};
     (
@@ -316,6 +318,7 @@ fn arb_file_id() -> impl Strategy<Value = Message> {
         })
 }
 
+#[cfg(feature = "chrono")]
 proptest! {
     /// Round-trip equivalence: any sequence of random `file_id` messages must
     /// encode + decode back to a value-equivalent stream. A weak property —

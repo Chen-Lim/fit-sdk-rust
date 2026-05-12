@@ -21,6 +21,7 @@
 //!      `developer_data_id` / `field_description` messages).
 
 use crate::base_type::BaseType;
+#[cfg(feature = "chrono")]
 use crate::datetime;
 use crate::decoder::Decoder;
 use crate::dev_fields::{self, DevFieldRegistry};
@@ -50,7 +51,8 @@ pub struct TransformOptions {
     /// Run heart-rate merge (HR samples → averaged `record.heart_rate`) after
     /// `read_all()` collects messages. Requires `expand_components` and
     /// `apply_scale_and_offset` to be enabled to compute fractional sample
-    /// timestamps correctly.
+    /// timestamps correctly. Only available with the `chrono` feature.
+    #[cfg(feature = "chrono")]
     pub merge_heart_rates: bool,
     /// Skip `file_id` messages from the output.
     pub skip_header: bool,
@@ -68,6 +70,7 @@ impl Default for TransformOptions {
             convert_types_to_strings: true,
             convert_datetime: true,
             decode_memo_glob: false,
+            #[cfg(feature = "chrono")]
             merge_heart_rates: false,
             skip_header: false,
             data_only: false,
@@ -115,6 +118,7 @@ impl<'a> DecoderBuilder<'a> {
         self.options.decode_memo_glob = v;
         self
     }
+    #[cfg(feature = "chrono")]
     pub fn merge_heart_rates(mut self, v: bool) -> Self {
         self.options.merge_heart_rates = v;
         self
@@ -191,7 +195,8 @@ impl<'a> TypedDecoder<'a> {
             crate::transforms::memo_glob::decode_memo_glob(&mut messages);
         }
 
-        // Post-processing: HR merge
+        // Post-processing: HR merge (chrono-only).
+        #[cfg(feature = "chrono")]
         if self.options.merge_heart_rates {
             crate::transforms::merge_heart_rates(&mut messages);
         }
@@ -235,7 +240,7 @@ impl<'a> Iterator for TypedDecoder<'a> {
 
 /// Intercept `developer_data_id` (207) and `field_description` (206) messages
 /// to populate the developer field registry.
-fn collect_dev_meta(raw: &RawMessage, registry: &mut DevFieldRegistry) {
+fn collect_dev_meta(raw: &RawMessage<'_>, registry: &mut DevFieldRegistry) {
     match raw.global_mesg_num {
         // developer_data_id — we just need to know the index exists.
         // The registry doesn't store the id itself, but we could extend it.
@@ -275,7 +280,7 @@ fn collect_dev_meta(raw: &RawMessage, registry: &mut DevFieldRegistry) {
 }
 
 fn transform_message(
-    raw: &RawMessage,
+    raw: &RawMessage<'_>,
     options: TransformOptions,
     acc: &mut Accumulator,
     dev_registry: &DevFieldRegistry,
@@ -312,7 +317,7 @@ fn transform_message(
                 let bits = resolve_accumulator_bits(fi.type_name);
                 let accumulated =
                     acc.accumulate(raw.global_mesg_num, rf.field_def_num, scalar, bits);
-                RawValue::UInt64(vec![accumulated])
+                RawValue::U64Scalar(accumulated)
             } else {
                 rf.value.clone()
             }
@@ -347,7 +352,7 @@ fn transform_message(
                         } else {
                             comp.raw
                         };
-                        let raw_v = RawValue::UInt64(vec![comp_raw]);
+                        let raw_v = RawValue::U64Scalar(comp_raw);
                         let cv =
                             transform_value(&raw_v, "uint64", comp.scale, comp.offset, options);
                         fields.push(Field {
@@ -374,7 +379,7 @@ fn transform_message(
                             } else {
                                 comp.raw
                             };
-                            let raw_v = RawValue::UInt64(vec![comp_raw]);
+                            let raw_v = RawValue::U64Scalar(comp_raw);
                             let cv =
                                 transform_value(&raw_v, "uint64", comp.scale, comp.offset, options);
                             fields.push(Field {
@@ -410,7 +415,7 @@ fn transform_message(
                     field_def_num: dev.field_def_num,
                     developer_data_index: dev.developer_data_index,
                 },
-                value: Value::Bytes(dev.bytes.clone()),
+                value: Value::Bytes(dev.bytes.clone().into_owned()),
                 units: None,
             });
         }
@@ -460,7 +465,7 @@ fn resolve_accumulator_bits(type_name: &str) -> u32 {
 /// Resolve a developer field's raw bytes into a typed [`Value`] using the
 /// registry entry's base type, scale, and offset.
 fn resolve_dev_field(
-    dev: &RawDevField,
+    dev: &RawDevField<'_>,
     info: &dev_fields::DevFieldInfo,
     options: TransformOptions,
 ) -> Value {
@@ -473,7 +478,7 @@ fn resolve_dev_field(
         dev.field_def_num,
     ) {
         Ok(v) => v,
-        Err(_) => return Value::Bytes(dev.bytes.clone()),
+        Err(_) => return Value::Bytes(dev.bytes.clone().into_owned()),
     };
 
     let type_name = dev_fields::base_type_to_type_name(info.base_type);
@@ -491,13 +496,21 @@ fn transform_value(
         return Value::Invalid;
     }
 
-    // DateTime conversion (date_time / local_date_time → chrono::DateTime).
+    // DateTime conversion (date_time / local_date_time).
+    // With chrono: produces `Value::DateTime(DateTime<Utc>)`.
+    // Without chrono: produces `Value::DateTime(u32)` carrying raw FIT seconds.
     if options.convert_datetime && (type_name == "date_time" || type_name == "local_date_time") {
         if let Some(secs) = components::scalar_as_u64(raw) {
-            // FIT date_time fits in u32; values above are not representable.
             if secs <= u32::MAX as u64 {
-                if let Some(dt) = datetime::fit_to_datetime(secs as u32) {
-                    return Value::DateTime(dt);
+                #[cfg(feature = "chrono")]
+                {
+                    if let Some(dt) = datetime::fit_to_datetime(secs as u32) {
+                        return Value::DateTime(dt);
+                    }
+                }
+                #[cfg(not(feature = "chrono"))]
+                {
+                    return Value::DateTime(secs as u32);
                 }
             }
         }
@@ -533,56 +546,52 @@ fn raw_to_value_passthrough(raw: &RawValue) -> Value {
     use RawValue::*;
     match raw {
         Invalid => Value::Invalid,
-        String(s) => Value::String(s.clone()),
-        Byte(v) => Value::Bytes(v.clone()),
-        Enum(v) | UInt8(v) | UInt8z(v) => one_or_many(v, |x| Value::UInt(*x as u64)),
-        UInt16(v) | UInt16z(v) => one_or_many(v, |x| Value::UInt(*x as u64)),
-        UInt32(v) | UInt32z(v) => one_or_many(v, |x| Value::UInt(*x as u64)),
-        UInt64(v) | UInt64z(v) => one_or_many(v, |x| Value::UInt(*x)),
-        SInt8(v) => one_or_many(v, |x| Value::SInt(*x as i64)),
-        SInt16(v) => one_or_many(v, |x| Value::SInt(*x as i64)),
-        SInt32(v) => one_or_many(v, |x| Value::SInt(*x as i64)),
-        SInt64(v) => one_or_many(v, |x| Value::SInt(*x)),
-        Float32(v) => one_or_many(v, |x| Value::Float(*x as f64)),
-        Float64(v) => one_or_many(v, |x| Value::Float(*x)),
+        String(s) => Value::String(s.to_string()),
+        Byte(v) => Value::Bytes(v.to_vec()),
+
+        // Scalars — single element on the stack.
+        EnumScalar(v) | U8Scalar(v) | U8zScalar(v) => Value::UInt(*v as u64),
+        U16Scalar(v) | U16zScalar(v) => Value::UInt(*v as u64),
+        U32Scalar(v) | U32zScalar(v) => Value::UInt(*v as u64),
+        U64Scalar(v) | U64zScalar(v) => Value::UInt(*v),
+        I8Scalar(v) => Value::SInt(*v as i64),
+        I16Scalar(v) => Value::SInt(*v as i64),
+        I32Scalar(v) => Value::SInt(*v as i64),
+        I64Scalar(v) => Value::SInt(*v),
+        F32Scalar(v) => Value::Float(*v as f64),
+        F64Scalar(v) => Value::Float(*v),
+
+        // Arrays — multiple elements. (length ≥ 2 by construction)
+        EnumArray(a) | U8Array(a) | U8zArray(a) => {
+            Value::Array(a.iter().map(|x| Value::UInt(*x as u64)).collect())
+        }
+        U16Array(a) | U16zArray(a) => {
+            Value::Array(a.iter().map(|x| Value::UInt(*x as u64)).collect())
+        }
+        U32Array(a) | U32zArray(a) => {
+            Value::Array(a.iter().map(|x| Value::UInt(*x as u64)).collect())
+        }
+        U64Array(a) | U64zArray(a) => {
+            Value::Array(a.iter().map(|x| Value::UInt(*x)).collect())
+        }
+        I8Array(a) => Value::Array(a.iter().map(|x| Value::SInt(*x as i64)).collect()),
+        I16Array(a) => Value::Array(a.iter().map(|x| Value::SInt(*x as i64)).collect()),
+        I32Array(a) => Value::Array(a.iter().map(|x| Value::SInt(*x as i64)).collect()),
+        I64Array(a) => Value::Array(a.iter().map(|x| Value::SInt(*x)).collect()),
+        F32Array(a) => Value::Array(a.iter().map(|x| Value::Float(*x as f64)).collect()),
+        F64Array(a) => Value::Array(a.iter().map(|x| Value::Float(*x)).collect()),
     }
 }
 
-fn one_or_many<T, F>(v: &[T], f: F) -> Value
-where
-    F: Fn(&T) -> Value,
-{
-    if v.len() == 1 {
-        f(&v[0])
-    } else {
-        Value::Array(v.iter().map(f).collect())
-    }
-}
-
+#[inline]
 fn scalar_as_f64(raw: &RawValue) -> Option<f64> {
-    if let Some(v) = components::scalar_as_u64(raw) {
-        return Some(v as f64);
-    }
-    match raw {
-        RawValue::Float32(v) if v.len() == 1 => Some(v[0] as f64),
-        RawValue::Float64(v) if v.len() == 1 => Some(v[0]),
-        _ => None,
-    }
+    raw.scalar_f64()
 }
 
+#[inline]
 fn array_as_f64s(raw: &RawValue) -> Option<Vec<f64>> {
-    use RawValue::*;
-    Some(match raw {
-        Enum(v) | UInt8(v) | UInt8z(v) | Byte(v) => v.iter().map(|&x| x as f64).collect(),
-        UInt16(v) | UInt16z(v) => v.iter().map(|&x| x as f64).collect(),
-        UInt32(v) | UInt32z(v) => v.iter().map(|&x| x as f64).collect(),
-        UInt64(v) | UInt64z(v) => v.iter().map(|&x| x as f64).collect(),
-        SInt8(v) => v.iter().map(|&x| x as f64).collect(),
-        SInt16(v) => v.iter().map(|&x| x as f64).collect(),
-        SInt32(v) => v.iter().map(|&x| x as f64).collect(),
-        SInt64(v) => v.iter().map(|&x| x as f64).collect(),
-        Float32(v) => v.iter().map(|&x| x as f64).collect(),
-        Float64(v) => v.clone(),
-        _ => return None,
-    })
+    // For `to_f64s` we only want to take the array path here; callers already
+    // tried the scalar route first, but `to_f64s` accepts both and returns a
+    // single-element vec for scalars, which is also valid output.
+    raw.to_f64s()
 }

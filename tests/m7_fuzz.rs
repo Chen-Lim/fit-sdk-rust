@@ -112,6 +112,7 @@ proptest! {
 // 4. DateTime round-trip
 // ────────────────────────────────────────────────────────────────────
 
+#[cfg(feature = "chrono")]
 proptest! {
     /// FIT timestamp → DateTime → timestamp round-trip preserves the value.
     #[test]

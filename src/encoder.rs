@@ -24,7 +24,7 @@ use std::collections::HashMap;
 use crate::base_type::BaseType;
 use crate::crc;
 use crate::dev_fields::{base_type_to_type_name, DevFieldInfo, DevFieldRegistry};
-use crate::error::FitError;
+use crate::error::{FieldTooLargeKind, FitError};
 use crate::output_stream::OutputStream;
 use crate::profile;
 use crate::value::{FieldKind, Message, Value};
@@ -388,15 +388,21 @@ fn compute_wire_size(
 ) -> Result<u8, FitError> {
     if base_type == BaseType::String {
         return match value {
-            Value::String(s) => u8::try_from(s.len() + 1)
-                .map_err(|_| FitError::FieldTooLarge(format!("string of {} bytes", s.len()))),
+            Value::String(s) => u8::try_from(s.len() + 1).map_err(|_| FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::String,
+                size: s.len(),
+            }),
             _ => Ok(1),
         };
     }
     if base_type == BaseType::Byte {
         return match value {
-            Value::Bytes(b) => u8::try_from(b.len().max(1))
-                .map_err(|_| FitError::FieldTooLarge(format!("byte array of {} bytes", b.len()))),
+            Value::Bytes(b) => u8::try_from(b.len().max(1)).map_err(|_| {
+                FitError::FieldTooLarge {
+                    kind: FieldTooLargeKind::ByteArray,
+                    size: b.len(),
+                }
+            }),
             _ => Ok(1),
         };
     }
@@ -408,22 +414,30 @@ fn compute_wire_size(
 fn compute_dev_wire_size(info: &DevFieldInfo, value: &Value) -> Result<u8, FitError> {
     if info.base_type == BaseType::String {
         return match value {
-            Value::String(s) => u8::try_from(s.len() + 1)
-                .map_err(|_| FitError::FieldTooLarge(format!("string of {} bytes", s.len()))),
+            Value::String(s) => u8::try_from(s.len() + 1).map_err(|_| FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::String,
+                size: s.len(),
+            }),
             _ => Ok(1),
         };
     }
     if info.base_type == BaseType::Byte {
         return match value {
-            Value::Bytes(b) => u8::try_from(b.len().max(1))
-                .map_err(|_| FitError::FieldTooLarge(format!("byte array of {} bytes", b.len()))),
+            Value::Bytes(b) => u8::try_from(b.len().max(1)).map_err(|_| {
+                FitError::FieldTooLarge {
+                    kind: FieldTooLargeKind::ByteArray,
+                    size: b.len(),
+                }
+            }),
             _ => Ok(1),
         };
     }
     let element_size = info.base_type.element_size() as u8;
     if let Value::Array(a) = value {
-        let len = u8::try_from(a.len())
-            .map_err(|_| FitError::FieldTooLarge(format!("array with {} elements", a.len())))?;
+        let len = u8::try_from(a.len()).map_err(|_| FitError::FieldTooLarge {
+            kind: FieldTooLargeKind::Array,
+            size: a.len(),
+        })?;
         return Ok(element_size * len.max(1));
     }
     Ok(element_size)
@@ -431,8 +445,10 @@ fn compute_dev_wire_size(info: &DevFieldInfo, value: &Value) -> Result<u8, FitEr
 
 fn element_count(fi: Option<&profile::FieldInfo>, value: &Value) -> Result<u8, FitError> {
     if let Value::Array(a) = value {
-        return u8::try_from(a.len())
-            .map_err(|_| FitError::FieldTooLarge(format!("array with {} elements", a.len())));
+        return u8::try_from(a.len()).map_err(|_| FitError::FieldTooLarge {
+            kind: FieldTooLargeKind::Array,
+            size: a.len(),
+        });
     }
     if let Some(fi) = fi {
         if let Some(spec) = fi.array {
@@ -620,8 +636,9 @@ fn write_definition_record(
     out.write_u8(0x00); // reserved
     out.write_u8(0x00); // architecture: little-endian
     out.write_u16(def.global_mesg_num);
-    let field_count = u8::try_from(def.fields.len()).map_err(|_| {
-        FitError::FieldTooLarge(format!("message with {} fields", def.fields.len()))
+    let field_count = u8::try_from(def.fields.len()).map_err(|_| FitError::FieldTooLarge {
+        kind: FieldTooLargeKind::FieldList,
+        size: def.fields.len(),
     })?;
     out.write_u8(field_count);
     for f in &def.fields {
@@ -630,8 +647,9 @@ fn write_definition_record(
         out.write_u8(f.base_type_byte);
     }
     if !def.dev_fields.is_empty() {
-        let dev_count = u8::try_from(def.dev_fields.len()).map_err(|_| {
-            FitError::FieldTooLarge(format!("message with {} dev fields", def.dev_fields.len()))
+        let dev_count = u8::try_from(def.dev_fields.len()).map_err(|_| FitError::FieldTooLarge {
+            kind: FieldTooLargeKind::DevFieldList,
+            size: def.dev_fields.len(),
         })?;
         out.write_u8(dev_count);
         for d in &def.dev_fields {
@@ -770,7 +788,11 @@ fn encode_value_inner(
             }
         }
         Value::DateTime(dt) => {
-            if let Some(secs) = crate::datetime::datetime_to_fit(*dt) {
+            #[cfg(feature = "chrono")]
+            let secs = crate::datetime::datetime_to_fit(*dt);
+            #[cfg(not(feature = "chrono"))]
+            let secs = Some(*dt);
+            if let Some(secs) = secs {
                 encode_int(out, secs as i128, base_type);
             } else {
                 write_invalid(out, base_type, size);

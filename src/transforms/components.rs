@@ -68,22 +68,9 @@ pub fn unpack_scalar(components: &'static [Component], scalar: u64) -> Vec<Unpac
 
 /// Best-effort conversion of a numeric [`RawValue`] to a u64. Returns `None`
 /// for non-numeric variants (`String`, `Bytes`, `Invalid`).
+#[inline]
 pub fn scalar_as_u64(raw: &RawValue) -> Option<u64> {
-    match raw {
-        RawValue::Enum(v) | RawValue::UInt8(v) | RawValue::UInt8z(v) | RawValue::Byte(v)
-            if v.len() == 1 =>
-        {
-            Some(v[0] as u64)
-        }
-        RawValue::UInt16(v) | RawValue::UInt16z(v) if v.len() == 1 => Some(v[0] as u64),
-        RawValue::UInt32(v) | RawValue::UInt32z(v) if v.len() == 1 => Some(v[0] as u64),
-        RawValue::UInt64(v) | RawValue::UInt64z(v) if v.len() == 1 => Some(v[0]),
-        RawValue::SInt8(v) if v.len() == 1 => Some(v[0] as u8 as u64),
-        RawValue::SInt16(v) if v.len() == 1 => Some(v[0] as u16 as u64),
-        RawValue::SInt32(v) if v.len() == 1 => Some(v[0] as u32 as u64),
-        RawValue::SInt64(v) if v.len() == 1 => Some(v[0] as u64),
-        _ => None,
-    }
+    raw.scalar_u64()
 }
 
 #[cfg(test)]
@@ -155,15 +142,15 @@ mod tests {
 
     #[test]
     fn scalar_as_u64_handles_common_cases() {
-        assert_eq!(scalar_as_u64(&RawValue::UInt8(vec![42])), Some(42));
-        assert_eq!(scalar_as_u64(&RawValue::UInt16(vec![1234])), Some(1234));
-        assert_eq!(
-            scalar_as_u64(&RawValue::UInt32(vec![995749880])),
-            Some(995749880)
-        );
+        assert_eq!(scalar_as_u64(&RawValue::U8Scalar(42)), Some(42));
+        assert_eq!(scalar_as_u64(&RawValue::U16Scalar(1234)), Some(1234));
+        assert_eq!(scalar_as_u64(&RawValue::U32Scalar(995749880)), Some(995749880));
         assert_eq!(scalar_as_u64(&RawValue::Invalid), None);
         assert_eq!(scalar_as_u64(&RawValue::String("foo".into())), None);
         // Multi-element arrays are not scalars.
-        assert_eq!(scalar_as_u64(&RawValue::UInt8(vec![1, 2])), None);
+        assert_eq!(
+            scalar_as_u64(&RawValue::U8Array(vec![1u8, 2].into_boxed_slice())),
+            None
+        );
     }
 }

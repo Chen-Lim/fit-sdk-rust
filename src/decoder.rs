@@ -10,6 +10,8 @@
 //! [`FileHeader`] from the remaining bytes and resets the local definition
 //! table. See protocol §"多 FIT 链".
 
+use std::borrow::Cow;
+
 use crate::definition::{LocalDefinitions, MessageDefinition};
 use crate::error::FitError;
 use crate::header::FileHeader;
@@ -18,8 +20,11 @@ use crate::record_header::RecordHeader;
 use crate::stream::ByteStream;
 
 /// One decoded FIT message.
+///
+/// The lifetime `'a` ties developer-field byte slices to the input buffer so
+/// they can be borrowed zero-copy. Use [`RawMessage::into_owned`] to detach.
 #[derive(Debug, Clone, PartialEq)]
-pub struct RawMessage {
+pub struct RawMessage<'a> {
     /// Profile-level message number — index into the codegen-produced
     /// `MesgNum` enum.
     pub global_mesg_num: u16,
@@ -28,7 +33,7 @@ pub struct RawMessage {
     /// Developer fields, if any. Without a registered `field_description`
     /// (mesg_num=206), the wire bytes are stored verbatim; resolving them
     /// to typed values lands in M6.
-    pub dev_fields: Vec<RawDevField>,
+    pub dev_fields: Vec<RawDevField<'a>>,
     /// `true` when this message is the first Data record after a chained-FIT
     /// boundary. Upper layers (e.g. [`crate::TypedDecoder`]) use this to
     /// reset per-chain state such as the [`crate::transforms::Accumulator`].
@@ -36,12 +41,27 @@ pub struct RawMessage {
     pub starts_new_chain: bool,
 }
 
-impl RawMessage {
+impl<'a> RawMessage<'a> {
     /// Look up a standard field by its definition number.
     pub fn field(&self, field_def_num: u8) -> Option<&RawField> {
         self.fields
             .iter()
             .find(|f| f.field_def_num == field_def_num)
+    }
+
+    /// Detach from the input buffer by copying any borrowed dev-field bytes
+    /// onto the heap. Yields a `'static` message that outlives the decoder.
+    pub fn into_owned(self) -> RawMessage<'static> {
+        RawMessage {
+            global_mesg_num: self.global_mesg_num,
+            fields: self.fields,
+            dev_fields: self
+                .dev_fields
+                .into_iter()
+                .map(RawDevField::into_owned)
+                .collect(),
+            starts_new_chain: self.starts_new_chain,
+        }
     }
 }
 
@@ -55,14 +75,28 @@ pub struct RawField {
 }
 
 /// A developer field's wire bytes, awaiting M6 schema resolution.
+///
+/// `bytes` is borrowed from the decoder's input slice when produced by the
+/// streaming decoder, eliminating per-message heap allocation.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct RawDevField {
+pub struct RawDevField<'a> {
     /// Wire-level field definition number.
     pub field_def_num: u8,
     /// Index into the developer data ID table.
     pub developer_data_index: u8,
     /// Raw bytes exactly as they appeared on the wire.
-    pub bytes: Vec<u8>,
+    pub bytes: Cow<'a, [u8]>,
+}
+
+impl<'a> RawDevField<'a> {
+    /// Detach the byte slice from the input buffer.
+    pub fn into_owned(self) -> RawDevField<'static> {
+        RawDevField {
+            field_def_num: self.field_def_num,
+            developer_data_index: self.developer_data_index,
+            bytes: Cow::Owned(self.bytes.into_owned()),
+        }
+    }
 }
 
 /// The streaming decoder. Implements [`Iterator`] yielding one
@@ -110,7 +144,7 @@ impl<'a> Decoder<'a> {
     /// Drain the iterator into two vectors: messages and errors. Mirrors the
     /// JS SDK's `read() -> { messages, errors }` shape. On a structural
     /// error the iterator stops, so `errors` will hold at most one entry.
-    pub fn read_all(self) -> (Vec<RawMessage>, Vec<FitError>) {
+    pub fn read_all(self) -> (Vec<RawMessage<'a>>, Vec<FitError>) {
         let mut messages = Vec::new();
         let mut errors = Vec::new();
         for item in self {
@@ -161,7 +195,7 @@ impl<'a> Decoder<'a> {
     }
 
     /// Track the timestamp from a decoded Data message, if it has field 253.
-    fn track_timestamp(&mut self, msg: &RawMessage) {
+    fn track_timestamp(&mut self, msg: &RawMessage<'_>) {
         if let Some(f) = msg.field(253) {
             if let Some(ts) = f.value.as_u32() {
                 self.last_timestamp = Some(ts);
@@ -171,42 +205,34 @@ impl<'a> Decoder<'a> {
 
     /// Decode the body of a Data message keyed by `local_mesg_num`. The
     /// 1-byte record header has already been consumed.
-    fn decode_data(&mut self, local_mesg_num: u8) -> Result<RawMessage, FitError> {
-        // Snapshot what we need from the definition. `FieldDefinition` is
-        // `Copy`, so this is cheap; cloning the `dev_fields` Vec avoids the
-        // borrow checker complaining about &self.local_defs vs &mut self.stream.
-        let (endian, global_mesg_num, fields, dev_fields) = {
-            let def = self.local_defs.require(local_mesg_num)?;
-            (
-                def.endian,
-                def.global_mesg_num,
-                def.fields.clone(),
-                def.dev_fields.clone(),
-            )
-        };
+    fn decode_data(&mut self, local_mesg_num: u8) -> Result<RawMessage<'a>, FitError> {
+        // One stack-bound copy of the definition (≈256B with inline SmallVec)
+        // releases the borrow on `self.local_defs` so the read loop below can
+        // freely take `&mut self.stream`. Zero heap traffic in the common case.
+        let def = self.local_defs.require(local_mesg_num)?.clone();
 
-        let mut out_fields = Vec::with_capacity(fields.len());
-        for f in &fields {
+        let mut out_fields = Vec::with_capacity(def.fields.len());
+        for f in &def.fields {
             let raw = self.stream.read_bytes(f.size as usize)?;
-            let value = decode_value(f.base_type, raw, endian, f.field_def_num)?;
+            let value = decode_value(f.base_type, raw, def.endian, f.field_def_num)?;
             out_fields.push(RawField {
                 field_def_num: f.field_def_num,
                 value,
             });
         }
 
-        let mut out_dev = Vec::with_capacity(dev_fields.len());
-        for d in &dev_fields {
-            let raw = self.stream.read_bytes(d.size as usize)?.to_vec();
+        let mut out_dev = Vec::with_capacity(def.dev_fields.len());
+        for d in &def.dev_fields {
+            let raw = self.stream.read_bytes(d.size as usize)?;
             out_dev.push(RawDevField {
                 field_def_num: d.field_def_num,
                 developer_data_index: d.developer_data_index,
-                bytes: raw,
+                bytes: Cow::Borrowed(raw),
             });
         }
 
         let msg = RawMessage {
-            global_mesg_num,
+            global_mesg_num: def.global_mesg_num,
             fields: out_fields,
             dev_fields: out_dev,
             starts_new_chain: false,
@@ -222,29 +248,20 @@ impl<'a> Decoder<'a> {
         &mut self,
         local_mesg_num: u8,
         timestamp_offset: u8,
-    ) -> Result<RawMessage, FitError> {
-        let (endian, global_mesg_num, fields, dev_fields) = {
-            let def = self.local_defs.require(local_mesg_num)?;
-            (
-                def.endian,
-                def.global_mesg_num,
-                def.fields.clone(),
-                def.dev_fields.clone(),
-            )
-        };
-
+    ) -> Result<RawMessage<'a>, FitError> {
+        let def = self.local_defs.require(local_mesg_num)?.clone();
         let timestamp = self.decode_compressed_timestamp(timestamp_offset);
 
-        let mut out_fields = Vec::with_capacity(fields.len());
-        for f in &fields {
+        let mut out_fields = Vec::with_capacity(def.fields.len());
+        for f in &def.fields {
             if f.field_def_num == 253 {
                 out_fields.push(RawField {
                     field_def_num: 253,
-                    value: RawValue::UInt32(vec![timestamp]),
+                    value: RawValue::U32Scalar(timestamp),
                 });
             } else {
                 let raw = self.stream.read_bytes(f.size as usize)?;
-                let value = decode_value(f.base_type, raw, endian, f.field_def_num)?;
+                let value = decode_value(f.base_type, raw, def.endian, f.field_def_num)?;
                 out_fields.push(RawField {
                     field_def_num: f.field_def_num,
                     value,
@@ -252,18 +269,18 @@ impl<'a> Decoder<'a> {
             }
         }
 
-        let mut out_dev = Vec::with_capacity(dev_fields.len());
-        for d in &dev_fields {
-            let raw = self.stream.read_bytes(d.size as usize)?.to_vec();
+        let mut out_dev = Vec::with_capacity(def.dev_fields.len());
+        for d in &def.dev_fields {
+            let raw = self.stream.read_bytes(d.size as usize)?;
             out_dev.push(RawDevField {
                 field_def_num: d.field_def_num,
                 developer_data_index: d.developer_data_index,
-                bytes: raw,
+                bytes: Cow::Borrowed(raw),
             });
         }
 
         Ok(RawMessage {
-            global_mesg_num,
+            global_mesg_num: def.global_mesg_num,
             fields: out_fields,
             dev_fields: out_dev,
             starts_new_chain: false,
@@ -272,7 +289,7 @@ impl<'a> Decoder<'a> {
 }
 
 impl<'a> Iterator for Decoder<'a> {
-    type Item = Result<RawMessage, FitError>;
+    type Item = Result<RawMessage<'a>, FitError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.terminated {

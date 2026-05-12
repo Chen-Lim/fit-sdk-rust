@@ -21,9 +21,18 @@
 
 use std::array;
 
+use smallvec::SmallVec;
+
 use crate::base_type::BaseType;
 use crate::error::FitError;
 use crate::stream::{ByteStream, Endian};
+
+/// Inline capacity for `MessageDefinition::fields` — covers virtually every
+/// real-world FIT message without spilling to the heap. Wire allows up to 255
+/// fields (u8 count) but typical messages use < 30.
+pub const FIELDS_INLINE: usize = 48;
+/// Inline capacity for `MessageDefinition::dev_fields`.
+pub const DEV_FIELDS_INLINE: usize = 8;
 
 /// Maximum number of simultaneously valid local message definitions.
 pub const LOCAL_DEFINITION_SLOTS: usize = 16;
@@ -76,6 +85,11 @@ pub struct DeveloperFieldDefinition {
 }
 
 /// A complete Definition message.
+///
+/// `fields` and `dev_fields` use [`SmallVec`] with inline capacity tuned to
+/// fit typical FIT messages on the stack. The whole struct is ~256B inline
+/// so `LocalDefinitions` (16 slots) sits in ~4KB — well within L1d. Cloning
+/// is a `memcpy` with no heap allocation in the common case.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MessageDefinition {
     /// Profile-level (global) message number — the index into `MesgNum`.
@@ -83,10 +97,10 @@ pub struct MessageDefinition {
     /// Endianness for multi-byte fields in subsequent Data messages.
     pub endian: Endian,
     /// Standard fields, in wire order.
-    pub fields: Vec<FieldDefinition>,
+    pub fields: SmallVec<[FieldDefinition; FIELDS_INLINE]>,
     /// Developer fields, in wire order. Empty unless the definition's record
     /// header had the dev-data bit set.
-    pub dev_fields: Vec<DeveloperFieldDefinition>,
+    pub dev_fields: SmallVec<[DeveloperFieldDefinition; DEV_FIELDS_INLINE]>,
     /// Reserved byte preserved verbatim (always `0x00` for compliant files,
     /// but kept so the encoder can reproduce non-compliant input bit-for-bit).
     pub reserved: u8,
@@ -109,7 +123,8 @@ impl MessageDefinition {
         let global_mesg_num = stream.read_u16(endian)?;
         let field_count = stream.read_u8()? as usize;
 
-        let mut fields = Vec::with_capacity(field_count);
+        let mut fields: SmallVec<[FieldDefinition; FIELDS_INLINE]> =
+            SmallVec::with_capacity(field_count);
         for _ in 0..field_count {
             let field_def_num = stream.read_u8()?;
             let size = stream.read_u8()?;
@@ -138,7 +153,8 @@ impl MessageDefinition {
             });
         }
 
-        let mut dev_fields = Vec::new();
+        let mut dev_fields: SmallVec<[DeveloperFieldDefinition; DEV_FIELDS_INLINE]> =
+            SmallVec::new();
         if has_dev_data {
             let dev_count = stream.read_u8()? as usize;
             dev_fields.reserve_exact(dev_count);
@@ -352,8 +368,8 @@ mod tests {
             MessageDefinition {
                 global_mesg_num: 0,
                 endian: Endian::Little,
-                fields: Vec::new(),
-                dev_fields: Vec::new(),
+                fields: SmallVec::new(),
+                dev_fields: SmallVec::new(),
                 reserved: 0,
             },
         );

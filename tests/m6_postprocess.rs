@@ -112,6 +112,7 @@ fn on_mesg_callback_fires_for_each_message() {
 // HR merge integration (using unit-level merge_heart_rates)
 // ────────────────────────────────────────────────────────────────────
 
+#[cfg(feature = "chrono")]
 #[test]
 fn hr_merge_adds_heart_rate_to_records() {
     let bytes = read_fixture("Activity.fit");

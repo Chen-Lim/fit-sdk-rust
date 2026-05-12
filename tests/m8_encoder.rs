@@ -144,6 +144,7 @@ fn roundtrip_specific_field_values() {
 // 3. Synthetic minimal FIT
 // ────────────────────────────────────────────────────────────────────
 
+#[cfg(feature = "chrono")]
 #[test]
 fn encode_single_record_message() {
     use chrono::{TimeZone, Utc};

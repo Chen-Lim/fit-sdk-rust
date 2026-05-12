@@ -25,7 +25,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let timestamp = m
             .field("timestamp")
             .and_then(|f| match &f.value {
+                #[cfg(feature = "chrono")]
                 Value::DateTime(dt) => Some(dt.to_rfc3339()),
+                #[cfg(not(feature = "chrono"))]
+                Value::DateTime(secs) => Some(format!("fit_sec={secs}")),
                 _ => None,
             })
             .unwrap_or_else(|| "?".into());

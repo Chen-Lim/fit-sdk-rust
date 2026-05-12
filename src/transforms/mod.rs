@@ -19,6 +19,7 @@ pub mod accumulator;
 pub mod bit_stream;
 pub mod components;
 pub mod enum_strings;
+#[cfg(feature = "chrono")]
 pub mod hr_merge;
 pub mod memo_glob;
 pub mod scale_offset;
@@ -26,5 +27,6 @@ pub mod subfields;
 
 pub use accumulator::Accumulator;
 pub use bit_stream::BitStream;
+#[cfg(feature = "chrono")]
 pub use hr_merge::merge_heart_rates;
 pub use memo_glob::decode_memo_glob;

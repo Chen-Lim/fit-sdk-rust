@@ -23,7 +23,7 @@ use crate::RawMessage;
 pub fn select<'a>(
     parent_field: &'a FieldInfo,
     parent_mesg: &MesgInfo,
-    raw_message: &RawMessage,
+    raw_message: &RawMessage<'_>,
 ) -> Option<&'a SubField> {
     if parent_field.sub_fields.is_empty() {
         return None;
@@ -40,7 +40,7 @@ pub fn select<'a>(
 
 fn condition_matches(
     parent_mesg: &MesgInfo,
-    raw_message: &RawMessage,
+    raw_message: &RawMessage<'_>,
     ref_field_name: &str,
     expected: &str,
 ) -> bool {
@@ -107,11 +107,11 @@ mod tests {
             fields: vec![
                 crate::RawField {
                     field_def_num: 1, // manufacturer
-                    value: RawValue::UInt16(vec![1]),
+                    value: RawValue::U16Scalar(1),
                 },
                 crate::RawField {
                     field_def_num: 2, // product (the parent of the SubField)
-                    value: RawValue::UInt16(vec![0]),
+                    value: RawValue::U16Scalar(0),
                 },
             ],
             dev_fields: vec![],
@@ -136,7 +136,7 @@ mod tests {
             global_mesg_num: 0,
             fields: vec![crate::RawField {
                 field_def_num: 1,
-                value: RawValue::UInt16(vec![999]),
+                value: RawValue::U16Scalar(999),
             }],
             dev_fields: vec![],
             starts_new_chain: false,

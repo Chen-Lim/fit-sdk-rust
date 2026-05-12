@@ -1,22 +1,21 @@
 //! Raw (untransformed) field values produced by the M4 decoder.
 //!
-//! Each variant corresponds to a base type from [`BaseType`]. Values are
-//! stored as `Vec<T>` regardless of cardinality — a scalar is just a
-//! length-1 vec. Arrays are decoded element-by-element using the endianness
-//! from the Definition message; a field collapses to [`RawValue::Invalid`]
-//! when **every** element matches that type's invalid sentinel
-//! (per protocol §3.1).
+//! Each base type has **two** variants: a `…Scalar(T)` for the common case of
+//! a length-1 field (~95% of FIT fields) and a `…Array(Box<[T]>)` for the rare
+//! multi-element case. Scalar variants are stack-only — no heap allocation per
+//! decoded message — while Array variants box the slice so the enum payload
+//! stays compact (16B + tag) regardless of cardinality.
+//!
+//! Invalid detection still applies the rule "every element matches the
+//! sentinel" (per protocol §3.1) but is checked before construction so the
+//! caller never sees an `Invalid` array.
 //!
 //! Notable per-type rules:
-//! - **Z series** (`UInt8z` / `UInt16z` / `UInt32z` / `UInt64z`): invalid
-//!   sentinel is **`0`**, not all-ones.
-//! - **`Byte`**: invalid only when *every* byte is `0xFF` (a standalone
-//!   `0xFF` inside a multi-byte array is **valid**).
+//! - **Z series** (`U8z` / `U16z` / `U32z` / `U64z`): invalid sentinel is `0`.
+//! - **`Byte`**: invalid only when *every* byte is `0xFF`.
 //! - **`String`**: invalid if first byte is `0x00` or empty after
-//!   null-stripping. Decoded with `from_utf8_lossy` so malformed UTF-8 does
-//!   not poison an entire message.
-//! - **Float32/64**: invalid is the all-ones **bit pattern**, regardless of
-//!   how it interprets as `f32`/`f64` (which would be a NaN payload).
+//!   null-stripping. Decoded with `from_utf8_lossy`.
+//! - **`Float32/64`**: invalid is the all-ones bit pattern.
 
 use crate::base_type::BaseType;
 use crate::error::FitError;
@@ -28,40 +27,46 @@ pub enum RawValue {
     /// All elements matched the type's invalid sentinel.
     Invalid,
 
-    /// Unsigned 8-bit enum value.
-    Enum(Vec<u8>),
-    /// Signed 8-bit integer.
-    SInt8(Vec<i8>),
-    /// Unsigned 8-bit integer.
-    UInt8(Vec<u8>),
-    /// Signed 16-bit integer.
-    SInt16(Vec<i16>),
-    /// Unsigned 16-bit integer.
-    UInt16(Vec<u16>),
-    /// Signed 32-bit integer.
-    SInt32(Vec<i32>),
-    /// Unsigned 32-bit integer.
-    UInt32(Vec<u32>),
+    // ── Scalars (stack-only) ───────────────────────────────────────────
+    EnumScalar(u8),
+    U8Scalar(u8),
+    U8zScalar(u8),
+    I8Scalar(i8),
+    U16Scalar(u16),
+    U16zScalar(u16),
+    I16Scalar(i16),
+    U32Scalar(u32),
+    U32zScalar(u32),
+    I32Scalar(i32),
+    U64Scalar(u64),
+    U64zScalar(u64),
+    I64Scalar(i64),
+    F32Scalar(f32),
+    F64Scalar(f64),
+
+    // ── Arrays (heap-boxed, length ≥ 2) ────────────────────────────────
+    EnumArray(Box<[u8]>),
+    U8Array(Box<[u8]>),
+    U8zArray(Box<[u8]>),
+    I8Array(Box<[i8]>),
+    U16Array(Box<[u16]>),
+    U16zArray(Box<[u16]>),
+    I16Array(Box<[i16]>),
+    U32Array(Box<[u32]>),
+    U32zArray(Box<[u32]>),
+    I32Array(Box<[i32]>),
+    U64Array(Box<[u64]>),
+    U64zArray(Box<[u64]>),
+    I64Array(Box<[i64]>),
+    F32Array(Box<[f32]>),
+    F64Array(Box<[f64]>),
+
     /// UTF-8 string with the trailing `0x00` (and any padding) stripped.
-    String(String),
-    /// 32-bit IEEE 754 float.
-    Float32(Vec<f32>),
-    /// 64-bit IEEE 754 float.
-    Float64(Vec<f64>),
-    /// Unsigned 8-bit integer (invalid sentinel is 0, not 0xFF).
-    UInt8z(Vec<u8>),
-    /// Unsigned 16-bit integer (invalid sentinel is 0).
-    UInt16z(Vec<u16>),
-    /// Unsigned 32-bit integer (invalid sentinel is 0).
-    UInt32z(Vec<u32>),
-    /// Opaque byte array.
-    Byte(Vec<u8>),
-    /// Signed 64-bit integer.
-    SInt64(Vec<i64>),
-    /// Unsigned 64-bit integer.
-    UInt64(Vec<u64>),
-    /// Unsigned 64-bit integer (invalid sentinel is 0).
-    UInt64z(Vec<u64>),
+    String(Box<str>),
+    /// Opaque byte array (single bytes that are not invalid sentinels also
+    /// land here — there is no `ByteScalar` variant since `Byte` is by
+    /// definition an array type on the wire).
+    Byte(Box<[u8]>),
 }
 
 impl RawValue {
@@ -71,43 +76,105 @@ impl RawValue {
         matches!(self, RawValue::Invalid)
     }
 
-    /// Get a scalar `u32` (works for `UInt32` and `UInt32z` length-1 fields).
-    pub fn as_u32(&self) -> Option<u32> {
+    /// Borrow the underlying string.
+    pub fn as_str(&self) -> Option<&str> {
         match self {
-            RawValue::UInt32(v) | RawValue::UInt32z(v) if v.len() == 1 => Some(v[0]),
-            _ => None,
-        }
-    }
-
-    /// Get a scalar `u16` (also widens `UInt8`/`Enum`).
-    pub fn as_u16(&self) -> Option<u16> {
-        match self {
-            RawValue::UInt16(v) | RawValue::UInt16z(v) if v.len() == 1 => Some(v[0]),
-            RawValue::UInt8(v) | RawValue::UInt8z(v) | RawValue::Enum(v) if v.len() == 1 => {
-                Some(v[0] as u16)
-            }
+            RawValue::String(s) => Some(s.as_ref()),
             _ => None,
         }
     }
 
     /// Get a scalar `u8` for length-1 single-byte fields.
     pub fn as_u8(&self) -> Option<u8> {
-        match self {
-            RawValue::UInt8(v) | RawValue::UInt8z(v) | RawValue::Enum(v) | RawValue::Byte(v)
-                if v.len() == 1 =>
-            {
-                Some(v[0])
+        match *self {
+            RawValue::U8Scalar(v)
+            | RawValue::U8zScalar(v)
+            | RawValue::EnumScalar(v) => Some(v),
+            RawValue::Byte(ref b) if b.len() == 1 => Some(b[0]),
+            _ => None,
+        }
+    }
+
+    /// Get a scalar `u16` (also widens single-byte fields).
+    pub fn as_u16(&self) -> Option<u16> {
+        match *self {
+            RawValue::U16Scalar(v) | RawValue::U16zScalar(v) => Some(v),
+            RawValue::U8Scalar(v) | RawValue::U8zScalar(v) | RawValue::EnumScalar(v) => {
+                Some(v as u16)
             }
             _ => None,
         }
     }
 
-    /// Borrow the underlying string.
-    pub fn as_str(&self) -> Option<&str> {
-        match self {
-            RawValue::String(s) => Some(s.as_str()),
+    /// Get a scalar `u32` (also accepts `U32z`).
+    pub fn as_u32(&self) -> Option<u32> {
+        match *self {
+            RawValue::U32Scalar(v) | RawValue::U32zScalar(v) => Some(v),
             _ => None,
         }
+    }
+
+    /// Best-effort cast of any single-element numeric value to `u64`.
+    /// Signed types are widened via two's complement (matches the prior
+    /// `components::scalar_as_u64` behavior).
+    pub fn scalar_u64(&self) -> Option<u64> {
+        match *self {
+            RawValue::EnumScalar(v) | RawValue::U8Scalar(v) | RawValue::U8zScalar(v) => {
+                Some(v as u64)
+            }
+            RawValue::U16Scalar(v) | RawValue::U16zScalar(v) => Some(v as u64),
+            RawValue::U32Scalar(v) | RawValue::U32zScalar(v) => Some(v as u64),
+            RawValue::U64Scalar(v) | RawValue::U64zScalar(v) => Some(v),
+            RawValue::I8Scalar(v) => Some(v as u8 as u64),
+            RawValue::I16Scalar(v) => Some(v as u16 as u64),
+            RawValue::I32Scalar(v) => Some(v as u32 as u64),
+            RawValue::I64Scalar(v) => Some(v as u64),
+            RawValue::Byte(ref b) if b.len() == 1 => Some(b[0] as u64),
+            _ => None,
+        }
+    }
+
+    /// Best-effort cast of any single-element numeric value to `f64`.
+    pub fn scalar_f64(&self) -> Option<f64> {
+        if let Some(u) = self.scalar_u64() {
+            return Some(u as f64);
+        }
+        match *self {
+            RawValue::F32Scalar(v) => Some(v as f64),
+            RawValue::F64Scalar(v) => Some(v),
+            _ => None,
+        }
+    }
+
+    /// Iterate any numeric variant (scalar or array) as `f64`s. Returns
+    /// `None` for non-numeric types (`String`, `Invalid`).
+    pub fn to_f64s(&self) -> Option<Vec<f64>> {
+        use RawValue::*;
+        Some(match self {
+            EnumScalar(v) | U8Scalar(v) | U8zScalar(v) => vec![*v as f64],
+            U16Scalar(v) | U16zScalar(v) => vec![*v as f64],
+            U32Scalar(v) | U32zScalar(v) => vec![*v as f64],
+            U64Scalar(v) | U64zScalar(v) => vec![*v as f64],
+            I8Scalar(v) => vec![*v as f64],
+            I16Scalar(v) => vec![*v as f64],
+            I32Scalar(v) => vec![*v as f64],
+            I64Scalar(v) => vec![*v as f64],
+            F32Scalar(v) => vec![*v as f64],
+            F64Scalar(v) => vec![*v],
+            EnumArray(a) | U8Array(a) | U8zArray(a) | Byte(a) => {
+                a.iter().map(|&x| x as f64).collect()
+            }
+            U16Array(a) | U16zArray(a) => a.iter().map(|&x| x as f64).collect(),
+            U32Array(a) | U32zArray(a) => a.iter().map(|&x| x as f64).collect(),
+            U64Array(a) | U64zArray(a) => a.iter().map(|&x| x as f64).collect(),
+            I8Array(a) => a.iter().map(|&x| x as f64).collect(),
+            I16Array(a) => a.iter().map(|&x| x as f64).collect(),
+            I32Array(a) => a.iter().map(|&x| x as f64).collect(),
+            I64Array(a) => a.iter().map(|&x| x as f64).collect(),
+            F32Array(a) => a.iter().map(|&x| x as f64).collect(),
+            F64Array(a) => a.to_vec(),
+            _ => return None,
+        })
     }
 }
 
@@ -127,8 +194,6 @@ pub(crate) fn decode_value(
     field_def_num: u8,
 ) -> Result<RawValue, FitError> {
     let stride = base_type.element_size();
-    // STRING and BYTE are stride-1 by construction; all other types must
-    // have a wire size that is a positive multiple of their element size.
     if !base_type.is_string() && !base_type.is_byte() && (raw.is_empty() || raw.len() % stride != 0)
     {
         return Err(FitError::MalformedField {
@@ -139,205 +204,232 @@ pub(crate) fn decode_value(
     }
 
     Ok(match base_type {
-        BaseType::Enum => collapse_or(decode_u8(raw), |&v| v == 0xFF, RawValue::Enum),
-        BaseType::UInt8 => collapse_or(decode_u8(raw), |&v| v == 0xFF, RawValue::UInt8),
-        BaseType::UInt8z => collapse_or(decode_u8(raw), |&v| v == 0x00, RawValue::UInt8z),
-        BaseType::SInt8 => collapse_or(decode_i8(raw), |&v| v == i8::MAX, RawValue::SInt8),
+        BaseType::Enum => collapse(
+            decode_u8_iter(raw),
+            |&v| v == 0xFF,
+            RawValue::EnumScalar,
+            RawValue::EnumArray,
+        ),
+        BaseType::UInt8 => collapse(
+            decode_u8_iter(raw),
+            |&v| v == 0xFF,
+            RawValue::U8Scalar,
+            RawValue::U8Array,
+        ),
+        BaseType::UInt8z => collapse(
+            decode_u8_iter(raw),
+            |&v| v == 0x00,
+            RawValue::U8zScalar,
+            RawValue::U8zArray,
+        ),
+        BaseType::SInt8 => collapse(
+            raw.iter().map(|&b| b as i8),
+            |&v| v == i8::MAX,
+            RawValue::I8Scalar,
+            RawValue::I8Array,
+        ),
         BaseType::Byte => decode_byte(raw),
         BaseType::String => decode_string(raw),
 
-        BaseType::UInt16 => collapse_or(
-            decode_u16(raw, endian),
+        BaseType::UInt16 => collapse(
+            decode_u16_iter(raw, endian),
             |&v| v == u16::MAX,
-            RawValue::UInt16,
+            RawValue::U16Scalar,
+            RawValue::U16Array,
         ),
-        BaseType::UInt16z => collapse_or(decode_u16(raw, endian), |&v| v == 0, RawValue::UInt16z),
-        BaseType::SInt16 => collapse_or(
-            decode_i16(raw, endian),
+        BaseType::UInt16z => collapse(
+            decode_u16_iter(raw, endian),
+            |&v| v == 0,
+            RawValue::U16zScalar,
+            RawValue::U16zArray,
+        ),
+        BaseType::SInt16 => collapse(
+            decode_i16_iter(raw, endian),
             |&v| v == i16::MAX,
-            RawValue::SInt16,
+            RawValue::I16Scalar,
+            RawValue::I16Array,
         ),
 
-        BaseType::UInt32 => collapse_or(
-            decode_u32(raw, endian),
+        BaseType::UInt32 => collapse(
+            decode_u32_iter(raw, endian),
             |&v| v == u32::MAX,
-            RawValue::UInt32,
+            RawValue::U32Scalar,
+            RawValue::U32Array,
         ),
-        BaseType::UInt32z => collapse_or(decode_u32(raw, endian), |&v| v == 0, RawValue::UInt32z),
-        BaseType::SInt32 => collapse_or(
-            decode_i32(raw, endian),
+        BaseType::UInt32z => collapse(
+            decode_u32_iter(raw, endian),
+            |&v| v == 0,
+            RawValue::U32zScalar,
+            RawValue::U32zArray,
+        ),
+        BaseType::SInt32 => collapse(
+            decode_i32_iter(raw, endian),
             |&v| v == i32::MAX,
-            RawValue::SInt32,
+            RawValue::I32Scalar,
+            RawValue::I32Array,
         ),
 
-        BaseType::UInt64 => collapse_or(
-            decode_u64(raw, endian),
+        BaseType::UInt64 => collapse(
+            decode_u64_iter(raw, endian),
             |&v| v == u64::MAX,
-            RawValue::UInt64,
+            RawValue::U64Scalar,
+            RawValue::U64Array,
         ),
-        BaseType::UInt64z => collapse_or(decode_u64(raw, endian), |&v| v == 0, RawValue::UInt64z),
-        BaseType::SInt64 => collapse_or(
-            decode_i64(raw, endian),
+        BaseType::UInt64z => collapse(
+            decode_u64_iter(raw, endian),
+            |&v| v == 0,
+            RawValue::U64zScalar,
+            RawValue::U64zArray,
+        ),
+        BaseType::SInt64 => collapse(
+            decode_i64_iter(raw, endian),
             |&v| v == i64::MAX,
-            RawValue::SInt64,
+            RawValue::I64Scalar,
+            RawValue::I64Array,
         ),
 
-        BaseType::Float32 => collapse_or(
-            decode_f32(raw, endian),
+        BaseType::Float32 => collapse(
+            decode_f32_iter(raw, endian),
             |v| v.to_bits() == 0xFFFF_FFFF,
-            RawValue::Float32,
+            RawValue::F32Scalar,
+            RawValue::F32Array,
         ),
-        BaseType::Float64 => collapse_or(
-            decode_f64(raw, endian),
+        BaseType::Float64 => collapse(
+            decode_f64_iter(raw, endian),
             |v| v.to_bits() == 0xFFFF_FFFF_FFFF_FFFF,
-            RawValue::Float64,
+            RawValue::F64Scalar,
+            RawValue::F64Array,
         ),
     })
 }
 
 // ───────────────────────────────────────────────────────────────────
-// Per-type decoders. Each returns Vec<T>; invalid detection happens in
-// `collapse_or` after decoding so the rule "every element invalid" is
-// uniform across types.
+// Per-type element iterators. Returning iterators (not Vec) lets
+// `collapse` pick Scalar without ever allocating in the hot path.
 // ───────────────────────────────────────────────────────────────────
 
-fn decode_u8(raw: &[u8]) -> Vec<u8> {
-    raw.to_vec()
+fn decode_u8_iter(raw: &[u8]) -> impl Iterator<Item = u8> + '_ {
+    raw.iter().copied()
 }
 
-fn decode_i8(raw: &[u8]) -> Vec<i8> {
-    raw.iter().map(|&b| b as i8).collect()
+fn decode_u16_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = u16> + '_ {
+    raw.chunks_exact(2).map(move |c| {
+        let arr = [c[0], c[1]];
+        match endian {
+            Endian::Little => u16::from_le_bytes(arr),
+            Endian::Big => u16::from_be_bytes(arr),
+        }
+    })
 }
 
-fn decode_u16(raw: &[u8], endian: Endian) -> Vec<u16> {
-    raw.chunks_exact(2)
-        .map(|c| {
-            let arr = [c[0], c[1]];
-            match endian {
-                Endian::Little => u16::from_le_bytes(arr),
-                Endian::Big => u16::from_be_bytes(arr),
-            }
-        })
-        .collect()
+fn decode_i16_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = i16> + '_ {
+    raw.chunks_exact(2).map(move |c| {
+        let arr = [c[0], c[1]];
+        match endian {
+            Endian::Little => i16::from_le_bytes(arr),
+            Endian::Big => i16::from_be_bytes(arr),
+        }
+    })
 }
 
-fn decode_i16(raw: &[u8], endian: Endian) -> Vec<i16> {
-    raw.chunks_exact(2)
-        .map(|c| {
-            let arr = [c[0], c[1]];
-            match endian {
-                Endian::Little => i16::from_le_bytes(arr),
-                Endian::Big => i16::from_be_bytes(arr),
-            }
-        })
-        .collect()
+fn decode_u32_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = u32> + '_ {
+    raw.chunks_exact(4).map(move |c| {
+        let arr = [c[0], c[1], c[2], c[3]];
+        match endian {
+            Endian::Little => u32::from_le_bytes(arr),
+            Endian::Big => u32::from_be_bytes(arr),
+        }
+    })
 }
 
-fn decode_u32(raw: &[u8], endian: Endian) -> Vec<u32> {
-    raw.chunks_exact(4)
-        .map(|c| {
-            let arr = [c[0], c[1], c[2], c[3]];
-            match endian {
-                Endian::Little => u32::from_le_bytes(arr),
-                Endian::Big => u32::from_be_bytes(arr),
-            }
-        })
-        .collect()
+fn decode_i32_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = i32> + '_ {
+    raw.chunks_exact(4).map(move |c| {
+        let arr = [c[0], c[1], c[2], c[3]];
+        match endian {
+            Endian::Little => i32::from_le_bytes(arr),
+            Endian::Big => i32::from_be_bytes(arr),
+        }
+    })
 }
 
-fn decode_i32(raw: &[u8], endian: Endian) -> Vec<i32> {
-    raw.chunks_exact(4)
-        .map(|c| {
-            let arr = [c[0], c[1], c[2], c[3]];
-            match endian {
-                Endian::Little => i32::from_le_bytes(arr),
-                Endian::Big => i32::from_be_bytes(arr),
-            }
-        })
-        .collect()
+fn decode_u64_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = u64> + '_ {
+    raw.chunks_exact(8).map(move |c| {
+        let arr = [c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]];
+        match endian {
+            Endian::Little => u64::from_le_bytes(arr),
+            Endian::Big => u64::from_be_bytes(arr),
+        }
+    })
 }
 
-fn decode_u64(raw: &[u8], endian: Endian) -> Vec<u64> {
-    raw.chunks_exact(8)
-        .map(|c| {
-            let arr = [c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]];
-            match endian {
-                Endian::Little => u64::from_le_bytes(arr),
-                Endian::Big => u64::from_be_bytes(arr),
-            }
-        })
-        .collect()
+fn decode_i64_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = i64> + '_ {
+    raw.chunks_exact(8).map(move |c| {
+        let arr = [c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]];
+        match endian {
+            Endian::Little => i64::from_le_bytes(arr),
+            Endian::Big => i64::from_be_bytes(arr),
+        }
+    })
 }
 
-fn decode_i64(raw: &[u8], endian: Endian) -> Vec<i64> {
-    raw.chunks_exact(8)
-        .map(|c| {
-            let arr = [c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]];
-            match endian {
-                Endian::Little => i64::from_le_bytes(arr),
-                Endian::Big => i64::from_be_bytes(arr),
-            }
-        })
-        .collect()
+fn decode_f32_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = f32> + '_ {
+    raw.chunks_exact(4).map(move |c| {
+        let arr = [c[0], c[1], c[2], c[3]];
+        match endian {
+            Endian::Little => f32::from_le_bytes(arr),
+            Endian::Big => f32::from_be_bytes(arr),
+        }
+    })
 }
 
-fn decode_f32(raw: &[u8], endian: Endian) -> Vec<f32> {
-    raw.chunks_exact(4)
-        .map(|c| {
-            let arr = [c[0], c[1], c[2], c[3]];
-            match endian {
-                Endian::Little => f32::from_le_bytes(arr),
-                Endian::Big => f32::from_be_bytes(arr),
-            }
-        })
-        .collect()
+fn decode_f64_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = f64> + '_ {
+    raw.chunks_exact(8).map(move |c| {
+        let arr = [c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]];
+        match endian {
+            Endian::Little => f64::from_le_bytes(arr),
+            Endian::Big => f64::from_be_bytes(arr),
+        }
+    })
 }
 
-fn decode_f64(raw: &[u8], endian: Endian) -> Vec<f64> {
-    raw.chunks_exact(8)
-        .map(|c| {
-            let arr = [c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]];
-            match endian {
-                Endian::Little => f64::from_le_bytes(arr),
-                Endian::Big => f64::from_be_bytes(arr),
-            }
-        })
-        .collect()
-}
-
-/// Build a [`RawValue`] from a decoded vec, collapsing to
-/// [`RawValue::Invalid`] when every element matches `is_invalid`.
-fn collapse_or<T, F>(values: Vec<T>, is_invalid: F, ctor: fn(Vec<T>) -> RawValue) -> RawValue
+/// Drive the decoded element iterator and pick the right enum shape:
+/// - all elements invalid → `RawValue::Invalid`
+/// - exactly one element → `scalar(value)`
+/// - many elements → `array(Box<[T]>)`
+fn collapse<T, I, F, S, A>(iter: I, is_invalid: F, scalar: S, array: A) -> RawValue
 where
+    T: Copy,
+    I: Iterator<Item = T>,
     F: Fn(&T) -> bool,
+    S: FnOnce(T) -> RawValue,
+    A: FnOnce(Box<[T]>) -> RawValue,
 {
-    if values.iter().all(is_invalid) {
-        RawValue::Invalid
+    let collected: Vec<T> = iter.collect();
+    if collected.is_empty() || collected.iter().all(is_invalid) {
+        return RawValue::Invalid;
+    }
+    if collected.len() == 1 {
+        scalar(collected[0])
     } else {
-        ctor(values)
+        array(collected.into_boxed_slice())
     }
 }
 
-/// Special handling for [`BaseType::Byte`]: invalid only when every byte is
-/// `0xFF`. (Reusing `collapse_or` works here because the per-element rule
-/// happens to coincide — but we keep the explicit predicate for clarity.)
 fn decode_byte(raw: &[u8]) -> RawValue {
-    let v = raw.to_vec();
-    if !v.is_empty() && v.iter().all(|&b| b == 0xFF) {
+    if !raw.is_empty() && raw.iter().all(|&b| b == 0xFF) {
         RawValue::Invalid
     } else {
-        RawValue::Byte(v)
+        RawValue::Byte(raw.to_vec().into_boxed_slice())
     }
 }
 
 fn decode_string(raw: &[u8]) -> RawValue {
-    // FIT strings are null-terminated UTF-8 with possible trailing padding.
     let end = raw.iter().position(|&b| b == 0).unwrap_or(raw.len());
     if end == 0 {
         return RawValue::Invalid;
     }
     let s = String::from_utf8_lossy(&raw[..end]).into_owned();
-    RawValue::String(s)
+    RawValue::String(s.into_boxed_str())
 }
 
 #[cfg(test)]
@@ -362,10 +454,9 @@ mod tests {
 
     #[test]
     fn enum_valid_keeps_all_elements() {
-        // Mixed: 0xFF stays in the array because at least one element is non-FF.
         assert_eq!(
             dec(BaseType::Enum, &[1, 0xFF, 4], Endian::Little),
-            RawValue::Enum(vec![1, 0xFF, 4])
+            RawValue::EnumArray(vec![1u8, 0xFF, 4].into_boxed_slice())
         );
     }
 
@@ -377,23 +468,20 @@ mod tests {
         );
         assert_eq!(
             dec(BaseType::UInt8z, &[0xFF], Endian::Little),
-            RawValue::UInt8z(vec![0xFF])
+            RawValue::U8zScalar(0xFF)
         );
     }
 
     #[test]
     fn byte_invalid_only_when_all_ff() {
-        // Single element 0xFF is invalid (matches "all FF" rule for length 1).
         assert_eq!(
             dec(BaseType::Byte, &[0xFF], Endian::Little),
             RawValue::Invalid
         );
-        // Mixed: any non-FF byte makes the field valid.
         assert_eq!(
             dec(BaseType::Byte, &[0xFF, 0x01, 0xFF], Endian::Little),
-            RawValue::Byte(vec![0xFF, 0x01, 0xFF])
+            RawValue::Byte(vec![0xFFu8, 0x01, 0xFF].into_boxed_slice())
         );
-        // All-FF multi-byte: invalid.
         assert_eq!(
             dec(BaseType::Byte, &[0xFF, 0xFF, 0xFF], Endian::Little),
             RawValue::Invalid
@@ -402,16 +490,14 @@ mod tests {
 
     #[test]
     fn uint16_endianness_and_invalid() {
-        // 0x1234 in LE = [0x34, 0x12]; in BE = [0x12, 0x34].
         assert_eq!(
             dec(BaseType::UInt16, &[0x34, 0x12], Endian::Little),
-            RawValue::UInt16(vec![0x1234])
+            RawValue::U16Scalar(0x1234)
         );
         assert_eq!(
             dec(BaseType::UInt16, &[0x12, 0x34], Endian::Big),
-            RawValue::UInt16(vec![0x1234])
+            RawValue::U16Scalar(0x1234)
         );
-        // All 0xFFFF → invalid.
         assert_eq!(
             dec(BaseType::UInt16, &[0xFF, 0xFF], Endian::Little),
             RawValue::Invalid
@@ -420,11 +506,9 @@ mod tests {
 
     #[test]
     fn uint32_le_decodes_known_timestamp() {
-        // 995749880 = 0x3B59EFF8 (FIT epoch seconds — matches the first
-        // `record` message's timestamp in Activity.fit).
         assert_eq!(
             dec(BaseType::UInt32, &[0xF8, 0xEF, 0x59, 0x3B], Endian::Little),
-            RawValue::UInt32(vec![995749880])
+            RawValue::U32Scalar(995749880)
         );
     }
 
@@ -434,11 +518,10 @@ mod tests {
             dec(BaseType::Float32, &[0xFF, 0xFF, 0xFF, 0xFF], Endian::Little),
             RawValue::Invalid
         );
-        // 1.0 = 0x3F800000 → LE bytes [0x00, 0x00, 0x80, 0x3F]
         let v = dec(BaseType::Float32, &[0x00, 0x00, 0x80, 0x3F], Endian::Little);
         match v {
-            RawValue::Float32(arr) => assert_eq!(arr, vec![1.0]),
-            _ => panic!("expected Float32"),
+            RawValue::F32Scalar(x) => assert_eq!(x, 1.0),
+            _ => panic!("expected F32Scalar"),
         }
     }
 
@@ -460,7 +543,6 @@ mod tests {
 
     #[test]
     fn malformed_size_returns_error() {
-        // UInt32 with 3 bytes is malformed.
         let err = decode_value(BaseType::UInt32, &[0, 0, 0], Endian::Little, 42).unwrap_err();
         assert!(matches!(
             err,
@@ -473,11 +555,11 @@ mod tests {
 
     #[test]
     fn helpers_extract_scalars() {
-        let v = RawValue::UInt32(vec![995749880]);
+        let v = RawValue::U32Scalar(995749880);
         assert_eq!(v.as_u32(), Some(995749880));
         assert!(!v.is_invalid());
 
-        let v = RawValue::Enum(vec![4]);
+        let v = RawValue::EnumScalar(4);
         assert_eq!(v.as_u8(), Some(4));
         assert_eq!(v.as_u16(), Some(4));
 
@@ -493,22 +575,19 @@ mod tests {
         );
         assert_eq!(
             dec(BaseType::SInt8, &[0x7E], Endian::Little),
-            RawValue::SInt8(vec![126])
+            RawValue::I8Scalar(126)
         );
     }
 
     #[test]
     fn sint16_array_partial_invalid_keeps_field() {
-        // Mix valid + invalid sentinels: the field as a whole is valid because
-        // at least one element is real. (Per-element invalidity is not modeled
-        // at this layer — M5 transforms can interpret if needed.)
         assert_eq!(
             dec(
                 BaseType::SInt16,
-                &[0xFF, 0x7F, 0x05, 0x00], // [i16::MAX, 5]
+                &[0xFF, 0x7F, 0x05, 0x00],
                 Endian::Little
             ),
-            RawValue::SInt16(vec![i16::MAX, 5])
+            RawValue::I16Array(vec![i16::MAX, 5].into_boxed_slice())
         );
     }
 }

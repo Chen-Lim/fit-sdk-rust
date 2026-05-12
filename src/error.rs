@@ -94,6 +94,27 @@ pub enum FitError {
     TooManyLocalDefinitions(usize),
 
     /// A field's wire size or count exceeds 255 bytes (u8 limit).
-    #[error("encoder: field too large for wire: {0} exceeds 255 byte limit")]
-    FieldTooLarge(String),
+    #[error("encoder: {kind:?} of size {size} exceeds 255 byte wire limit")]
+    FieldTooLarge {
+        /// What kind of object exceeded the limit.
+        kind: FieldTooLargeKind,
+        /// The actual (oversized) value.
+        size: usize,
+    },
+}
+
+/// Tag identifying which protocol field exceeded its 255-byte u8 cap. Kept
+/// separate so [`FitError`] stays heap-free.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FieldTooLargeKind {
+    /// A UTF-8 string field whose null-terminated bytes don't fit in u8.
+    String,
+    /// A `Byte` field whose raw byte array doesn't fit in u8.
+    ByteArray,
+    /// A numeric / typed array whose element count overflows u8.
+    Array,
+    /// A Definition message has more than 255 standard fields.
+    FieldList,
+    /// A Definition message has more than 255 developer fields.
+    DevFieldList,
 }

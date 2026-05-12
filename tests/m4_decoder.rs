@@ -157,7 +157,7 @@ fn activity_first_file_id_decodes_with_correct_types() {
     // serial_number must be uint32z (a Z-typed scalar field).
     let serial = first.field(3).expect("file_id.serial_number missing");
     assert!(
-        matches!(&serial.value, RawValue::UInt32z(v) if v.len() == 1),
+        matches!(&serial.value, RawValue::U32zScalar(_)),
         "serial_number must decode as a length-1 UInt32z; got {:?}",
         serial.value,
     );

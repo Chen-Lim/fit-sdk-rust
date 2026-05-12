@@ -1,6 +1,6 @@
 [package]
 name = "fit-sdk-rust"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.75"
 license = "GPL-3.0"
@@ -16,9 +16,14 @@ exclude = ["tests/fixtures/"]
 [lib]
 name = "fit"
 
+[features]
+default = ["chrono"]
+chrono = ["dep:chrono"]
+
 [dependencies]
 thiserror = "2.0"
-chrono = { version = "0.4", default-features = false, features = ["std"] }
+smallvec = { version = "1.13", features = ["const_generics"] }
+chrono = { version = "0.4", default-features = false, features = ["std"], optional = true }
 
 [dev-dependencies]
 proptest = "1.6"

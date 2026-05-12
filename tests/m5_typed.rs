@@ -33,6 +33,7 @@ fn activity_typed_decode_total_count_matches_raw() {
     assert_eq!(typed_count, 3611);
 }
 
+#[cfg(feature = "chrono")]
 #[test]
 fn activity_first_record_has_datetime_and_known_fields() {
     let bytes = read_fixture("Activity.fit");

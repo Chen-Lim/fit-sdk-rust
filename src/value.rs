@@ -7,6 +7,7 @@
 //! friendly: scale/offset already applied, enums already named, datetimes
 //! already wall-clock.
 
+#[cfg(feature = "chrono")]
 use chrono::{DateTime, Utc};
 
 /// A fully-transformed field value.
@@ -29,8 +30,14 @@ pub enum Value {
     Bool(bool),
     /// Resolved enum value (e.g. `"running"` for `Sport::Running`).
     Enum(&'static str),
-    /// FIT timestamp converted to wall-clock UTC.
+    /// FIT timestamp converted to wall-clock UTC. With the `chrono` feature
+    /// disabled this carries the raw FIT epoch seconds (u32) instead.
+    #[cfg(feature = "chrono")]
     DateTime(DateTime<Utc>),
+    /// FIT timestamp as raw seconds since the FIT epoch (1989-12-31 UTC).
+    /// Only present when the `chrono` feature is **disabled**.
+    #[cfg(not(feature = "chrono"))]
+    DateTime(u32),
     /// Multi-element field. Each entry is a [`Value`] of homogeneous type.
     Array(Vec<Value>),
 }
@@ -79,9 +86,20 @@ impl Value {
     }
 
     /// Extract a `DateTime<Utc>` from the `DateTime` variant.
+    #[cfg(feature = "chrono")]
     pub fn as_datetime(&self) -> Option<DateTime<Utc>> {
         match self {
             Value::DateTime(d) => Some(*d),
+            _ => None,
+        }
+    }
+
+    /// Extract the raw FIT epoch seconds from the `DateTime` variant.
+    /// Available only when the `chrono` feature is disabled.
+    #[cfg(not(feature = "chrono"))]
+    pub fn as_datetime(&self) -> Option<u32> {
+        match self {
+            Value::DateTime(s) => Some(*s),
             _ => None,
         }
     }

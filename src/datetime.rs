@@ -1,10 +1,11 @@
-//! FIT timestamp ↔ `chrono::DateTime<Utc>` conversion.
+//! FIT timestamp conversions.
 //!
 //! FIT stores absolute time as a `u32` count of seconds since
 //! **1989-12-31 00:00:00 UTC** — 631,065,600 seconds *after* the Unix epoch.
-//!
-//! Reference: `guide/fit_binary_learning_notes.md` §"时间戳体系：FIT Epoch".
+//! The `chrono`-based helpers ([`fit_to_datetime`] / [`datetime_to_fit`]) are
+//! only compiled when the `chrono` feature is enabled.
 
+#[cfg(feature = "chrono")]
 use chrono::{DateTime, Utc};
 
 /// Seconds between Unix epoch (`1970-01-01`) and FIT epoch (`1989-12-31`).
@@ -14,6 +15,7 @@ pub const FIT_EPOCH_OFFSET_SECS: i64 = 631_065_600;
 ///
 /// Returns `None` only for the unrepresentable case where adding the offset
 /// overflows `i64::MAX` — practically impossible for `u32` inputs.
+#[cfg(feature = "chrono")]
 pub fn fit_to_datetime(fit_seconds: u32) -> Option<DateTime<Utc>> {
     let unix = i64::from(fit_seconds).checked_add(FIT_EPOCH_OFFSET_SECS)?;
     DateTime::from_timestamp(unix, 0)
@@ -21,17 +23,17 @@ pub fn fit_to_datetime(fit_seconds: u32) -> Option<DateTime<Utc>> {
 
 /// Inverse of [`fit_to_datetime`]. Returns `None` if the datetime is before
 /// the FIT epoch or beyond `u32::MAX` seconds after it (≈ year 2125).
+#[cfg(feature = "chrono")]
 pub fn datetime_to_fit(dt: DateTime<Utc>) -> Option<u32> {
     let secs = dt.timestamp().checked_sub(FIT_EPOCH_OFFSET_SECS)?;
     if (0..=i64::from(u32::MAX)).contains(&secs) {
-        // secs is range-checked to fit u32 above.
         Some(secs as u32)
     } else {
         None
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "chrono"))]
 mod tests {
     use super::*;
     use chrono::TimeZone;
@@ -44,8 +46,6 @@ mod tests {
 
     #[test]
     fn known_value_round_trips() {
-        // 995_749_880 = first record timestamp from Activity.fit fixture.
-        // 1989-12-31 + 995_749_880 sec ≈ 2021-07-19 21:11:20 UTC.
         let dt = fit_to_datetime(995_749_880).unwrap();
         assert_eq!(dt.timestamp(), 995_749_880 + FIT_EPOCH_OFFSET_SECS);
         let back = datetime_to_fit(dt).unwrap();
@@ -60,7 +60,6 @@ mod tests {
 
     #[test]
     fn unix_offset_is_correct() {
-        // 1989-12-31 00:00:00 UTC = 631_065_600 Unix seconds.
         let unix_dt = DateTime::from_timestamp(FIT_EPOCH_OFFSET_SECS, 0).unwrap();
         assert_eq!(
             unix_dt,
