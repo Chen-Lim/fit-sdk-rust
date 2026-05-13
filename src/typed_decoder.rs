@@ -520,7 +520,7 @@ fn transform_value(
     if options.convert_types_to_strings {
         if let Some(v) = components::scalar_as_u64(raw) {
             if let Some(s) = enum_strings::enum_str_by_value(type_name, v) {
-                return Value::Enum(s);
+                return Value::Enum(s.to_string());
             }
         }
     }

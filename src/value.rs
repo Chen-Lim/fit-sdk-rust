@@ -29,7 +29,7 @@ pub enum Value {
     /// Boolean value.
     Bool(bool),
     /// Resolved enum value (e.g. `"running"` for `Sport::Running`).
-    Enum(&'static str),
+    Enum(String),
     /// FIT timestamp converted to wall-clock UTC. With the `chrono` feature
     /// disabled this carries the raw FIT epoch seconds (u32) instead.
     #[cfg(feature = "chrono")]
@@ -80,7 +80,7 @@ impl Value {
     pub fn as_str(&self) -> Option<&str> {
         match self {
             Value::String(s) => Some(s.as_str()),
-            Value::Enum(s) => Some(*s),
+            Value::Enum(s) => Some(s.as_str()),
             _ => None,
         }
     }
