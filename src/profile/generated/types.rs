@@ -24611,7 +24611,7 @@ pub fn enum_value_by_str(type_name: &str, name: &str) -> Option<u64> {
     }
 }
 
-/// Map a Profile type_name to its underlying wire [`BaseType`].
+/// Map a Profile type_name to its underlying wire [`crate::base_type::BaseType`].
 /// Returns `None` for raw base type names like `"uint16"` (those
 /// are resolved separately by the encoder) and for unknown names.
 pub fn base_type_for_type_name(type_name: &str) -> Option<crate::base_type::BaseType> {

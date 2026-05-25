@@ -86,7 +86,7 @@ impl DevFieldRegistry {
 
 /// Map a [`BaseType`] to the `type_name` string expected by
 /// [`crate::transforms::enum_strings::enum_str_by_value`] and
-/// [`crate::typed_decoder::transform_value`].
+/// `typed_decoder::transform_value`.
 pub fn base_type_to_type_name(bt: BaseType) -> &'static str {
     match bt {
         BaseType::Enum => "enum",

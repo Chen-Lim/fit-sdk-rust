@@ -30,7 +30,7 @@
 //! | [`Decoder`] / [`RawMessage`] | Streaming raw-message iterator |
 //! | [`DecoderBuilder`] / [`TypedDecoder`] / [`Message`] | Profile-aware typed pipeline |
 //! | [`Encoder`] / [`EncoderBuilder`] | Round-trip back to FIT binary |
-//! | [`crc`] / [`base_type`] / [`record_header`] | Protocol primitives |
+//! | [`crc`] / [`base_type`] / `record_header` | Protocol primitives |
 //! | [`profile`] | Generated Profile.xlsx tables (see `MesgNum`, `MesgInfo`, `FieldInfo`) |
 //! | [`transforms`] | Re-exports of the M5 transform helpers (datetime / enum / scale / components) |
 //! | [`merge_heart_rates`] / [`decode_memo_glob`] | M6 post-processing helpers |

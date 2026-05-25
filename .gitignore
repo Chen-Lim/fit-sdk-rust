@@ -28,3 +28,7 @@ lcov.info
 # Profiling
 flamegraph.svg
 perf.data*
+
+# Review / planning artefacts
+plan.md
+code-review-report.html
