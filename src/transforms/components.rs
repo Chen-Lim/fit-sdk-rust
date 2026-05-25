@@ -144,7 +144,10 @@ mod tests {
     fn scalar_as_u64_handles_common_cases() {
         assert_eq!(scalar_as_u64(&RawValue::U8Scalar(42)), Some(42));
         assert_eq!(scalar_as_u64(&RawValue::U16Scalar(1234)), Some(1234));
-        assert_eq!(scalar_as_u64(&RawValue::U32Scalar(995749880)), Some(995749880));
+        assert_eq!(
+            scalar_as_u64(&RawValue::U32Scalar(995749880)),
+            Some(995749880)
+        );
         assert_eq!(scalar_as_u64(&RawValue::Invalid), None);
         assert_eq!(scalar_as_u64(&RawValue::String("foo".into())), None);
         // Multi-element arrays are not scalars.

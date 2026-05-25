@@ -7,6 +7,8 @@
 //! friendly: scale/offset already applied, enums already named, datetimes
 //! already wall-clock.
 
+use std::borrow::Cow;
+
 #[cfg(feature = "chrono")]
 use chrono::{DateTime, Utc};
 
@@ -29,7 +31,15 @@ pub enum Value {
     /// Boolean value.
     Bool(bool),
     /// Resolved enum value (e.g. `"running"` for `Sport::Running`).
-    Enum(String),
+    ///
+    /// Backed by [`Cow<'static, str>`] so that the common case — names
+    /// returned from the static Profile dispatcher — is a zero-allocation
+    /// borrow, while developer-defined enum values can still own a
+    /// runtime [`String`]. Construct with
+    /// `Value::Enum("running".into())` (works for both `&'static str` and
+    /// `String`); read via `Deref<Target=str>` (`s.is_empty()`,
+    /// `&s[..]`, `&*s`, etc.).
+    Enum(Cow<'static, str>),
     /// FIT timestamp converted to wall-clock UTC. With the `chrono` feature
     /// disabled this carries the raw FIT epoch seconds (u32) instead.
     #[cfg(feature = "chrono")]
@@ -80,7 +90,7 @@ impl Value {
     pub fn as_str(&self) -> Option<&str> {
         match self {
             Value::String(s) => Some(s.as_str()),
-            Value::Enum(s) => Some(s.as_str()),
+            Value::Enum(s) => Some(s),
             _ => None,
         }
     }

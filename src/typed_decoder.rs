@@ -20,6 +20,8 @@
 //!   6. Resolve developer fields via [`DevFieldRegistry`] (populated from
 //!      `developer_data_id` / `field_description` messages).
 
+use std::borrow::Cow;
+
 use crate::base_type::BaseType;
 #[cfg(feature = "chrono")]
 use crate::datetime;
@@ -520,7 +522,9 @@ fn transform_value(
     if options.convert_types_to_strings {
         if let Some(v) = components::scalar_as_u64(raw) {
             if let Some(s) = enum_strings::enum_str_by_value(type_name, v) {
-                return Value::Enum(s.to_string());
+                // `s` is `&'static str` from the codegen dispatcher — store
+                // as `Cow::Borrowed` so the hot path stays alloc-free.
+                return Value::Enum(Cow::Borrowed(s));
             }
         }
     }
@@ -571,9 +575,7 @@ fn raw_to_value_passthrough(raw: &RawValue) -> Value {
         U32Array(a) | U32zArray(a) => {
             Value::Array(a.iter().map(|x| Value::UInt(*x as u64)).collect())
         }
-        U64Array(a) | U64zArray(a) => {
-            Value::Array(a.iter().map(|x| Value::UInt(*x)).collect())
-        }
+        U64Array(a) | U64zArray(a) => Value::Array(a.iter().map(|x| Value::UInt(*x)).collect()),
         I8Array(a) => Value::Array(a.iter().map(|x| Value::SInt(*x as i64)).collect()),
         I16Array(a) => Value::Array(a.iter().map(|x| Value::SInt(*x as i64)).collect()),
         I32Array(a) => Value::Array(a.iter().map(|x| Value::SInt(*x as i64)).collect()),

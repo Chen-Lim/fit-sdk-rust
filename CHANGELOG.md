@@ -7,11 +7,14 @@ that was merged before publishing.
 
 ### Breaking
 
-- **`Value::Enum` now carries `String` instead of `&'static str`** so that
-  developer-field enum values (which are not in the static profile) can be
-  represented. Consumers must `.to_string()` static literals
-  (`Value::Enum("activity".to_string())`) and must borrow when matching
-  (`matches!(&value, Value::Enum(s) if ...)`).
+- **`Value::Enum` now carries `Cow<'static, str>`** so that names returned
+  from the static Profile dispatcher stay zero-allocation while
+  developer-defined enum values can still own a runtime `String`.
+  Consumers construct with `Value::Enum("activity".into())` (works for
+  both `&'static str` and `String`); read via the `Deref<Target=str>`
+  impl (`s.is_empty()`, `&s[..]`, `&*s`). Pattern-match against the
+  variant by value (`Value::Enum(Cow::Borrowed("activity"))` or just
+  `matches!(&v, Value::Enum(s) if s == "activity")`).
 
 ### Fixed
 

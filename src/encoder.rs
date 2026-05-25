@@ -397,11 +397,9 @@ fn compute_wire_size(
     }
     if base_type == BaseType::Byte {
         return match value {
-            Value::Bytes(b) => u8::try_from(b.len().max(1)).map_err(|_| {
-                FitError::FieldTooLarge {
-                    kind: FieldTooLargeKind::ByteArray,
-                    size: b.len(),
-                }
+            Value::Bytes(b) => u8::try_from(b.len().max(1)).map_err(|_| FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::ByteArray,
+                size: b.len(),
             }),
             _ => Ok(1),
         };
@@ -423,11 +421,9 @@ fn compute_dev_wire_size(info: &DevFieldInfo, value: &Value) -> Result<u8, FitEr
     }
     if info.base_type == BaseType::Byte {
         return match value {
-            Value::Bytes(b) => u8::try_from(b.len().max(1)).map_err(|_| {
-                FitError::FieldTooLarge {
-                    kind: FieldTooLargeKind::ByteArray,
-                    size: b.len(),
-                }
+            Value::Bytes(b) => u8::try_from(b.len().max(1)).map_err(|_| FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::ByteArray,
+                size: b.len(),
             }),
             _ => Ok(1),
         };
@@ -647,10 +643,11 @@ fn write_definition_record(
         out.write_u8(f.base_type_byte);
     }
     if !def.dev_fields.is_empty() {
-        let dev_count = u8::try_from(def.dev_fields.len()).map_err(|_| FitError::FieldTooLarge {
-            kind: FieldTooLargeKind::DevFieldList,
-            size: def.dev_fields.len(),
-        })?;
+        let dev_count =
+            u8::try_from(def.dev_fields.len()).map_err(|_| FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::DevFieldList,
+                size: def.dev_fields.len(),
+            })?;
         out.write_u8(dev_count);
         for d in &def.dev_fields {
             out.write_u8(d.field_def_num);

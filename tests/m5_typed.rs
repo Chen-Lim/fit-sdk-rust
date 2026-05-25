@@ -78,7 +78,7 @@ fn activity_file_id_type_is_enum_string() {
 
     // type field is `file` enum, value 4 → "activity"
     let ty = file_id.field("type").expect("file_id.type");
-    assert_eq!(ty.value, Value::Enum("activity".to_string()));
+    assert_eq!(ty.value, Value::Enum("activity".into()));
 }
 
 #[test]
@@ -198,7 +198,7 @@ fn file_id_product_resolves_to_garmin_subfield_when_applicable() {
     // field should be renamed `garmin_product`. (For Activity.fit it's
     // "development" which doesn't match any subfield, so we use this
     // gear-change fixture which is a Garmin file.)
-    if mfr.value == Value::Enum("garmin".to_string()) {
+    if mfr.value == Value::Enum("garmin".into()) {
         assert!(
             file_id.field("garmin_product").is_some(),
             "expected garmin_product subfield when manufacturer is garmin"

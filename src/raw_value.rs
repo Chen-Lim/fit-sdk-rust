@@ -87,9 +87,7 @@ impl RawValue {
     /// Get a scalar `u8` for length-1 single-byte fields.
     pub fn as_u8(&self) -> Option<u8> {
         match *self {
-            RawValue::U8Scalar(v)
-            | RawValue::U8zScalar(v)
-            | RawValue::EnumScalar(v) => Some(v),
+            RawValue::U8Scalar(v) | RawValue::U8zScalar(v) | RawValue::EnumScalar(v) => Some(v),
             RawValue::Byte(ref b) if b.len() == 1 => Some(b[0]),
             _ => None,
         }
@@ -582,11 +580,7 @@ mod tests {
     #[test]
     fn sint16_array_partial_invalid_keeps_field() {
         assert_eq!(
-            dec(
-                BaseType::SInt16,
-                &[0xFF, 0x7F, 0x05, 0x00],
-                Endian::Little
-            ),
+            dec(BaseType::SInt16, &[0xFF, 0x7F, 0x05, 0x00], Endian::Little),
             RawValue::I16Array(vec![i16::MAX, 5].into_boxed_slice())
         );
     }
