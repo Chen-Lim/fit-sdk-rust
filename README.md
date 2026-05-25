@@ -1,6 +1,12 @@
 # fit-sdk-rust
 
+[![Crates.io](https://img.shields.io/crates/v/fit-sdk-rust)](https://crates.io/crates/fit-sdk-rust)
+[![docs.rs](https://img.shields.io/docsrs/fit-sdk-rust)](https://docs.rs/fit-sdk-rust)
+[![License](https://img.shields.io/crates/l/fit-sdk-rust)](LICENSE)
+
 Pure-Rust decoder and encoder for Garmin FIT (Flexible and Interoperable Data Transfer) protocol files — activities, workouts, courses, settings, and more.
+
+Available on [crates.io](https://crates.io/crates/fit-sdk-rust) and [docs.rs](https://docs.rs/fit-sdk-rust).
 
 Supports FIT protocol v2.0 (profile v21.200). No `unsafe` code, no C dependencies.
 
