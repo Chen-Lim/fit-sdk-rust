@@ -125,7 +125,7 @@ fn schema_change_within_same_mesg_num_re_emits_definition() {
             fields: vec![Field {
                 name: "type".to_string(),
                 kind: FieldKind::Standard { field_def_num: 0 },
-                value: Value::Enum("activity"),
+                value: Value::Enum("activity".to_string()),
                 units: None,
             }],
         },
@@ -136,7 +136,7 @@ fn schema_change_within_same_mesg_num_re_emits_definition() {
                 Field {
                     name: "type".to_string(),
                     kind: FieldKind::Standard { field_def_num: 0 },
-                    value: Value::Enum("activity"),
+                    value: Value::Enum("activity".to_string()),
                     units: None,
                 },
                 Field {
@@ -289,7 +289,7 @@ fn arb_file_id() -> impl Strategy<Value = Message> {
                 fields.push(Field {
                     name: "type".into(),
                     kind: FieldKind::Standard { field_def_num: 0 },
-                    value: Value::Enum(name),
+                    value: Value::Enum(name.to_string()),
                     units: None,
                 });
             }

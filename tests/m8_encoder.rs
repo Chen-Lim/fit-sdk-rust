@@ -156,7 +156,7 @@ fn encode_single_record_message() {
             Field {
                 name: "type".to_string(),
                 kind: FieldKind::Standard { field_def_num: 0 },
-                value: Value::Enum("activity"),
+                value: Value::Enum("activity".to_string()),
                 units: None,
             },
             Field {
@@ -181,7 +181,7 @@ fn encode_single_record_message() {
     assert_eq!(decoded[0].name, "file_id");
 
     let type_field = decoded[0].field("type").unwrap();
-    assert_eq!(type_field.value, Value::Enum("activity"));
+    assert_eq!(type_field.value, Value::Enum("activity".to_string()));
 }
 
 #[test]
@@ -193,7 +193,7 @@ fn encode_with_uint_fields() {
             Field {
                 name: "type".to_string(),
                 kind: FieldKind::Standard { field_def_num: 0 },
-                value: Value::Enum("activity"),
+                value: Value::Enum("activity".to_string()),
                 units: None,
             },
             Field {
@@ -226,7 +226,7 @@ fn encode_with_uint_fields() {
     // the wire bytes — which it does, as evidenced by the round-trip naming.
     assert_eq!(
         msg.field("manufacturer").unwrap().value,
-        Value::Enum("garmin")
+        Value::Enum("garmin".to_string())
     );
     // product activates the `garmin_product` SubField (because manufacturer ==
     // garmin); 3415 is not a named garmin_product value, so it stays a UInt.
@@ -245,7 +245,7 @@ fn encode_multiple_messages() {
             fields: vec![Field {
                 name: "type".to_string(),
                 kind: FieldKind::Standard { field_def_num: 0 },
-                value: Value::Enum("activity"),
+                value: Value::Enum("activity".to_string()),
                 units: None,
             }],
         },

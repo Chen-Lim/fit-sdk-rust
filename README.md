@@ -25,8 +25,10 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-fit-sdk-rust = "0.1"
+fit-sdk-rust = "0.2"
 ```
+
+The library is exposed under the crate name `fit` (per `[lib] name`), so you `use fit::...` in your code.
 
 ### Decode an activity file
 
@@ -155,4 +157,4 @@ Rust 1.75 or later.
 
 ## License
 
-Licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) for details.
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.

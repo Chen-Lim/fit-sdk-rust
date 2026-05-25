@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.2.1
+
+First crates.io release. Carries one small breaking change from `0.2.0`
+that was merged before publishing.
+
+### Breaking
+
+- **`Value::Enum` now carries `String` instead of `&'static str`** so that
+  developer-field enum values (which are not in the static profile) can be
+  represented. Consumers must `.to_string()` static literals
+  (`Value::Enum("activity".to_string())`) and must borrow when matching
+  (`matches!(&value, Value::Enum(s) if ...)`).
+
+### Fixed
+
+- Integration tests that broke alongside the `Value::Enum` change now build
+  and pass under `cargo test --all-targets`.
+- `Cargo.toml`: `license` switched from `GPL-3.0` to `Apache-2.0`,
+  `repository` corrected to `github.com/Chen-Lim/fit-sdk-rust`.
+- `README.md`: install snippet updated to `fit-sdk-rust = "0.2"`,
+  added a note that the crate exposes the library as `fit`.
+
+### Known issues
+
+These are documented in the in-repo code review (`code-review-report.html`)
+and scheduled for `0.3.0`:
+
+- Encoder array wire-size overflow on > 31 element `u64` / > 63 element
+  `u32` arrays (debug panic / release silent wraparound).
+- `Encoder::encode_int` silently wraps integer values exceeding the wire
+  type's range (asymmetric with `encode_float`, which correctly writes the
+  invalid sentinel).
+- Strings with embedded NUL bytes silently truncate on round-trip.
+- `decode_memo_glob` can panic on `Value::Array([Value::Bytes(empty)])`.
+
 ## 0.2.0
 
 Performance + API tightening pass. **Breaking changes throughout the public
