@@ -145,6 +145,41 @@ impl BaseType {
     pub fn type_code(&self) -> u8 {
         *self as u8
     }
+
+    /// Resolve a Profile primitive type name (e.g. `"uint16"`, `"sint8"`,
+    /// `"string"`, `"byte"`, `"bool"`, `"date_time"`) to a [`BaseType`].
+    pub(crate) fn from_name(type_name: &str) -> Option<Self> {
+        match type_name {
+            "enum" => Some(Self::Enum),
+            "sint8" => Some(Self::SInt8),
+            "uint8" => Some(Self::UInt8),
+            "sint16" => Some(Self::SInt16),
+            "uint16" => Some(Self::UInt16),
+            "sint32" => Some(Self::SInt32),
+            "uint32" => Some(Self::UInt32),
+            "sint64" => Some(Self::SInt64),
+            "uint64" => Some(Self::UInt64),
+            "float32" => Some(Self::Float32),
+            "float64" => Some(Self::Float64),
+            "uint8z" => Some(Self::UInt8z),
+            "uint16z" => Some(Self::UInt16z),
+            "uint32z" => Some(Self::UInt32z),
+            "uint64z" => Some(Self::UInt64z),
+            "string" => Some(Self::String),
+            "byte" => Some(Self::Byte),
+            "bool" => Some(Self::UInt8),
+            "date_time" | "local_date_time" => Some(Self::UInt32),
+            _ => None,
+        }
+    }
+
+    /// Resolve any Profile `type_name` (either an enum/typedef from the
+    /// generated Types table or a primitive base type name) to its underlying
+    /// [`BaseType`].
+    pub(crate) fn from_profile_type(type_name: &str) -> Option<Self> {
+        crate::transforms::enum_strings::base_type_for_type_name(type_name)
+            .or_else(|| Self::from_name(type_name))
+    }
 }
 
 #[cfg(test)]
@@ -207,5 +242,20 @@ mod tests {
     fn uint64z_is_present_at_0x10() {
         // Regression check for the gap originally identified in the learning notes.
         assert_eq!(BaseType::from_byte(0x10).unwrap(), BaseType::UInt64z);
+    }
+
+    #[test]
+    fn from_name_and_from_profile_type_resolve_primitives_and_enums() {
+        assert_eq!(BaseType::from_name("uint16"), Some(BaseType::UInt16));
+        assert_eq!(BaseType::from_name("sint8"), Some(BaseType::SInt8));
+        assert_eq!(BaseType::from_name("bool"), Some(BaseType::UInt8));
+        assert_eq!(BaseType::from_name("date_time"), Some(BaseType::UInt32));
+        assert_eq!(BaseType::from_name("local_date_time"), Some(BaseType::UInt32));
+        assert_eq!(BaseType::from_name("sport"), None);
+
+        assert_eq!(BaseType::from_profile_type("sport"), Some(BaseType::Enum));
+        assert_eq!(BaseType::from_profile_type("mesg_num"), Some(BaseType::UInt16));
+        assert_eq!(BaseType::from_profile_type("uint32"), Some(BaseType::UInt32));
+        assert_eq!(BaseType::from_profile_type("unknown_custom_type"), None);
     }
 }

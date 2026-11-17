@@ -124,6 +124,10 @@ pub struct Decoder<'a> {
     /// next Data record so its [`RawMessage::starts_new_chain`] reports
     /// `true`. Then cleared.
     chain_just_reset: bool,
+    /// Endianness of the Definition used for the most recently decoded
+    /// Data record (used by [`crate::TypedDecoder`] when interpreting
+    /// developer fields).
+    last_endian: crate::stream::Endian,
 }
 
 impl<'a> Decoder<'a> {
@@ -138,7 +142,13 @@ impl<'a> Decoder<'a> {
             terminated: false,
             last_timestamp: None,
             chain_just_reset: false,
+            last_endian: crate::stream::Endian::Little,
         }
+    }
+
+    /// Return the wire endianness of the most recently decoded Data record.
+    pub(crate) fn last_endian(&self) -> crate::stream::Endian {
+        self.last_endian
     }
 
     /// Drain the iterator into two vectors: messages and errors. Mirrors the
@@ -210,6 +220,7 @@ impl<'a> Decoder<'a> {
         // releases the borrow on `self.local_defs` so the read loop below can
         // freely take `&mut self.stream`. Zero heap traffic in the common case.
         let def = self.local_defs.require(local_mesg_num)?.clone();
+        self.last_endian = def.endian;
 
         let mut out_fields = Vec::with_capacity(def.fields.len());
         for f in &def.fields {
@@ -250,6 +261,7 @@ impl<'a> Decoder<'a> {
         timestamp_offset: u8,
     ) -> Result<RawMessage<'a>, FitError> {
         let def = self.local_defs.require(local_mesg_num)?.clone();
+        self.last_endian = def.endian;
         let timestamp = self.decode_compressed_timestamp(timestamp_offset);
 
         let mut saw_ts = false;

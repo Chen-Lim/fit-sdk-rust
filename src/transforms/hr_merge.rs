@@ -92,41 +92,10 @@ fn expand_heart_rates(hr_messages: &[&Message]) -> Vec<HrSample> {
             continue; // no anchor yet — skip
         };
 
-        // Gather event timestamps and BPMs from both fdn 9 (event_timestamp)
-        // and fdn 10 (event_timestamp_12 / expanded components).
-        let mut all_event_ts: Vec<f64> = Vec::new();
-        let mut all_bpm: Vec<f64> = Vec::new();
-
-        if let Some(evts) = field_as_f64_vec(hr_msg, "event_timestamp") {
-            all_event_ts = evts;
-        }
-        if let Some(bpms) = field_as_f64_vec(hr_msg, "filtered_bpm") {
-            all_bpm = bpms;
-        }
-
-        // Also check for component-expanded event_timestamp fields
-        // (from event_timestamp_12's 12-bit components).
-        // These appear as additional "event_timestamp" fields; collect
-        // any fields named "event_timestamp" that weren't in fdn 9's array.
-        // Actually, the pipeline creates synthetic fields with the component's
-        // target_name — "event_timestamp". Since fdn 9 also has that name,
-        // we might get duplicates. The safest approach: collect ALL fields
-        // named "event_timestamp" from the message.
-        let comp_event_ts: Vec<f64> = hr_msg
-            .fields
-            .iter()
-            .filter(|f| {
-                f.name == "event_timestamp"
-                    && !matches!(f.kind, crate::FieldKind::Standard { field_def_num: 9 })
-            })
-            .filter_map(|f| f.value.as_f64())
-            .collect();
-
-        // If we found component-expanded timestamps, use those as primary
-        // if fdn 9 had no data.
-        if all_event_ts.is_empty() && !comp_event_ts.is_empty() {
-            all_event_ts = comp_event_ts;
-        }
+        // Gather event timestamps and BPMs. Component-expanded `event_timestamp_12`
+        // values are already grouped under `"event_timestamp"` (fdn 9).
+        let all_event_ts = field_as_f64_vec(hr_msg, "event_timestamp").unwrap_or_default();
+        let all_bpm = field_as_f64_vec(hr_msg, "filtered_bpm").unwrap_or_default();
 
         if all_event_ts.is_empty() || all_bpm.is_empty() {
             continue;
