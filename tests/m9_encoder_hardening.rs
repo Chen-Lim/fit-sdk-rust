@@ -3,7 +3,8 @@
 
 use std::path::PathBuf;
 
-use fit::{Decoder, Encoder, Field, FieldKind, Message, Value};
+use fit::{Decoder, Encoder, Field, FieldKind, FieldTooLargeKind, FitError, Message, Value};
+#[cfg(feature = "chrono")]
 use proptest::prelude::*;
 
 fn fixture(name: &str) -> PathBuf {
@@ -341,3 +342,241 @@ proptest! {
         }
     }
 }
+
+// ────────────────────────────────────────────────────────────────────
+// 7. Protocol conformance, SubField encoding, overflow & sentinel bounds
+// ────────────────────────────────────────────────────────────────────
+
+#[test]
+fn multibyte_field_definitions_set_endian_ability_bit() {
+    let messages = vec![Message {
+        global_mesg_num: 0, // file_id
+        name: "file_id",
+        fields: vec![Field {
+            name: "product".to_string(),
+            kind: FieldKind::Standard { field_def_num: 2 },
+            value: Value::UInt(0x1234),
+            units: None,
+        }],
+    }];
+    let bytes = Encoder::new().encode(&messages).unwrap();
+    // Header(14) + DefHdr(1)+Res(1)+Arch(1)+MesgNum(2)+FCount(1) = 20 -> field[0] at 20..23
+    assert_eq!(bytes[20], 2); // fdn = 2 (product)
+    assert_eq!(bytes[21], 2); // size = 2
+    assert_eq!(bytes[22], 0x84); // UINT16 with endian-ability bit
+}
+
+#[test]
+fn subfield_round_trips_preserve_scale_and_enum_types() {
+    // workout_step (27): duration_distance SubField on fdn=2 has scale=100;
+    // file_id (0): garmin_product SubField on fdn=2 uses "garmin_product" enum.
+    let messages = vec![
+        Message {
+            global_mesg_num: 0,
+            name: "file_id",
+            fields: vec![
+                Field {
+                    name: "manufacturer".to_string(),
+                    kind: FieldKind::Standard { field_def_num: 1 },
+                    value: Value::Enum("garmin".into()),
+                    units: None,
+                },
+                Field {
+                    name: "garmin_product".to_string(),
+                    kind: FieldKind::Standard { field_def_num: 2 },
+                    value: Value::Enum("fr935".into()),
+                    units: None,
+                },
+            ],
+        },
+        Message {
+            global_mesg_num: 27,
+            name: "workout_step",
+            fields: vec![
+                Field {
+                    name: "duration_type".to_string(),
+                    kind: FieldKind::Standard { field_def_num: 1 },
+                    value: Value::Enum("distance".into()),
+                    units: None,
+                },
+                Field {
+                    name: "duration_distance".to_string(),
+                    kind: FieldKind::Standard { field_def_num: 2 },
+                    value: Value::Float(800.0),
+                    units: Some("m".to_string()),
+                },
+            ],
+        },
+    ];
+
+    let bytes = Encoder::new().encode(&messages).unwrap();
+    fit::check_integrity(&bytes).unwrap();
+    let (decoded, errs) = Decoder::builder(&bytes).build().read_all();
+    assert!(errs.is_empty(), "decode errors: {errs:?}");
+    assert_eq!(decoded.len(), 2);
+
+    assert_eq!(
+        decoded[0].field("garmin_product").unwrap().value,
+        Value::Enum("fr935".into())
+    );
+    match decoded[1].field("duration_distance").unwrap().value {
+        Value::Float(v) => assert!((v - 800.0).abs() < 1e-6, "got {v}"),
+        ref other => panic!("expected Float(800.0), got {other:?}"),
+    }
+}
+
+#[test]
+fn oversized_arrays_and_strings_return_field_too_large() {
+    // 32 u64 developer field values = 256 wire bytes -> must return Err(FieldTooLarge), never wrap/panic.
+    let messages = vec![
+        Message {
+            global_mesg_num: 206, // field_description
+            name: "field_description",
+            fields: vec![
+                Field {
+                    name: "developer_data_index".into(),
+                    kind: FieldKind::Standard { field_def_num: 0 },
+                    value: Value::UInt(0),
+                    units: None,
+                },
+                Field {
+                    name: "field_definition_number".into(),
+                    kind: FieldKind::Standard { field_def_num: 1 },
+                    value: Value::UInt(0),
+                    units: None,
+                },
+                Field {
+                    name: "fit_base_type_id".into(),
+                    kind: FieldKind::Standard { field_def_num: 2 },
+                    value: Value::Enum("uint64".into()),
+                    units: None,
+                },
+                Field {
+                    name: "field_name".into(),
+                    kind: FieldKind::Standard { field_def_num: 3 },
+                    value: Value::String("big_u64_arr".into()),
+                    units: None,
+                },
+            ],
+        },
+        Message {
+            global_mesg_num: 20, // record
+            name: "record",
+            fields: vec![Field {
+                name: "big_u64_arr".into(),
+                kind: FieldKind::Developer {
+                    field_def_num: 0,
+                    developer_data_index: 0,
+                },
+                value: Value::Array(vec![Value::UInt(1); 32]),
+                units: None,
+            }],
+        },
+    ];
+    let err = Encoder::new().encode(&messages).unwrap_err();
+    assert_eq!(
+        err,
+        FitError::FieldTooLarge {
+            kind: FieldTooLargeKind::Array,
+            size: 256,
+        }
+    );
+
+    // Known standard UInt32 field with 64 elements = 256 wire bytes -> FieldTooLarge.
+    let err_u32 = Encoder::new()
+        .encode(&[Message {
+            global_mesg_num: 0, // file_id
+            name: "file_id",
+            fields: vec![Field {
+                name: "serial_number".into(),
+                kind: FieldKind::Standard { field_def_num: 3 },
+                value: Value::Array(vec![Value::UInt(42); 64]),
+                units: None,
+            }],
+        }])
+        .unwrap_err();
+    assert_eq!(
+        err_u32,
+        FitError::FieldTooLarge {
+            kind: FieldTooLargeKind::Array,
+            size: 256,
+        }
+    );
+
+    // 255-byte UTF-8 string + NUL = 256 bytes -> FieldTooLarge(String).
+    let long_str = vec![Message {
+        global_mesg_num: 0,
+        name: "file_id",
+        fields: vec![Field {
+            name: "product_name".into(),
+            kind: FieldKind::Standard { field_def_num: 8 },
+            value: Value::String("a".repeat(255)),
+            units: None,
+        }],
+    }];
+    assert_eq!(
+        Encoder::new().encode(&long_str).unwrap_err(),
+        FitError::FieldTooLarge {
+            kind: FieldTooLargeKind::String,
+            size: 255,
+        }
+    );
+}
+
+#[test]
+fn out_of_range_integer_encodes_as_invalid_sentinel_instead_of_wrapping() {
+    let messages = vec![Message {
+        global_mesg_num: 20, // record
+        name: "record",
+        fields: vec![
+            // heart_rate (fdn 3): uint8 -> 300 > 255 -> 0xFF (Invalid)
+            Field {
+                name: "heart_rate".into(),
+                kind: FieldKind::Standard { field_def_num: 3 },
+                value: Value::UInt(300),
+                units: None,
+            },
+            // cadence (fdn 4): uint8 -> -5 < 0 -> 0xFF (Invalid)
+            Field {
+                name: "cadence".into(),
+                kind: FieldKind::Standard { field_def_num: 4 },
+                value: Value::SInt(-5),
+                units: None,
+            },
+            // temperature (fdn 13): sint8 -> 200 > 127 -> 0x7F (Invalid)
+            Field {
+                name: "temperature".into(),
+                kind: FieldKind::Standard { field_def_num: 13 },
+                value: Value::SInt(200),
+                units: None,
+            },
+        ],
+    }];
+
+    let bytes = Encoder::new().encode(&messages).unwrap();
+    fit::check_integrity(&bytes).unwrap();
+    let (decoded, errs) = Decoder::builder(&bytes).build().read_all();
+    assert!(errs.is_empty(), "{errs:?}");
+    assert_eq!(decoded[0].field("heart_rate").unwrap().value, Value::Invalid);
+    assert_eq!(decoded[0].field("cadence").unwrap().value, Value::Invalid);
+    assert_eq!(decoded[0].field("temperature").unwrap().value, Value::Invalid);
+}
+
+#[test]
+fn embedded_null_in_string_returns_explicit_error() {
+    let messages = vec![Message {
+        global_mesg_num: 0, // file_id
+        name: "file_id",
+        fields: vec![Field {
+            name: "product_name".into(),
+            kind: FieldKind::Standard { field_def_num: 8 },
+            value: Value::String("abc\0def".into()),
+            units: None,
+        }],
+    }];
+    assert_eq!(
+        Encoder::new().encode(&messages).unwrap_err(),
+        FitError::EmbeddedNullInString
+    );
+}
+

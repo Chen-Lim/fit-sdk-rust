@@ -23,7 +23,7 @@ use std::collections::HashMap;
 
 use crate::base_type::BaseType;
 use crate::crc;
-use crate::dev_fields::{base_type_to_type_name, DevFieldInfo, DevFieldRegistry};
+use crate::dev_fields::{base_type_to_type_name, DevFieldRegistry};
 use crate::error::{FieldTooLargeKind, FitError};
 use crate::output_stream::OutputStream;
 use crate::profile;
@@ -116,8 +116,9 @@ impl Encoder {
 
         // Backpatch the segment header.
         let header_off = segment_start;
-        let data_size = u32::try_from(out.position() - header_off - 14)
-            .expect("FIT segment data exceeds u32::MAX bytes");
+        let payload_len = out.position() - header_off - 14;
+        let data_size =
+            u32::try_from(payload_len).map_err(|_| FitError::SegmentTooLarge(payload_len))?;
         out.patch(header_off + 4, &data_size.to_le_bytes());
 
         let header_crc = crc::calculate(&out.as_slice()[header_off..header_off + 12]);
@@ -255,6 +256,22 @@ fn is_real_wire_field(
     real.name == field_name || real.sub_fields.iter().any(|sf| sf.name == field_name)
 }
 
+/// Reject any `Value::String` (including elements inside `Value::Array`) that
+/// contains an embedded NUL (`0x00`) byte, which cannot round-trip cleanly on
+/// the FIT wire.
+fn validate_no_embedded_nul(value: &Value) -> Result<(), FitError> {
+    match value {
+        Value::String(s) if s.as_bytes().contains(&0) => Err(FitError::EmbeddedNullInString),
+        Value::Array(items) => {
+            for item in items {
+                validate_no_embedded_nul(item)?;
+            }
+            Ok(())
+        }
+        _ => Ok(()),
+    }
+}
+
 /// Build a `WireDef` from a single [`Message`]'s fields, consulting both the
 /// generated Profile metadata (for Standard fields) and the supplied developer
 /// registry (for Developer fields).
@@ -264,6 +281,7 @@ fn build_wire_def(msg: &Message, dev_registry: &DevFieldRegistry) -> Result<Wire
     let mut fields = Vec::with_capacity(msg.fields.len());
     let mut dev_fields = Vec::new();
     let mut seen_fdns = std::collections::HashSet::<u8>::new();
+    let mut seen_dev_keys = std::collections::HashSet::<(u8, u8)>::new();
 
     for field in &msg.fields {
         match field.kind {
@@ -277,13 +295,34 @@ fn build_wire_def(msg: &Message, dev_registry: &DevFieldRegistry) -> Result<Wire
                     continue;
                 }
 
-                let base_type = resolve_base_type(fi, &field.value);
-                let base_type_byte = base_type.type_code();
-                let size = compute_wire_size(fi, &field.value, base_type)?;
-                let (type_name, scale, offset) = match fi {
-                    Some(f) => (f.type_name, f.scale, f.offset),
-                    None => ("", None, None),
+                validate_no_embedded_nul(&field.value)?;
+
+                let (type_name, scale, offset, base_type) = match fi {
+                    Some(f) => {
+                        let (type_name, raw_scale, raw_offset, active_components) =
+                            if let Some(sub) = f.sub_fields.iter().find(|sf| sf.name == field.name)
+                            {
+                                (sub.type_name, sub.scale, sub.offset, sub.components)
+                            } else {
+                                (f.type_name, f.scale, f.offset, f.components)
+                            };
+                        // Multi-component packed containers hold heterogeneous bit-fields;
+                        // suppress parent-level scale/offset just like TypedDecoder does.
+                        let (scale, offset) = if active_components.len() > 1 {
+                            (None, None)
+                        } else {
+                            (raw_scale, raw_offset)
+                        };
+                        let base_type = BaseType::from_profile_type(type_name)
+                            .or_else(|| BaseType::from_profile_type(f.type_name))
+                            .unwrap_or_else(|| infer_base_type(&field.value));
+                        (type_name, scale, offset, base_type)
+                    }
+                    None => ("", None, None, infer_base_type(&field.value)),
                 };
+
+                let base_type_byte = base_type.wire_byte();
+                let size = compute_wire_size(base_type, &field.value)?;
 
                 fields.push(WireField {
                     field_def_num,
@@ -304,7 +343,11 @@ fn build_wire_def(msg: &Message, dev_registry: &DevFieldRegistry) -> Result<Wire
                 let Some(info) = dev_registry.get(developer_data_index, field_def_num) else {
                     continue;
                 };
-                let size = compute_dev_wire_size(info, &field.value)?;
+                if !seen_dev_keys.insert((developer_data_index, field_def_num)) {
+                    continue;
+                }
+                validate_no_embedded_nul(&field.value)?;
+                let size = compute_wire_size(info.base_type, &field.value)?;
                 dev_fields.push(WireDevField {
                     field_def_num,
                     size,
@@ -324,47 +367,6 @@ fn build_wire_def(msg: &Message, dev_registry: &DevFieldRegistry) -> Result<Wire
     })
 }
 
-/// Resolve a field's wire base type. Order:
-/// 1. Codegen dispatcher (Profile enum types like `manufacturer`, `sport`).
-/// 2. Direct base-type name (`uint16`, `string`, `byte`, ...).
-/// 3. Inference from the value variant (last resort).
-fn resolve_base_type(fi: Option<&profile::FieldInfo>, value: &Value) -> BaseType {
-    if let Some(fi) = fi {
-        if let Some(bt) = crate::transforms::enum_strings::base_type_for_type_name(fi.type_name) {
-            return bt;
-        }
-        if let Some(bt) = base_type_from_name(fi.type_name) {
-            return bt;
-        }
-    }
-    infer_base_type(value)
-}
-
-fn base_type_from_name(type_name: &str) -> Option<BaseType> {
-    match type_name {
-        "enum" => Some(BaseType::Enum),
-        "sint8" => Some(BaseType::SInt8),
-        "uint8" => Some(BaseType::UInt8),
-        "sint16" => Some(BaseType::SInt16),
-        "uint16" => Some(BaseType::UInt16),
-        "sint32" => Some(BaseType::SInt32),
-        "uint32" => Some(BaseType::UInt32),
-        "sint64" => Some(BaseType::SInt64),
-        "uint64" => Some(BaseType::UInt64),
-        "float32" => Some(BaseType::Float32),
-        "float64" => Some(BaseType::Float64),
-        "uint8z" => Some(BaseType::UInt8z),
-        "uint16z" => Some(BaseType::UInt16z),
-        "uint32z" => Some(BaseType::UInt32z),
-        "uint64z" => Some(BaseType::UInt64z),
-        "string" => Some(BaseType::String),
-        "byte" => Some(BaseType::Byte),
-        "bool" => Some(BaseType::UInt8),
-        "date_time" | "local_date_time" => Some(BaseType::UInt32),
-        _ => None,
-    }
-}
-
 fn infer_base_type(value: &Value) -> BaseType {
     match value {
         Value::UInt(_) => BaseType::UInt32,
@@ -381,86 +383,96 @@ fn infer_base_type(value: &Value) -> BaseType {
     }
 }
 
-fn compute_wire_size(
-    fi: Option<&profile::FieldInfo>,
-    value: &Value,
-    base_type: BaseType,
-) -> Result<u8, FitError> {
-    if base_type == BaseType::String {
-        return match value {
-            Value::String(s) => u8::try_from(s.len() + 1).map_err(|_| FitError::FieldTooLarge {
-                kind: FieldTooLargeKind::String,
-                size: s.len(),
-            }),
-            _ => Ok(1),
-        };
-    }
-    if base_type == BaseType::Byte {
-        return match value {
-            Value::Bytes(b) => u8::try_from(b.len().max(1)).map_err(|_| FitError::FieldTooLarge {
-                kind: FieldTooLargeKind::ByteArray,
-                size: b.len(),
-            }),
-            _ => Ok(1),
-        };
-    }
-    let element_size = base_type.element_size() as u8;
-    let count = element_count(fi, value)?;
-    Ok(element_size * count.max(1))
-}
-
-fn compute_dev_wire_size(info: &DevFieldInfo, value: &Value) -> Result<u8, FitError> {
-    if info.base_type == BaseType::String {
-        return match value {
-            Value::String(s) => u8::try_from(s.len() + 1).map_err(|_| FitError::FieldTooLarge {
-                kind: FieldTooLargeKind::String,
-                size: s.len(),
-            }),
-            _ => Ok(1),
-        };
-    }
-    if info.base_type == BaseType::Byte {
-        return match value {
-            Value::Bytes(b) => u8::try_from(b.len().max(1)).map_err(|_| FitError::FieldTooLarge {
-                kind: FieldTooLargeKind::ByteArray,
-                size: b.len(),
-            }),
-            _ => Ok(1),
-        };
-    }
-    let element_size = info.base_type.element_size() as u8;
-    if let Value::Array(a) = value {
-        let len = u8::try_from(a.len()).map_err(|_| FitError::FieldTooLarge {
-            kind: FieldTooLargeKind::Array,
-            size: a.len(),
-        })?;
-        return Ok(element_size * len.max(1));
-    }
-    Ok(element_size)
-}
-
-fn element_count(fi: Option<&profile::FieldInfo>, value: &Value) -> Result<u8, FitError> {
-    if let Value::Array(a) = value {
-        return u8::try_from(a.len()).map_err(|_| FitError::FieldTooLarge {
-            kind: FieldTooLargeKind::Array,
-            size: a.len(),
-        });
-    }
-    if let Some(fi) = fi {
-        if let Some(spec) = fi.array {
-            let inner = spec.trim_matches(|c| c == '[' || c == ']');
-            if let Some((first, _rest)) = inner.split_once('x') {
-                if let Ok(n) = first.parse::<u8>() {
-                    return Ok(n);
+fn compute_wire_size(base_type: BaseType, value: &Value) -> Result<u8, FitError> {
+    match base_type {
+        BaseType::String => match value {
+            Value::String(s) => {
+                if s.as_bytes().contains(&0) {
+                    return Err(FitError::EmbeddedNullInString);
                 }
-            } else if inner != "N" {
-                if let Ok(n) = inner.parse::<u8>() {
-                    return Ok(n);
-                }
+                let len = s.len().checked_add(1).ok_or(FitError::FieldTooLarge {
+                    kind: FieldTooLargeKind::String,
+                    size: s.len(),
+                })?;
+                u8::try_from(len).map_err(|_| FitError::FieldTooLarge {
+                    kind: FieldTooLargeKind::String,
+                    size: s.len(),
+                })
             }
+            Value::Array(items) => {
+                if items.is_empty() {
+                    return Ok(1);
+                }
+                let mut total = 0usize;
+                for item in items {
+                    let item_len = match item {
+                        Value::String(s) => {
+                            if s.as_bytes().contains(&0) {
+                                return Err(FitError::EmbeddedNullInString);
+                            }
+                            s.len().checked_add(1).ok_or(FitError::FieldTooLarge {
+                                kind: FieldTooLargeKind::String,
+                                size: usize::MAX,
+                            })?
+                        }
+                        _ => 1,
+                    };
+                    total = total.checked_add(item_len).ok_or(FitError::FieldTooLarge {
+                        kind: FieldTooLargeKind::String,
+                        size: usize::MAX,
+                    })?;
+                }
+                u8::try_from(total).map_err(|_| FitError::FieldTooLarge {
+                    kind: FieldTooLargeKind::String,
+                    size: total,
+                })
+            }
+            _ => Ok(1),
+        },
+        BaseType::Byte => match value {
+            Value::Bytes(b) => {
+                let size = b.len().max(1);
+                u8::try_from(size).map_err(|_| FitError::FieldTooLarge {
+                    kind: FieldTooLargeKind::ByteArray,
+                    size: b.len(),
+                })
+            }
+            Value::Array(items) => {
+                let mut total = 0usize;
+                for item in items {
+                    let item_len = match item {
+                        Value::Bytes(b) => b.len(),
+                        _ => 1,
+                    };
+                    total = total.checked_add(item_len).ok_or(FitError::FieldTooLarge {
+                        kind: FieldTooLargeKind::ByteArray,
+                        size: usize::MAX,
+                    })?;
+                }
+                let size = total.max(1);
+                u8::try_from(size).map_err(|_| FitError::FieldTooLarge {
+                    kind: FieldTooLargeKind::ByteArray,
+                    size: total,
+                })
+            }
+            _ => Ok(1),
+        },
+        _ => {
+            let element_size = base_type.element_size();
+            let count = match value {
+                Value::Array(a) => a.len().max(1),
+                _ => 1,
+            };
+            let total_bytes = element_size.checked_mul(count).ok_or(FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::Array,
+                size: usize::MAX,
+            })?;
+            u8::try_from(total_bytes).map_err(|_| FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::Array,
+                size: total_bytes,
+            })
         }
     }
-    Ok(1)
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -569,11 +581,11 @@ fn collect_dev_registry(messages: &[Message]) -> DevFieldRegistry {
         // surface it as either `Value::UInt(_)` or `Value::Enum("uint8")` /
         // `Value::Enum("float32")` etc. depending on toggles.
         let bt_id = m.field("fit_base_type_id").and_then(|f| match &f.value {
-            Value::UInt(v) => Some(*v as u8),
-            Value::SInt(v) => Some(*v as u8),
+            Value::UInt(v) => u8::try_from(*v).ok(),
+            Value::SInt(v) => u8::try_from(*v).ok(),
             Value::Enum(name) => {
                 crate::transforms::enum_strings::enum_value_by_str("fit_base_type", name)
-                    .map(|v| v as u8)
+                    .and_then(|v| u8::try_from(v).ok())
             }
             _ => None,
         });
@@ -607,8 +619,8 @@ fn collect_dev_registry(messages: &[Message]) -> DevFieldRegistry {
 
 fn value_as_u8(f: &crate::value::Field) -> Option<u8> {
     match &f.value {
-        Value::UInt(v) => Some(*v as u8),
-        Value::SInt(v) => Some(*v as u8),
+        Value::UInt(v) => u8::try_from(*v).ok(),
+        Value::SInt(v) => u8::try_from(*v).ok(),
         _ => None,
     }
 }
@@ -741,6 +753,14 @@ fn encode_dev_field_value(
     )
 }
 
+/// Write trailing invalid elements if a field's `size` exceeds the bytes written.
+fn pad_trailing_invalid(out: &mut OutputStream, base_type: BaseType, start: usize, size: u8) {
+    let written = out.position() - start;
+    if written < size as usize {
+        write_invalid(out, base_type, (size as usize - written) as u8);
+    }
+}
+
 /// Common encoder for both standard and developer fields. `type_name` is used
 /// only for `Value::Enum` reverse lookups; `scale`/`offset` flip the M5 forward
 /// transform for `Value::Float` on integer base types.
@@ -753,56 +773,161 @@ fn encode_value_inner(
     scale: Option<f64>,
     offset: Option<f64>,
 ) -> Result<(), FitError> {
+    let start = out.position();
     match value {
         Value::Invalid => write_invalid(out, base_type, size),
-        Value::Bool(b) => out.write_u8(if *b { 1 } else { 0 }),
-        Value::UInt(v) => encode_int(out, *v as i128, base_type),
-        Value::SInt(v) => encode_int(out, *v as i128, base_type),
-        Value::Float(v) => encode_float(out, *v, base_type, scale, offset),
+        Value::Bool(b) => {
+            if base_type == BaseType::String {
+                write_invalid(out, base_type, size);
+            } else {
+                encode_int(out, i128::from(*b), base_type);
+                pad_trailing_invalid(out, base_type, start, size);
+            }
+        }
+        Value::UInt(v) => {
+            if base_type == BaseType::String {
+                write_invalid(out, base_type, size);
+            } else {
+                encode_int(out, i128::from(*v), base_type);
+                pad_trailing_invalid(out, base_type, start, size);
+            }
+        }
+        Value::SInt(v) => {
+            if base_type == BaseType::String {
+                write_invalid(out, base_type, size);
+            } else {
+                encode_int(out, i128::from(*v), base_type);
+                pad_trailing_invalid(out, base_type, start, size);
+            }
+        }
+        Value::Float(v) => {
+            if base_type == BaseType::String {
+                write_invalid(out, base_type, size);
+            } else {
+                encode_float(out, *v, base_type, scale, offset);
+                pad_trailing_invalid(out, base_type, start, size);
+            }
+        }
         Value::String(s) => {
-            out.write_bytes(s.as_bytes());
-            out.write_u8(0x00);
-            for _ in s.len() + 1..size as usize {
-                out.write_u8(0x00);
+            if s.as_bytes().contains(&0) {
+                return Err(FitError::EmbeddedNullInString);
+            }
+            if base_type == BaseType::String {
+                let max = size as usize;
+                let take = s.len().min(max.saturating_sub(1));
+                out.write_bytes(&s.as_bytes()[..take]);
+                if max > 0 {
+                    out.write_u8(0x00);
+                }
+                for _ in (out.position() - start)..max {
+                    out.write_u8(0x00);
+                }
+            } else {
+                write_invalid(out, base_type, size);
             }
         }
         Value::Bytes(b) => {
-            out.write_bytes(b);
-            for _ in b.len()..size as usize {
-                out.write_u8(0xFF);
+            if base_type == BaseType::Byte {
+                let take = b.len().min(size as usize);
+                out.write_bytes(&b[..take]);
+                for _ in take..size as usize {
+                    out.write_u8(0xFF);
+                }
+            } else {
+                write_invalid(out, base_type, size);
             }
         }
         Value::Enum(name) => {
-            let lookup_name = if type_name.is_empty() {
-                "enum"
-            } else {
-                type_name
-            };
-            if let Some(v) = crate::transforms::enum_strings::enum_value_by_str(lookup_name, name) {
-                encode_int(out, v as i128, base_type);
-            } else {
+            if base_type == BaseType::String {
                 write_invalid(out, base_type, size);
+            } else {
+                let lookup_name = if type_name.is_empty() {
+                    "enum"
+                } else {
+                    type_name
+                };
+                if let Some(v) =
+                    crate::transforms::enum_strings::enum_value_by_str(lookup_name, name)
+                {
+                    encode_int(out, i128::from(v), base_type);
+                    pad_trailing_invalid(out, base_type, start, size);
+                } else {
+                    write_invalid(out, base_type, size);
+                }
             }
         }
         Value::DateTime(dt) => {
-            #[cfg(feature = "chrono")]
-            let secs = crate::datetime::datetime_to_fit(*dt);
-            #[cfg(not(feature = "chrono"))]
-            let secs = Some(*dt);
-            if let Some(secs) = secs {
-                encode_int(out, secs as i128, base_type);
-            } else {
+            if base_type == BaseType::String {
                 write_invalid(out, base_type, size);
+            } else {
+                #[cfg(feature = "chrono")]
+                let secs = crate::datetime::datetime_to_fit(*dt);
+                #[cfg(not(feature = "chrono"))]
+                let secs = Some(*dt);
+                if let Some(secs) = secs {
+                    encode_int(out, i128::from(secs), base_type);
+                    pad_trailing_invalid(out, base_type, start, size);
+                } else {
+                    write_invalid(out, base_type, size);
+                }
             }
         }
         Value::Array(items) => {
-            let element_size = base_type.element_size() as u8;
-            for item in items {
-                encode_value_inner(out, item, base_type, element_size, type_name, scale, offset)?;
-            }
-            let written = items.len() * base_type.element_size();
-            for _ in written..size as usize {
-                out.write_u8(invalid_byte_for_base(base_type));
+            if base_type == BaseType::String {
+                for item in items {
+                    let written = out.position() - start;
+                    if written >= size as usize {
+                        break;
+                    }
+                    let rem = size as usize - written;
+                    match item {
+                        Value::String(s) => {
+                            if s.as_bytes().contains(&0) {
+                                return Err(FitError::EmbeddedNullInString);
+                            }
+                            let take = s.len().min(rem - 1);
+                            out.write_bytes(&s.as_bytes()[..take]);
+                            out.write_u8(0x00);
+                        }
+                        _ => out.write_u8(0x00),
+                    }
+                }
+                pad_trailing_invalid(out, base_type, start, size);
+            } else if base_type == BaseType::Byte {
+                for item in items {
+                    let written = out.position() - start;
+                    if written >= size as usize {
+                        break;
+                    }
+                    let rem = size as usize - written;
+                    match item {
+                        Value::Bytes(b) => out.write_bytes(&b[..b.len().min(rem)]),
+                        Value::UInt(v) => out.write_u8(u8::try_from(*v).unwrap_or(0xFF)),
+                        Value::SInt(v) => out.write_u8(u8::try_from(*v).unwrap_or(0xFF)),
+                        _ => out.write_u8(0xFF),
+                    }
+                }
+                pad_trailing_invalid(out, base_type, start, size);
+            } else {
+                let elem_sz = base_type.element_size();
+                let element_size = elem_sz as u8;
+                let max_items = size as usize / elem_sz;
+                for item in items.iter().take(max_items) {
+                    if matches!(item, Value::Array(_)) {
+                        write_invalid(out, base_type, element_size);
+                    } else {
+                        encode_value_inner(
+                            out,
+                            item,
+                            base_type,
+                            element_size,
+                            type_name,
+                            scale,
+                            offset,
+                        )?;
+                    }
+                }
+                pad_trailing_invalid(out, base_type, start, size);
             }
         }
     }
@@ -842,9 +967,9 @@ fn encode_float(
 }
 
 /// Inclusive `[min, max]` range of an integer base type, in `i128`. Used by
-/// [`encode_float`] to reject scaled values that would silently wrap on cast.
-/// Float / String bases are not integer-shaped; we return a degenerate range
-/// (they are routed through other paths and never reach this helper in practice).
+/// [`encode_int`] and [`encode_float`] to reject out-of-range values that would
+/// silently wrap on cast. Float / String bases are not integer-shaped; we
+/// return a degenerate range (they are routed through other paths).
 fn base_type_int_range(base_type: BaseType) -> (i128, i128) {
     match base_type {
         BaseType::Enum | BaseType::UInt8 | BaseType::UInt8z | BaseType::Byte => {
@@ -863,19 +988,29 @@ fn base_type_int_range(base_type: BaseType) -> (i128, i128) {
 
 fn encode_int(out: &mut OutputStream, v: i128, base_type: BaseType) {
     match base_type {
-        BaseType::Enum | BaseType::UInt8 | BaseType::UInt8z | BaseType::Byte => {
-            out.write_u8(v as u8);
-        }
-        BaseType::UInt16 | BaseType::UInt16z => out.write_u16(v as u16),
-        BaseType::UInt32 | BaseType::UInt32z => out.write_u32(v as u32),
-        BaseType::UInt64 | BaseType::UInt64z => out.write_u64(v as u64),
-        BaseType::SInt8 => out.write_u8(v as i8 as u8),
-        BaseType::SInt16 => out.write_i16(v as i16),
-        BaseType::SInt32 => out.write_i32(v as i32),
-        BaseType::SInt64 => out.write_i64(v as i64),
         BaseType::Float32 => out.write_u32((v as f32).to_bits()),
         BaseType::Float64 => out.write_u64((v as f64).to_bits()),
         BaseType::String => {} // strings handled separately
+        _ => {
+            let (lo, hi) = base_type_int_range(base_type);
+            if v < lo || v > hi {
+                write_invalid(out, base_type, base_type.element_size() as u8);
+                return;
+            }
+            match base_type {
+                BaseType::Enum | BaseType::UInt8 | BaseType::UInt8z | BaseType::Byte => {
+                    out.write_u8(v as u8);
+                }
+                BaseType::UInt16 | BaseType::UInt16z => out.write_u16(v as u16),
+                BaseType::UInt32 | BaseType::UInt32z => out.write_u32(v as u32),
+                BaseType::UInt64 | BaseType::UInt64z => out.write_u64(v as u64),
+                BaseType::SInt8 => out.write_u8(v as i8 as u8),
+                BaseType::SInt16 => out.write_i16(v as i16),
+                BaseType::SInt32 => out.write_i32(v as i32),
+                BaseType::SInt64 => out.write_i64(v as i64),
+                BaseType::Float32 | BaseType::Float64 | BaseType::String => unreachable!(),
+            }
+        }
     }
 }
 
@@ -943,15 +1078,11 @@ fn write_invalid(out: &mut OutputStream, base_type: BaseType, size: u8) {
                 out.write_i64(i64::MAX);
             }
         }
-        BaseType::String => out.write_u8(0x00),
-    }
-}
-
-fn invalid_byte_for_base(base_type: BaseType) -> u8 {
-    match base_type {
-        BaseType::UInt8z | BaseType::UInt16z | BaseType::UInt32z | BaseType::UInt64z => 0x00,
-        BaseType::String => 0x00,
-        _ => 0xFF,
+        BaseType::String => {
+            for _ in 0..count {
+                out.write_u8(0x00);
+            }
+        }
     }
 }
 
@@ -1014,5 +1145,94 @@ mod tests {
         reg.commit(999, local, new_def, 200);
         assert!(reg.by_mesg_num.contains_key(&999));
         assert!(!reg.by_mesg_num.contains_key(&0));
+    }
+
+    #[test]
+    fn compute_wire_size_rejects_array_byte_overflow_without_wrapping() {
+        let u64_32 = Value::Array(vec![Value::UInt(1); 32]);
+        assert!(matches!(
+            compute_wire_size(BaseType::UInt64, &u64_32),
+            Err(FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::Array,
+                size: 256,
+            })
+        ));
+
+        let u32_64 = Value::Array(vec![Value::UInt(1); 64]);
+        assert!(matches!(
+            compute_wire_size(BaseType::UInt32, &u32_64),
+            Err(FitError::FieldTooLarge {
+                kind: FieldTooLargeKind::Array,
+                size: 256,
+            })
+        ));
+
+        let u32_63 = Value::Array(vec![Value::UInt(1); 63]);
+        assert_eq!(compute_wire_size(BaseType::UInt32, &u32_63).unwrap(), 252);
+    }
+
+    #[test]
+    fn encode_int_writes_invalid_sentinel_when_out_of_range() {
+        let cases = [
+            (256i128, BaseType::UInt8, vec![0xFF]),
+            (-1i128, BaseType::UInt8, vec![0xFF]),
+            (256i128, BaseType::UInt8z, vec![0x00]),
+            (-129i128, BaseType::SInt8, vec![0x7F]),
+            (128i128, BaseType::SInt8, vec![0x7F]),
+            (65536i128, BaseType::UInt16, vec![0xFF, 0xFF]),
+            (-1i128, BaseType::UInt16z, vec![0x00, 0x00]),
+            (32768i128, BaseType::SInt16, vec![0xFF, 0x7F]),
+        ];
+        for (val, bt, expected) in cases {
+            let mut out = OutputStream::new();
+            encode_int(&mut out, val, bt);
+            assert_eq!(
+                out.as_slice(),
+                expected.as_slice(),
+                "val={val} bt={bt:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn build_wire_def_resolves_subfield_and_suppresses_multi_component_scale() {
+        // workout_step (27): fdn 2 SubField "duration_distance" has scale=100.
+        let step = Message {
+            global_mesg_num: 27,
+            name: "workout_step",
+            fields: vec![crate::Field {
+                name: "duration_distance".to_string(),
+                kind: FieldKind::Standard { field_def_num: 2 },
+                value: Value::Float(800.0),
+                units: Some("m".to_string()),
+            }],
+        };
+        let def = build_wire_def(&step, &DevFieldRegistry::new()).unwrap();
+        assert_eq!(def.fields[0].scale, Some(100.0));
+        assert_eq!(def.fields[0].base_type, BaseType::UInt32);
+        assert_eq!(def.fields[0].base_type_byte, 0x86);
+
+        // record (20): fdn 8 "compressed_speed_distance" has 2 components -> suppress scale.
+        let rec = Message {
+            global_mesg_num: 20,
+            name: "record",
+            fields: vec![crate::Field {
+                name: "compressed_speed_distance".to_string(),
+                kind: FieldKind::Standard { field_def_num: 8 },
+                value: Value::Bytes(vec![0x8B, 0x10, 0x00]),
+                units: None,
+            }],
+        };
+        let rec_def = build_wire_def(&rec, &DevFieldRegistry::new()).unwrap();
+        assert_eq!(rec_def.fields[0].scale, None);
+        assert_eq!(rec_def.fields[0].offset, None);
+        assert_eq!(rec_def.fields[0].base_type, BaseType::Byte);
+    }
+
+    #[test]
+    fn write_invalid_pads_full_string_width() {
+        let mut out = OutputStream::new();
+        write_invalid(&mut out, BaseType::String, 4);
+        assert_eq!(out.as_slice(), &[0, 0, 0, 0]);
     }
 }
