@@ -3882,17 +3882,17 @@ static SUBFIELDS_SESSION_12: &[SubField] = &[
 static COMPONENTS_SESSION_15: &[Component] = &[Component {
     name: "enhanced_avg_speed",
     bits: 16,
-    scale: None,
+    scale: Some(1000_f64),
     offset: None,
-    units: None,
+    units: Some("m/s"),
     accumulate: false,
 }];
 static COMPONENTS_SESSION_16: &[Component] = &[Component {
     name: "enhanced_max_speed",
     bits: 16,
-    scale: None,
+    scale: Some(1000_f64),
     offset: None,
-    units: None,
+    units: Some("m/s"),
     accumulate: false,
 }];
 static SUBFIELDS_SESSION_19: &[SubField] = &[SubField {
@@ -3916,25 +3916,25 @@ static SUBFIELDS_SESSION_20: &[SubField] = &[SubField {
 static COMPONENTS_SESSION_49: &[Component] = &[Component {
     name: "enhanced_avg_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_SESSION_50: &[Component] = &[Component {
     name: "enhanced_max_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_SESSION_71: &[Component] = &[Component {
     name: "enhanced_min_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_SESSION_130: &[Component] = &[Component {
@@ -5881,17 +5881,17 @@ static SUBFIELDS_LAP_12: &[SubField] = &[
 static COMPONENTS_LAP_15: &[Component] = &[Component {
     name: "enhanced_avg_speed",
     bits: 16,
-    scale: None,
+    scale: Some(1000_f64),
     offset: None,
-    units: None,
+    units: Some("m/s"),
     accumulate: false,
 }];
 static COMPONENTS_LAP_16: &[Component] = &[Component {
     name: "enhanced_max_speed",
     bits: 16,
-    scale: None,
+    scale: Some(1000_f64),
     offset: None,
-    units: None,
+    units: Some("m/s"),
     accumulate: false,
 }];
 static SUBFIELDS_LAP_19: &[SubField] = &[SubField {
@@ -5915,25 +5915,25 @@ static SUBFIELDS_LAP_20: &[SubField] = &[SubField {
 static COMPONENTS_LAP_38: &[Component] = &[Component {
     name: "enhanced_avg_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_LAP_39: &[Component] = &[Component {
     name: "enhanced_max_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_LAP_58: &[Component] = &[Component {
     name: "enhanced_min_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_LAP_111: &[Component] = &[Component {
@@ -7727,34 +7727,34 @@ pub static MESG_LENGTH: MesgInfo = MesgInfo {
 static COMPONENTS_RECORD_3: &[Component] = &[Component {
     name: "enhanced_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_RECORD_7: &[Component] = &[Component {
     name: "enhanced_speed",
     bits: 16,
-    scale: None,
+    scale: Some(1000_f64),
     offset: None,
-    units: None,
+    units: Some("m/s"),
     accumulate: false,
 }];
 static COMPONENTS_RECORD_9: &[Component] = &[
     Component {
         name: "speed",
         bits: 12,
-        scale: None,
+        scale: Some(100_f64),
         offset: None,
-        units: None,
+        units: Some("m/s"),
         accumulate: false,
     },
     Component {
         name: "distance",
         bits: 12,
-        scale: None,
+        scale: Some(16_f64),
         offset: None,
-        units: None,
+        units: Some("m"),
         accumulate: true,
     },
 ];
@@ -7763,7 +7763,7 @@ static COMPONENTS_RECORD_16: &[Component] = &[Component {
     bits: 8,
     scale: None,
     offset: None,
-    units: None,
+    units: Some("cycles"),
     accumulate: true,
 }];
 static COMPONENTS_RECORD_18: &[Component] = &[Component {
@@ -7771,7 +7771,7 @@ static COMPONENTS_RECORD_18: &[Component] = &[Component {
     bits: 16,
     scale: None,
     offset: None,
-    units: None,
+    units: Some("watts"),
     accumulate: true,
 }];
 static COMPONENTS_RECORD_68: &[Component] = &[Component {
@@ -7779,7 +7779,7 @@ static COMPONENTS_RECORD_68: &[Component] = &[Component {
     bits: 8,
     scale: None,
     offset: None,
-    units: None,
+    units: Some("s"),
     accumulate: false,
 }];
 static FIELDS_RECORD: &[FieldInfo] = &[
@@ -7865,7 +7865,7 @@ static FIELDS_RECORD: &[FieldInfo] = &[
         units: Some("m"),
         components: &[],
         sub_fields: &[],
-        accumulate: false,
+        accumulate: true,
     },
     FieldInfo {
         field_def_num: 6,
@@ -7985,7 +7985,7 @@ static FIELDS_RECORD: &[FieldInfo] = &[
         units: Some("cycles"),
         components: COMPONENTS_RECORD_16,
         sub_fields: &[],
-        accumulate: true,
+        accumulate: false,
     },
     FieldInfo {
         field_def_num: 19,
@@ -7997,7 +7997,7 @@ static FIELDS_RECORD: &[FieldInfo] = &[
         units: Some("cycles"),
         components: &[],
         sub_fields: &[],
-        accumulate: false,
+        accumulate: true,
     },
     FieldInfo {
         field_def_num: 28,
@@ -8009,7 +8009,7 @@ static FIELDS_RECORD: &[FieldInfo] = &[
         units: Some("watts"),
         components: COMPONENTS_RECORD_18,
         sub_fields: &[],
-        accumulate: true,
+        accumulate: false,
     },
     FieldInfo {
         field_def_num: 29,
@@ -8021,7 +8021,7 @@ static FIELDS_RECORD: &[FieldInfo] = &[
         units: Some("watts"),
         components: &[],
         sub_fields: &[],
-        accumulate: false,
+        accumulate: true,
     },
     FieldInfo {
         field_def_num: 30,
@@ -8878,7 +8878,7 @@ static SUBFIELD_COMPONENTS_EVENT_4_22: &[Component] = &[
     Component {
         name: "radar_threat_avg_approach_speed",
         bits: 8,
-        scale: None,
+        scale: Some(10_f64),
         offset: None,
         units: None,
         accumulate: false,
@@ -8886,7 +8886,7 @@ static SUBFIELD_COMPONENTS_EVENT_4_22: &[Component] = &[
     Component {
         name: "radar_threat_max_approach_speed",
         bits: 8,
-        scale: None,
+        scale: Some(10_f64),
         offset: None,
         units: None,
         accumulate: false,
@@ -11649,9 +11649,9 @@ pub static MESG_SET: MesgInfo = MesgInfo {
 static COMPONENTS_JUMP_8: &[Component] = &[Component {
     name: "enhanced_speed",
     bits: 16,
-    scale: None,
+    scale: Some(1000_f64),
     offset: None,
-    units: None,
+    units: Some("m/s"),
     accumulate: false,
 }];
 static FIELDS_JUMP: &[FieldInfo] = &[
@@ -12901,9 +12901,9 @@ pub static MESG_SEGMENT_LEADERBOARD_ENTRY: MesgInfo = MesgInfo {
 static COMPONENTS_SEGMENT_POINT_4: &[Component] = &[Component {
     name: "enhanced_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static FIELDS_SEGMENT_POINT: &[FieldInfo] = &[
@@ -13010,25 +13010,25 @@ static SUBFIELDS_SEGMENT_LAP_12: &[SubField] = &[SubField {
 static COMPONENTS_SEGMENT_LAP_36: &[Component] = &[Component {
     name: "enhanced_avg_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_SEGMENT_LAP_37: &[Component] = &[Component {
     name: "enhanced_max_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static COMPONENTS_SEGMENT_LAP_56: &[Component] = &[Component {
     name: "enhanced_min_altitude",
     bits: 16,
-    scale: None,
-    offset: None,
-    units: None,
+    scale: Some(5_f64),
+    offset: Some(500_f64),
+    units: Some("m"),
     accumulate: false,
 }];
 static FIELDS_SEGMENT_LAP: &[FieldInfo] = &[
@@ -16322,16 +16322,24 @@ pub static MESG_SPO2_DATA: MesgInfo = MesgInfo {
 static COMPONENTS_HR_2: &[Component] = &[Component {
     name: "fractional_timestamp",
     bits: 8,
-    scale: None,
+    scale: Some(256_f64),
     offset: None,
-    units: None,
+    units: Some("s"),
     accumulate: false,
 }];
 static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
+        offset: None,
+        units: Some("s"),
+        accumulate: true,
+    },
+    Component {
+        name: "event_timestamp",
+        bits: 12,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16339,7 +16347,7 @@ static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16347,7 +16355,7 @@ static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16355,7 +16363,7 @@ static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16363,7 +16371,7 @@ static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16371,7 +16379,7 @@ static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16379,7 +16387,7 @@ static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16387,7 +16395,7 @@ static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16395,15 +16403,7 @@ static COMPONENTS_HR_5: &[Component] = &[
     Component {
         name: "event_timestamp",
         bits: 12,
-        scale: None,
-        offset: None,
-        units: None,
-        accumulate: true,
-    },
-    Component {
-        name: "event_timestamp",
-        bits: 12,
-        scale: None,
+        scale: Some(1024_f64),
         offset: None,
         units: None,
         accumulate: true,
@@ -16468,7 +16468,7 @@ static FIELDS_HR: &[FieldInfo] = &[
         units: Some("s"),
         components: &[],
         sub_fields: &[],
-        accumulate: false,
+        accumulate: true,
     },
     FieldInfo {
         field_def_num: 10,
@@ -16480,7 +16480,7 @@ static FIELDS_HR: &[FieldInfo] = &[
         units: Some("s"),
         components: COMPONENTS_HR_5,
         sub_fields: &[],
-        accumulate: true,
+        accumulate: false,
     },
 ];
 
