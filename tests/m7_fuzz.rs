@@ -60,7 +60,8 @@ fn build_one_record_fit() -> Vec<u8> {
     bytes.extend_from_slice(b".FIT");
     bytes.extend_from_slice(&[0, 0]); // header CRC
     bytes.extend_from_slice(&records);
-    bytes.extend_from_slice(&[0, 0]); // file CRC
+    let file_crc = fit::crc16(&bytes);
+    bytes.extend_from_slice(&file_crc.to_le_bytes());
     bytes
 }
 
@@ -212,7 +213,8 @@ proptest! {
         bytes.extend_from_slice(b".FIT");
         bytes.extend_from_slice(&[0, 0]);
         bytes.extend_from_slice(&records);
-        bytes.extend_from_slice(&[0, 0]);
+        let file_crc = fit::crc16(&bytes);
+        bytes.extend_from_slice(&file_crc.to_le_bytes());
 
         let _ = Decoder::new(&bytes).read_all();
     }

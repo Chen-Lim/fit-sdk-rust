@@ -57,10 +57,11 @@ pub struct TransformOptions {
     /// timestamps correctly. Only available with the `chrono` feature.
     #[cfg(feature = "chrono")]
     pub merge_heart_rates: bool,
-    /// Skip `file_id` messages from the output.
+    /// Skip the 14-byte header without validating it (uses [`crate::DecodeMode::SkipHeader`])
+    /// and ignore trailing file CRC. Mutually exclusive with `data_only`.
     pub skip_header: bool,
-    /// Only keep messages whose `global_mesg_num` is in the Profile
-    /// (filters out unknown / metadata-only messages).
+    /// Treat the byte stream as headerless FIT records (uses [`crate::DecodeMode::DataOnly`])
+    /// and ignore trailing file CRC. Mutually exclusive with `skip_header`.
     pub data_only: bool,
 }
 
@@ -79,6 +80,23 @@ impl Default for TransformOptions {
             data_only: false,
         }
     }
+}
+
+fn validate_options(options: TransformOptions) -> Result<(), FitError> {
+    if options.data_only && options.skip_header {
+        return Err(FitError::InvalidOptions(
+            "data_only and skip_header cannot both be enabled",
+        ));
+    }
+    #[cfg(feature = "chrono")]
+    if options.merge_heart_rates
+        && (!options.apply_scale_and_offset || !options.expand_components)
+    {
+        return Err(FitError::InvalidOptions(
+            "merge_heart_rates requires apply_scale_and_offset and expand_components",
+        ));
+    }
+    Ok(())
 }
 
 /// Builder for [`TypedDecoder`]. Created by [`Decoder::builder`].
@@ -142,12 +160,22 @@ impl<'a> DecoderBuilder<'a> {
     }
 
     pub fn build(self) -> TypedDecoder<'a> {
+        let mode = if self.options.skip_header {
+            crate::decoder::DecodeMode::SkipHeader
+        } else if self.options.data_only {
+            crate::decoder::DecodeMode::DataOnly
+        } else {
+            crate::decoder::DecodeMode::Normal
+        };
+        let pending_option_error = validate_options(self.options).err();
         TypedDecoder {
-            inner: Decoder::new(self.bytes),
+            inner: Decoder::with_mode(self.bytes, mode),
             options: self.options,
             accumulator: Accumulator::new(),
             dev_registry: DevFieldRegistry::new(),
             on_mesg: self.on_mesg,
+            pending_option_error,
+            terminated: false,
         }
     }
 }
@@ -169,6 +197,8 @@ pub struct TypedDecoder<'a> {
     pub(crate) accumulator: Accumulator,
     dev_registry: DevFieldRegistry,
     on_mesg: Option<MesgCallback<'a>>,
+    pending_option_error: Option<FitError>,
+    terminated: bool,
 }
 
 impl<'a> TypedDecoder<'a> {
@@ -183,24 +213,14 @@ impl<'a> TypedDecoder<'a> {
             }
         }
 
-        // Post-processing: skip_header
-        if self.options.skip_header {
-            messages.retain(|m| m.global_mesg_num != 0); // file_id = 0
-        }
-
-        // Post-processing: data_only — filter to known Profile messages.
-        if self.options.data_only {
-            messages.retain(|m| crate::profile::mesg_info_by_num(m.global_mesg_num).is_some());
-        }
-
         // Post-processing: MemoGlob reassembly
-        if self.options.decode_memo_glob {
+        if self.options.decode_memo_glob && !messages.is_empty() {
             crate::transforms::memo_glob::decode_memo_glob(&mut messages);
         }
 
         // Post-processing: HR merge (chrono-only).
         #[cfg(feature = "chrono")]
-        if self.options.merge_heart_rates {
+        if self.options.merge_heart_rates && !messages.is_empty() {
             crate::transforms::merge_heart_rates(&mut messages);
         }
 
@@ -212,6 +232,14 @@ impl<'a> Iterator for TypedDecoder<'a> {
     type Item = Result<Message, FitError>;
 
     fn next(&mut self) -> Option<Self::Item> {
+        if self.terminated {
+            return None;
+        }
+        if let Some(err) = self.pending_option_error.take() {
+            self.terminated = true;
+            return Some(Err(err));
+        }
+
         match self.inner.next()? {
             Ok(raw) => {
                 // Reset per-chain accumulator state at chained-FIT boundaries.
@@ -234,7 +262,10 @@ impl<'a> Iterator for TypedDecoder<'a> {
                 }
                 Some(Ok(msg))
             }
-            Err(e) => Some(Err(e)),
+            Err(e) => {
+                self.terminated = true;
+                Some(Err(e))
+            }
         }
     }
 }

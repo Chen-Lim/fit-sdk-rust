@@ -101,6 +101,10 @@ pub enum FitError {
         /// The actual (oversized) value.
         size: usize,
     },
+
+    /// Conflicting or invalid decoder options were supplied.
+    #[error("invalid decoder options: {0}")]
+    InvalidOptions(&'static str),
 }
 
 /// Tag identifying which protocol field exceeded its 255-byte u8 cap. Kept

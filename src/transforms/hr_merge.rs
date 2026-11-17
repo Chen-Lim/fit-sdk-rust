@@ -19,7 +19,7 @@ const GAP_INCREMENT_MS: f64 = 250.0;
 const GAP_MAX_MS: f64 = 5000.0;
 const GAP_MAX_STEPS: usize = (GAP_MAX_MS / GAP_INCREMENT_MS) as usize; // 20
 
-/// Rollover threshold for 22-bit event timestamps (0x400000 = 4194304).
+/// Rollover period in seconds for 32-bit `1/1024` s event timestamps (`2^32 / 1024 = 0x400000 = 4194304` s).
 const EVENT_TS_ROLLOVER: f64 = 4194304.0;
 
 /// One expanded HR sample (timestamp in seconds since FIT epoch).
