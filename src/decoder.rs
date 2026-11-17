@@ -252,9 +252,11 @@ impl<'a> Decoder<'a> {
         let def = self.local_defs.require(local_mesg_num)?.clone();
         let timestamp = self.decode_compressed_timestamp(timestamp_offset);
 
-        let mut out_fields = Vec::with_capacity(def.fields.len());
+        let mut saw_ts = false;
+        let mut out_fields = Vec::with_capacity(def.fields.len() + 1);
         for f in &def.fields {
             if f.field_def_num == 253 {
+                saw_ts = true;
                 out_fields.push(RawField {
                     field_def_num: 253,
                     value: RawValue::U32Scalar(timestamp),
@@ -267,6 +269,12 @@ impl<'a> Decoder<'a> {
                     value,
                 });
             }
+        }
+        if !saw_ts {
+            out_fields.push(RawField {
+                field_def_num: 253,
+                value: RawValue::U32Scalar(timestamp),
+            });
         }
 
         let mut out_dev = Vec::with_capacity(def.dev_fields.len());
@@ -285,6 +293,25 @@ impl<'a> Decoder<'a> {
             dev_fields: out_dev,
             starts_new_chain: false,
         })
+    }
+
+    fn finish_record(
+        &mut self,
+        mut result: Result<RawMessage<'a>, FitError>,
+    ) -> Result<RawMessage<'a>, FitError> {
+        match &mut result {
+            Ok(msg) => {
+                if let Some(crc_off) = self.chain_crc_offset {
+                    if self.stream.position() > crc_off {
+                        self.terminated = true;
+                        return Err(FitError::UnexpectedEof { offset: crc_off });
+                    }
+                }
+                msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset);
+            }
+            Err(_) => self.terminated = true,
+        }
+        result
     }
 }
 
@@ -308,7 +335,12 @@ impl<'a> Iterator for Decoder<'a> {
         loop {
             // End of current chain reached?
             if let Some(crc_off) = self.chain_crc_offset {
-                if self.stream.position() >= crc_off {
+                let pos = self.stream.position();
+                if pos > crc_off {
+                    self.terminated = true;
+                    return Some(Err(FitError::UnexpectedEof { offset: crc_off }));
+                }
+                if pos == crc_off {
                     // Skip the 2-byte trailing CRC. We don't verify it here —
                     // callers who care can use `fit::check_integrity` first.
                     if self.stream.read_bytes(2).is_err() {
@@ -346,6 +378,12 @@ impl<'a> Iterator for Decoder<'a> {
                     has_dev_data,
                 } => match MessageDefinition::parse(&mut self.stream, has_dev_data) {
                     Ok(def) => {
+                        if let Some(crc_off) = self.chain_crc_offset {
+                            if self.stream.position() > crc_off {
+                                self.terminated = true;
+                                return Some(Err(FitError::UnexpectedEof { offset: crc_off }));
+                            }
+                        }
                         self.local_defs.set(local_mesg_num, def);
                         continue;
                     }
@@ -355,27 +393,15 @@ impl<'a> Iterator for Decoder<'a> {
                     }
                 },
                 RecordHeader::Data { local_mesg_num } => {
-                    let mut result = self.decode_data(local_mesg_num);
-                    match &mut result {
-                        Ok(msg) => {
-                            msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset)
-                        }
-                        Err(_) => self.terminated = true,
-                    }
-                    return Some(result);
+                    let raw = self.decode_data(local_mesg_num);
+                    return Some(self.finish_record(raw));
                 }
                 RecordHeader::CompressedTimestamp {
                     local_mesg_num,
                     timestamp_offset,
                 } => {
-                    let mut result = self.decode_data_compressed(local_mesg_num, timestamp_offset);
-                    match &mut result {
-                        Ok(msg) => {
-                            msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset)
-                        }
-                        Err(_) => self.terminated = true,
-                    }
-                    return Some(result);
+                    let raw = self.decode_data_compressed(local_mesg_num, timestamp_offset);
+                    return Some(self.finish_record(raw));
                 }
             }
         }
@@ -727,5 +753,53 @@ mod tests {
         assert_eq!(msgs[2].fields[1].value.as_u32(), Some(2000));
         // 2000 & 0x1F = 16, offset=5 < 16 → rollover
         assert_eq!(msgs[3].fields[1].value.as_u32(), Some(2021));
+    }
+
+    #[test]
+    fn compressed_timestamp_without_fdn_253_in_definition() {
+        let mut records = Vec::new();
+        // Local 0: record with timestamp (fdn=253) + heart_rate (fdn=3).
+        records.push(0x40);
+        records.extend_from_slice(&[
+            0x00, 0x00, 0x14, 0x00, 0x02, 0xFD, 0x04, 0x86, 0x03, 0x01, 0x02,
+        ]);
+        // Local 1: record with heart_rate (fdn=3) ONLY (no fdn=253).
+        records.push(0x41);
+        records.extend_from_slice(&[0x00, 0x00, 0x14, 0x00, 0x01, 0x03, 0x01, 0x02]);
+        // Data local 0: ts = 1000, hr = 120.
+        records.push(0x00);
+        records.extend_from_slice(&u32_le(1000));
+        records.push(120);
+        // Compressed timestamp local 1 (bit 6..5 = 01 -> 0x20), offset = 12 (0x80 | 0x20 | 12 = 0xAC): hr = 125.
+        records.push(0xAC);
+        records.push(125);
+
+        let fit = write_fake_fit(&records);
+        let (msgs, errs) = Decoder::new(&fit).read_all();
+        assert!(errs.is_empty(), "got errors: {errs:?}");
+        assert_eq!(msgs.len(), 2);
+        assert_eq!(msgs[1].field(3).unwrap().value.as_u8(), Some(125));
+        assert_eq!(msgs[1].field(253).unwrap().value.as_u32(), Some(1004));
+    }
+
+    #[test]
+    fn record_overrunning_data_size_returns_error() {
+        let recs = one_u32_record();
+        // Declare data_size smaller by 2 bytes so the Data record reads into CRC bytes.
+        let truncated_data_size = (recs.len() - 2) as u32;
+        let mut fit = vec![14u8, 0x20, 0xD0, 0x52];
+        fit.extend_from_slice(&truncated_data_size.to_le_bytes());
+        fit.extend_from_slice(b".FIT");
+        fit.extend_from_slice(&[0, 0]);
+        fit.extend_from_slice(&recs);
+        fit.extend_from_slice(&[0, 0]);
+
+        let (msgs, errs) = Decoder::new(&fit).read_all();
+        assert!(
+            msgs.is_empty(),
+            "overrun record must not yield a corrupt message: {msgs:?}"
+        );
+        assert_eq!(errs.len(), 1);
+        assert!(matches!(errs[0], FitError::UnexpectedEof { .. }));
     }
 }
