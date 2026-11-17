@@ -1,5 +1,31 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- **Profile metadata parity**: fixed `battery_level`/`cycles` components and
+  units in `src/profile/generated/messages.rs`, and marked `total_cycles` as
+  accumulated.
+- **Decoder conformance & robustness**: synthesized `timestamp` (`fdn 253`) on
+  compressed-timestamp records even when missing from the definition, rejected
+  records overrunning `data_size`, verified trailing 2-byte file CRC during
+  `DecodeMode::Normal` decoding, added `DecodeMode::{SkipHeader, DataOnly}` +
+  option conflict validation (`FitError::InvalidOptions`), avoided single-element
+  `Vec` allocations on scalar values, and handled zero-length/enum edge cases in
+  `decode_memo_glob`.
+- **Typed decoder & HR merge parity**: aligned SubField/component priority,
+  parent scale suppression for multi-component containers, accumulator seeding
+  and rollover handling (`0x400000`), uint8z invalid checks, and big-endian /
+  signed-offset developer-field decoding with Garmin's JavaScript SDK.
+- **Encoder hardening**: resolved SubFields during wire encoding, suppressed
+  multi-component parent scale/offset, set the protocol endian-ability bit
+  (`0x80`) on multi-byte `BaseType` definitions, replaced `expect` in segment
+  emission with `FitError::SegmentTooLarge`, fixed `u8` wire-size overflow on
+  >31 `u64` / >63 `u32` arrays, clamped out-of-range integers to protocol invalid
+  sentinels in `encode_int`, and rejected embedded NUL bytes in strings with
+  `FitError::EmbeddedNullInString`.
+
 ## 0.2.1
 
 First crates.io release. Carries one small breaking change from `0.2.0`
@@ -27,16 +53,17 @@ that was merged before publishing.
 
 ### Known issues
 
-These are documented in the in-repo code review (`code-review-report.html`)
-and scheduled for `0.3.0`:
+These were documented in the in-repo code review (`code-review-report.html`)
+at `0.2.1` release time (all four have since been resolved in `Unreleased`):
 
 - Encoder array wire-size overflow on > 31 element `u64` / > 63 element
-  `u32` arrays (debug panic / release silent wraparound).
+  `u32` arrays (fixed in `Unreleased`).
 - `Encoder::encode_int` silently wraps integer values exceeding the wire
-  type's range (asymmetric with `encode_float`, which correctly writes the
-  invalid sentinel).
-- Strings with embedded NUL bytes silently truncate on round-trip.
-- `decode_memo_glob` can panic on `Value::Array([Value::Bytes(empty)])`.
+  type's range (fixed in `Unreleased`).
+- Strings with embedded NUL bytes silently truncate on round-trip (fixed
+  in `Unreleased`).
+- `decode_memo_glob` can panic on `Value::Array([Value::Bytes(empty)])`
+  (fixed in `Unreleased`).
 
 ## 0.2.0
 

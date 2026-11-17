@@ -72,14 +72,45 @@ fn accumulator_resets_at_chained_fit_boundary() {
             other => panic!("expected UInt, got {other:?}"),
         })
         .collect();
+    let total_cycles: Vec<u64> = messages
+        .iter()
+        .map(|m| match &m.field("total_cycles").expect("total_cycles field").value {
+            Value::UInt(v) => *v,
+            other => panic!("expected UInt, got {other:?}"),
+        })
+        .collect();
 
     assert_eq!(cycles[0], 100, "seg1 first record");
     assert_eq!(cycles[1], 200, "seg1 second record");
+    assert_eq!(cycles[2], 50, "seg2 first record");
+
+    assert_eq!(total_cycles[0], 100, "seg1 total_cycles[0]");
+    assert_eq!(total_cycles[1], 200, "seg1 total_cycles[1]");
     assert_eq!(
-        cycles[2], 50,
+        total_cycles[2], 50,
         "seg2 first record must NOT carry seg1's accumulator state \
          (would be 306 if accumulator state leaked)"
     );
+}
+
+#[test]
+fn total_cycles_accumulates_within_segment_and_resets_across_chain() {
+    // Seg 1: cycles 254, 0, 1 → total_cycles 254, 256, 257 (8-bit wraparound).
+    // Seg 2: cycles 10 → total_cycles resets to 10 instead of continuing from 257.
+    let seg1 = build_segment(&[254, 0, 1]);
+    let seg2 = build_segment(&[10]);
+    let chained: Vec<u8> = seg1.iter().chain(seg2.iter()).copied().collect();
+
+    let (messages, errors) = Decoder::builder(&chained).build().read_all();
+    assert!(errors.is_empty(), "decode errors: {errors:?}");
+    let total_cycles: Vec<u64> = messages
+        .iter()
+        .map(|m| match &m.field("total_cycles").expect("total_cycles").value {
+            Value::UInt(v) => *v,
+            other => panic!("expected UInt, got {other:?}"),
+        })
+        .collect();
+    assert_eq!(total_cycles, vec![254, 256, 257, 10]);
 }
 
 #[test]

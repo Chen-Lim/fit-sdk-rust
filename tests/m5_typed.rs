@@ -150,17 +150,10 @@ fn disabling_scale_offset_keeps_raw_integers() {
 }
 
 // ────────────────────────────────────────────────────────────────────
-// Components — verify the unit-level transform correctness directly.
-//
-// NOTE: end-to-end Components expansion through `event.data → gear_change_data`
-// requires Profile-level metadata that lives on **subfield rows** in
-// Profile.xlsx (the components/bits/scale columns of subfield rows are
-// currently dropped by `fit-codegen`). Wiring SubField-level components
-// through codegen + the runtime is scheduled for M6 alongside the
-// developer-field schema work.
-//
-// Until then we exercise the algorithm itself via the unit tests in
-// `transforms::components` and verify that SubField *naming* fires here.
+// Components & SubFields — end-to-end SubField-level component expansion
+// (e.g. `event.data → gear_change_data` → `front_gear_num`/`front_gear`/
+// `rear_gear_num`/`rear_gear`) is covered in `tests/js_sdk_parity.rs`;
+// here we verify the SubField naming fires on `WithGearChangeData.fit`.
 // ────────────────────────────────────────────────────────────────────
 
 #[test]
