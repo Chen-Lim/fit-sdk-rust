@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Changed
+
+- **MSRV bumped to Rust 1.77**: updated `rust-version` from `1.75` to `1.77`
+  to match current `thiserror 2.0` upstream requirements.
+
 ### Fixed
 
 - **Profile metadata parity**: fixed `battery_level`/`cycles` components and
