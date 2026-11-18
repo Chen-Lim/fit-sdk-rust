@@ -42,6 +42,19 @@ impl Accumulator {
         Self::default()
     }
 
+    /// Initialise or reset the running total for `(mesg_num, field_def_num)`
+    /// to an authoritative full-width wire observation.
+    pub fn set(&mut self, mesg_num: u16, field_def_num: u8, value: u64) {
+        self.state.insert(
+            (mesg_num, field_def_num),
+            AccumulatedField {
+                last_value: value,
+                accumulated: value,
+                initialised: true,
+            },
+        );
+    }
+
     /// Feed a new value for `(mesg_num, field_def_num)` whose wire width is
     /// `bits` (clamped to 1..=64). Returns the cumulative total to record
     /// in the message's transformed value.
@@ -142,5 +155,20 @@ mod tests {
         let mut acc = Accumulator::new();
         let _ = acc.accumulate(20, 5, 100, 32);
         assert_eq!(acc.accumulate(20, 5, 1_000_000, 32), 1_000_000);
+    }
+
+    #[test]
+    fn set_seeds_and_resets_running_total() {
+        let mut acc = Accumulator::new();
+        // Seed initial full-width observation at 200, then accumulate a 12-bit sample 128
+        // which wrapped relative to (200 & 0xFFF).
+        acc.set(20, 5, 200);
+        // (128 - 200) & 0xFFF = 4024 -> 200 + 4024 = 4224.
+        assert_eq!(acc.accumulate(20, 5, 128, 12), 4224);
+        assert_eq!(acc.accumulate(20, 5, 320, 12), 4416);
+
+        // Calling set overrides prior state completely.
+        acc.set(20, 5, 50);
+        assert_eq!(acc.accumulate(20, 5, 60, 12), 60);
     }
 }

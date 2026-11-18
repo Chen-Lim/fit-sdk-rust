@@ -31,15 +31,18 @@ fn extract_data(msg: &Message) -> Vec<u8> {
         if let Some(field) = msg.field(name) {
             match &field.value {
                 Value::Bytes(b) => return b.clone(),
+                Value::UInt(n) => return vec![*n as u8],
+                Value::String(s) => return s.as_bytes().to_vec(),
                 Value::Array(items) => {
-                    return items
-                        .iter()
-                        .filter_map(|v| match v {
-                            Value::UInt(n) => Some(*n as u8),
-                            Value::Bytes(b) => Some(b[0]),
-                            _ => None,
-                        })
-                        .collect();
+                    let mut out = Vec::with_capacity(items.len());
+                    for v in items {
+                        match v {
+                            Value::UInt(n) => out.push(*n as u8),
+                            Value::Bytes(b) => out.extend_from_slice(b),
+                            _ => {}
+                        }
+                    }
+                    return out;
                 }
                 _ => {}
             }
@@ -52,10 +55,13 @@ fn extract_data(msg: &Message) -> Vec<u8> {
 fn extract_mesg_num(msg: &Message) -> Option<u16> {
     let field = msg.field("mesg_num")?;
     match &field.value {
-        Value::UInt(v) => Some(*v as u16),
-        // If enum resolution already converted it, we can't easily map back.
-        // This shouldn't happen since mesg_num type is "mesg_num" which is an
-        // enum whose values are the message numbers themselves.
+        Value::UInt(v) => u16::try_from(*v).ok(),
+        Value::SInt(v) => u16::try_from(*v).ok(),
+        Value::Enum(s) => {
+            crate::transforms::enum_strings::enum_value_by_str("mesg_num", s.as_ref())
+                .and_then(|v| u16::try_from(v).ok())
+                .or_else(|| s.parse::<u16>().ok())
+        }
         _ => None,
     }
 }
@@ -147,7 +153,11 @@ pub fn decode_memo_glob(messages: &mut [Message]) {
             .unwrap_or_else(|| key.field_num.to_string());
 
         // Set or add the field.
-        if let Some(existing) = msg.fields.iter_mut().find(|f| f.name == target_field_name) {
+        if let Some(existing) = msg.fields.iter_mut().find(|f| {
+            f.name == target_field_name
+                || matches!(f.kind, FieldKind::Standard { field_def_num } if field_def_num == key.field_num)
+        }) {
+            existing.name = target_field_name;
             existing.value = Value::String(text);
         } else {
             msg.fields.push(Field {
@@ -304,5 +314,57 @@ mod tests {
         if let Some(f) = field {
             assert_eq!(f.value, Value::String("name_val".to_string()));
         }
+    }
+
+    #[test]
+    fn memo_glob_handles_enum_mesg_num_and_empty_bytes_array() {
+        let mut messages = vec![
+            make_target_message("workout_step", 27, "notes", 8),
+            Message {
+                global_mesg_num: 145,
+                name: "memo_glob",
+                fields: vec![
+                    Field {
+                        name: "mesg_num".to_string(),
+                        kind: FieldKind::Standard { field_def_num: 1 },
+                        value: Value::Enum("workout_step".into()),
+                        units: None,
+                    },
+                    Field {
+                        name: "parent_index".to_string(),
+                        kind: FieldKind::Standard { field_def_num: 2 },
+                        value: Value::UInt(0),
+                        units: None,
+                    },
+                    Field {
+                        name: "field_num".to_string(),
+                        kind: FieldKind::Standard { field_def_num: 3 },
+                        value: Value::UInt(8),
+                        units: None,
+                    },
+                    Field {
+                        name: "part_index".to_string(),
+                        kind: FieldKind::Standard { field_def_num: 250 },
+                        value: Value::UInt(0),
+                        units: None,
+                    },
+                    Field {
+                        name: "data".to_string(),
+                        kind: FieldKind::Standard { field_def_num: 4 },
+                        value: Value::Array(vec![
+                            Value::Bytes(vec![]),
+                            Value::Bytes(b"hi".to_vec()),
+                            Value::UInt(u64::from(b'!')),
+                        ]),
+                        units: None,
+                    },
+                ],
+            },
+        ];
+        decode_memo_glob(&mut messages);
+        assert_eq!(
+            messages[0].field("notes").unwrap().value,
+            Value::String("hi!".to_string())
+        );
     }
 }

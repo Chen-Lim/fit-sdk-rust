@@ -93,6 +93,14 @@ impl RawValue {
         }
     }
 
+    /// Get a scalar `i8` for length-1 signed-byte fields.
+    pub fn as_i8(&self) -> Option<i8> {
+        match *self {
+            RawValue::I8Scalar(v) => Some(v),
+            _ => None,
+        }
+    }
+
     /// Get a scalar `u16` (also widens single-byte fields).
     pub fn as_u16(&self) -> Option<u16> {
         match *self {
@@ -394,7 +402,7 @@ fn decode_f64_iter(raw: &[u8], endian: Endian) -> impl Iterator<Item = f64> + '_
 /// - all elements invalid → `RawValue::Invalid`
 /// - exactly one element → `scalar(value)`
 /// - many elements → `array(Box<[T]>)`
-fn collapse<T, I, F, S, A>(iter: I, is_invalid: F, scalar: S, array: A) -> RawValue
+fn collapse<T, I, F, S, A>(mut iter: I, is_invalid: F, scalar: S, array: A) -> RawValue
 where
     T: Copy,
     I: Iterator<Item = T>,
@@ -402,12 +410,22 @@ where
     S: FnOnce(T) -> RawValue,
     A: FnOnce(Box<[T]>) -> RawValue,
 {
-    let collected: Vec<T> = iter.collect();
-    if collected.is_empty() || collected.iter().all(is_invalid) {
+    let Some(first) = iter.next() else {
         return RawValue::Invalid;
-    }
-    if collected.len() == 1 {
-        scalar(collected[0])
+    };
+    let Some(second) = iter.next() else {
+        return if is_invalid(&first) {
+            RawValue::Invalid
+        } else {
+            scalar(first)
+        };
+    };
+    let mut collected = Vec::with_capacity(2 + iter.size_hint().0);
+    collected.push(first);
+    collected.push(second);
+    collected.extend(iter);
+    if collected.iter().all(is_invalid) {
+        RawValue::Invalid
     } else {
         array(collected.into_boxed_slice())
     }
@@ -582,6 +600,57 @@ mod tests {
         assert_eq!(
             dec(BaseType::SInt16, &[0xFF, 0x7F, 0x05, 0x00], Endian::Little),
             RawValue::I16Array(vec![i16::MAX, 5].into_boxed_slice())
+        );
+    }
+
+    #[test]
+    fn as_i8_extracts_signed_scalar_only() {
+        assert_eq!(RawValue::I8Scalar(-5).as_i8(), Some(-5));
+        assert_eq!(RawValue::U8Scalar(5).as_i8(), None);
+        assert_eq!(
+            RawValue::I8Array(vec![-1, 2].into_boxed_slice()).as_i8(),
+            None
+        );
+        assert_eq!(RawValue::Invalid.as_i8(), None);
+    }
+
+    #[test]
+    fn collapse_handles_empty_single_and_all_invalid_multi() {
+        assert_eq!(
+            collapse(
+                std::iter::empty::<u8>(),
+                |&v| v == 0xFF,
+                RawValue::U8Scalar,
+                RawValue::U8Array
+            ),
+            RawValue::Invalid
+        );
+        assert_eq!(
+            collapse(
+                [42u8].into_iter(),
+                |&v| v == 0xFF,
+                RawValue::U8Scalar,
+                RawValue::U8Array
+            ),
+            RawValue::U8Scalar(42)
+        );
+        assert_eq!(
+            collapse(
+                [0xFFu8, 0xFFu8].into_iter(),
+                |&v| v == 0xFF,
+                RawValue::U8Scalar,
+                RawValue::U8Array
+            ),
+            RawValue::Invalid
+        );
+        assert_eq!(
+            collapse(
+                [1u8, 2u8, 3u8].into_iter(),
+                |&v| v == 0xFF,
+                RawValue::U8Scalar,
+                RawValue::U8Array
+            ),
+            RawValue::U8Array(vec![1, 2, 3].into_boxed_slice())
         );
     }
 }

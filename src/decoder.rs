@@ -99,16 +99,36 @@ impl<'a> RawDevField<'a> {
     }
 }
 
+/// Controls how [`Decoder`] handles FIT file headers and trailing file CRCs.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum DecodeMode {
+    /// Standard FIT decoding: validate the 12/14-byte [`FileHeader`] (including
+    /// the `.FIT` signature), verify each segment's trailing 2-byte CRC, and
+    /// decode chained FIT segments transparently.
+    #[default]
+    Normal,
+    /// Skip past a 14-byte header without validating it, decode records up to
+    /// the final 2 trailing bytes, and ignore CRCs.
+    SkipHeader,
+    /// Treat the entire byte slice up to the final 2 trailing bytes as raw FIT
+    /// records (no file header) and ignore CRCs.
+    DataOnly,
+}
+
 /// The streaming decoder. Implements [`Iterator`] yielding one
 /// `Result<RawMessage, FitError>` per Data record.
 ///
-/// On the first call, the iterator parses the [`FileHeader`] and seeks past
+/// On the first call, the iterator parses the [`FileHeader`] (unless configured
+/// with [`DecodeMode::SkipHeader`] or [`DecodeMode::DataOnly`]) and seeks past
 /// it. Definition records are absorbed silently into the 16-slot
 /// [`LocalDefinitions`] table; only Data records produce items. After a
 /// fatal error, all subsequent `next()` calls return `None`.
 pub struct Decoder<'a> {
     stream: ByteStream<'a>,
     local_defs: LocalDefinitions,
+    mode: DecodeMode,
+    /// Byte offset where the current FIT segment begins (for trailing CRC calculation).
+    chain_start: usize,
     /// File offset of the trailing 2-byte CRC for the current chain. Set
     /// after each `parse_header_at_cursor` call.
     chain_crc_offset: Option<usize>,
@@ -124,21 +144,49 @@ pub struct Decoder<'a> {
     /// next Data record so its [`RawMessage::starts_new_chain`] reports
     /// `true`. Then cleared.
     chain_just_reset: bool,
+    /// Endianness of the Definition used for the most recently decoded
+    /// Data record (used by [`crate::TypedDecoder`] when interpreting
+    /// developer fields).
+    last_endian: crate::stream::Endian,
 }
 
 impl<'a> Decoder<'a> {
-    /// Construct a decoder over a byte slice. The slice may contain a
-    /// single FIT file or several FIT files concatenated end-to-end.
+    /// Construct a decoder over a byte slice in [`DecodeMode::Normal`]. The slice
+    /// may contain a single FIT file or several FIT files concatenated end-to-end.
     pub fn new(bytes: &'a [u8]) -> Self {
+        Self::with_mode(bytes, DecodeMode::Normal)
+    }
+
+    /// Construct a decoder over a byte slice with an explicit [`DecodeMode`].
+    pub fn with_mode(bytes: &'a [u8], mode: DecodeMode) -> Self {
         Self {
             stream: ByteStream::new(bytes),
             local_defs: LocalDefinitions::new(),
+            mode,
+            chain_start: 0,
             chain_crc_offset: None,
             needs_header: true,
             terminated: false,
             last_timestamp: None,
             chain_just_reset: false,
+            last_endian: crate::stream::Endian::Little,
         }
+    }
+
+    /// Configure the decoder's [`DecodeMode`] (builder-style).
+    pub fn decode_mode(mut self, mode: DecodeMode) -> Self {
+        self.mode = mode;
+        self
+    }
+
+    /// Return the configured [`DecodeMode`].
+    pub fn mode(&self) -> DecodeMode {
+        self.mode
+    }
+
+    /// Return the wire endianness of the most recently decoded Data record.
+    pub(crate) fn last_endian(&self) -> crate::stream::Endian {
+        self.last_endian
     }
 
     /// Drain the iterator into two vectors: messages and errors. Mirrors the
@@ -156,23 +204,53 @@ impl<'a> Decoder<'a> {
         (messages, errors)
     }
 
-    /// Parse a FileHeader at the cursor and seek past it. On success, sets
-    /// `chain_crc_offset` to the offset where the trailing CRC lives.
+    /// Parse a FileHeader (or position cursor for `SkipHeader`/`DataOnly`) and
+    /// set `chain_crc_offset` to the offset where the trailing CRC lives.
     fn parse_header_at_cursor(&mut self) -> Result<(), FitError> {
+        const HEADER_WITH_CRC_SIZE: usize = 14;
+        const CRC_SIZE: usize = 2;
+
         let pos = self.stream.position();
         let bytes = self.stream.as_slice();
-        let header = FileHeader::parse(&bytes[pos..])?;
-        let header_size = header.header_size as usize;
-        let data_size = header.data_size as usize;
-        let total = header_size + data_size + 2;
-        if bytes.len() - pos < total {
-            return Err(FitError::TooShort {
-                expected: total,
-                actual: bytes.len() - pos,
-            });
+        self.chain_start = pos;
+
+        match self.mode {
+            DecodeMode::Normal => {
+                let header = FileHeader::parse(&bytes[pos..])?;
+                let header_size = header.header_size as usize;
+                let data_size = header.data_size as usize;
+                let total = header_size + data_size + CRC_SIZE;
+                if bytes.len() - pos < total {
+                    return Err(FitError::TooShort {
+                        expected: total,
+                        actual: bytes.len() - pos,
+                    });
+                }
+                self.stream.seek(pos + header_size)?;
+                self.chain_crc_offset = Some(pos + header_size + data_size);
+            }
+            DecodeMode::SkipHeader => {
+                let avail = bytes.len() - pos;
+                if avail < HEADER_WITH_CRC_SIZE + CRC_SIZE {
+                    return Err(FitError::TooShort {
+                        expected: HEADER_WITH_CRC_SIZE + CRC_SIZE,
+                        actual: avail,
+                    });
+                }
+                self.stream.seek(pos + HEADER_WITH_CRC_SIZE)?;
+                self.chain_crc_offset = Some(bytes.len() - CRC_SIZE);
+            }
+            DecodeMode::DataOnly => {
+                let avail = bytes.len() - pos;
+                if avail < CRC_SIZE {
+                    return Err(FitError::TooShort {
+                        expected: CRC_SIZE,
+                        actual: avail,
+                    });
+                }
+                self.chain_crc_offset = Some(bytes.len() - CRC_SIZE);
+            }
         }
-        self.stream.seek(pos + header_size)?;
-        self.chain_crc_offset = Some(pos + header_size + data_size);
         Ok(())
     }
 
@@ -210,6 +288,7 @@ impl<'a> Decoder<'a> {
         // releases the borrow on `self.local_defs` so the read loop below can
         // freely take `&mut self.stream`. Zero heap traffic in the common case.
         let def = self.local_defs.require(local_mesg_num)?.clone();
+        self.last_endian = def.endian;
 
         let mut out_fields = Vec::with_capacity(def.fields.len());
         for f in &def.fields {
@@ -250,11 +329,14 @@ impl<'a> Decoder<'a> {
         timestamp_offset: u8,
     ) -> Result<RawMessage<'a>, FitError> {
         let def = self.local_defs.require(local_mesg_num)?.clone();
+        self.last_endian = def.endian;
         let timestamp = self.decode_compressed_timestamp(timestamp_offset);
 
-        let mut out_fields = Vec::with_capacity(def.fields.len());
+        let mut saw_ts = false;
+        let mut out_fields = Vec::with_capacity(def.fields.len() + 1);
         for f in &def.fields {
             if f.field_def_num == 253 {
+                saw_ts = true;
                 out_fields.push(RawField {
                     field_def_num: 253,
                     value: RawValue::U32Scalar(timestamp),
@@ -267,6 +349,12 @@ impl<'a> Decoder<'a> {
                     value,
                 });
             }
+        }
+        if !saw_ts {
+            out_fields.push(RawField {
+                field_def_num: 253,
+                value: RawValue::U32Scalar(timestamp),
+            });
         }
 
         let mut out_dev = Vec::with_capacity(def.dev_fields.len());
@@ -285,6 +373,25 @@ impl<'a> Decoder<'a> {
             dev_fields: out_dev,
             starts_new_chain: false,
         })
+    }
+
+    fn finish_record(
+        &mut self,
+        mut result: Result<RawMessage<'a>, FitError>,
+    ) -> Result<RawMessage<'a>, FitError> {
+        match &mut result {
+            Ok(msg) => {
+                if let Some(crc_off) = self.chain_crc_offset {
+                    if self.stream.position() > crc_off {
+                        self.terminated = true;
+                        return Err(FitError::UnexpectedEof { offset: crc_off });
+                    }
+                }
+                msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset);
+            }
+            Err(_) => self.terminated = true,
+        }
+        result
     }
 }
 
@@ -308,12 +415,28 @@ impl<'a> Iterator for Decoder<'a> {
         loop {
             // End of current chain reached?
             if let Some(crc_off) = self.chain_crc_offset {
-                if self.stream.position() >= crc_off {
-                    // Skip the 2-byte trailing CRC. We don't verify it here —
-                    // callers who care can use `fit::check_integrity` first.
-                    if self.stream.read_bytes(2).is_err() {
-                        self.terminated = true;
-                        return None;
+                let pos = self.stream.position();
+                if pos > crc_off {
+                    self.terminated = true;
+                    return Some(Err(FitError::UnexpectedEof { offset: crc_off }));
+                }
+                if pos == crc_off {
+                    let crc_bytes = match self.stream.read_bytes(2) {
+                        Ok(b) => [b[0], b[1]],
+                        Err(_) => {
+                            self.terminated = true;
+                            return None;
+                        }
+                    };
+                    if self.mode == DecodeMode::Normal {
+                        let stored = u16::from_le_bytes(crc_bytes);
+                        let calculated = crate::crc::calculate(
+                            &self.stream.as_slice()[self.chain_start..crc_off],
+                        );
+                        if stored != calculated {
+                            self.terminated = true;
+                            return Some(Err(FitError::FileCrcMismatch { stored, calculated }));
+                        }
                     }
                     // More bytes? Try to start a new chain. If not, we're done.
                     if self.stream.is_empty() {
@@ -346,6 +469,12 @@ impl<'a> Iterator for Decoder<'a> {
                     has_dev_data,
                 } => match MessageDefinition::parse(&mut self.stream, has_dev_data) {
                     Ok(def) => {
+                        if let Some(crc_off) = self.chain_crc_offset {
+                            if self.stream.position() > crc_off {
+                                self.terminated = true;
+                                return Some(Err(FitError::UnexpectedEof { offset: crc_off }));
+                            }
+                        }
                         self.local_defs.set(local_mesg_num, def);
                         continue;
                     }
@@ -355,27 +484,15 @@ impl<'a> Iterator for Decoder<'a> {
                     }
                 },
                 RecordHeader::Data { local_mesg_num } => {
-                    let mut result = self.decode_data(local_mesg_num);
-                    match &mut result {
-                        Ok(msg) => {
-                            msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset)
-                        }
-                        Err(_) => self.terminated = true,
-                    }
-                    return Some(result);
+                    let raw = self.decode_data(local_mesg_num);
+                    return Some(self.finish_record(raw));
                 }
                 RecordHeader::CompressedTimestamp {
                     local_mesg_num,
                     timestamp_offset,
                 } => {
-                    let mut result = self.decode_data_compressed(local_mesg_num, timestamp_offset);
-                    match &mut result {
-                        Ok(msg) => {
-                            msg.starts_new_chain = std::mem::take(&mut self.chain_just_reset)
-                        }
-                        Err(_) => self.terminated = true,
-                    }
-                    return Some(result);
+                    let raw = self.decode_data_compressed(local_mesg_num, timestamp_offset);
+                    return Some(self.finish_record(raw));
                 }
             }
         }
@@ -387,7 +504,7 @@ mod tests {
     use super::*;
 
     /// Build a minimal but valid 14-byte header for a single in-memory FIT
-    /// file with `data_size` records bytes, plus a placeholder CRC pair.
+    /// file with `data_size` records bytes, plus a valid trailing file CRC.
     fn write_fake_fit(records: &[u8]) -> Vec<u8> {
         let data_size = records.len() as u32;
         let mut bytes = vec![14u8, 0x20, 0xD0, 0x52];
@@ -395,7 +512,8 @@ mod tests {
         bytes.extend_from_slice(b".FIT");
         bytes.extend_from_slice(&[0, 0]); // header CRC = 0 → skip
         bytes.extend_from_slice(records);
-        bytes.extend_from_slice(&[0, 0]); // file CRC placeholder
+        let file_crc = crate::crc::calculate(&bytes);
+        bytes.extend_from_slice(&file_crc.to_le_bytes());
         bytes
     }
 
@@ -727,5 +845,101 @@ mod tests {
         assert_eq!(msgs[2].fields[1].value.as_u32(), Some(2000));
         // 2000 & 0x1F = 16, offset=5 < 16 → rollover
         assert_eq!(msgs[3].fields[1].value.as_u32(), Some(2021));
+    }
+
+    #[test]
+    fn compressed_timestamp_without_fdn_253_in_definition() {
+        let mut records = Vec::new();
+        // Local 0: record with timestamp (fdn=253) + heart_rate (fdn=3).
+        records.push(0x40);
+        records.extend_from_slice(&[
+            0x00, 0x00, 0x14, 0x00, 0x02, 0xFD, 0x04, 0x86, 0x03, 0x01, 0x02,
+        ]);
+        // Local 1: record with heart_rate (fdn=3) ONLY (no fdn=253).
+        records.push(0x41);
+        records.extend_from_slice(&[0x00, 0x00, 0x14, 0x00, 0x01, 0x03, 0x01, 0x02]);
+        // Data local 0: ts = 1000, hr = 120.
+        records.push(0x00);
+        records.extend_from_slice(&u32_le(1000));
+        records.push(120);
+        // Compressed timestamp local 1 (bit 6..5 = 01 -> 0x20), offset = 12 (0x80 | 0x20 | 12 = 0xAC): hr = 125.
+        records.push(0xAC);
+        records.push(125);
+
+        let fit = write_fake_fit(&records);
+        let (msgs, errs) = Decoder::new(&fit).read_all();
+        assert!(errs.is_empty(), "got errors: {errs:?}");
+        assert_eq!(msgs.len(), 2);
+        assert_eq!(msgs[1].field(3).unwrap().value.as_u8(), Some(125));
+        assert_eq!(msgs[1].field(253).unwrap().value.as_u32(), Some(1004));
+    }
+
+    #[test]
+    fn record_overrunning_data_size_returns_error() {
+        let recs = one_u32_record();
+        // Declare data_size smaller by 2 bytes so the Data record reads into CRC bytes.
+        let truncated_data_size = (recs.len() - 2) as u32;
+        let mut fit = vec![14u8, 0x20, 0xD0, 0x52];
+        fit.extend_from_slice(&truncated_data_size.to_le_bytes());
+        fit.extend_from_slice(b".FIT");
+        fit.extend_from_slice(&[0, 0]);
+        fit.extend_from_slice(&recs);
+        fit.extend_from_slice(&[0, 0]);
+
+        let (msgs, errs) = Decoder::new(&fit).read_all();
+        assert!(
+            msgs.is_empty(),
+            "overrun record must not yield a corrupt message: {msgs:?}"
+        );
+        assert_eq!(errs.len(), 1);
+        assert!(matches!(errs[0], FitError::UnexpectedEof { .. }));
+    }
+
+    #[test]
+    fn normal_mode_reports_file_crc_mismatch_after_yielding_messages() {
+        let mut fit = write_fake_fit(&one_u32_record());
+        let last = fit.len() - 1;
+        fit[last] ^= 0xFF;
+
+        let (msgs, errs) = Decoder::new(&fit).read_all();
+        assert_eq!(msgs.len(), 1);
+        assert_eq!(errs.len(), 1);
+        assert!(matches!(errs[0], FitError::FileCrcMismatch { .. }));
+    }
+
+    #[test]
+    fn skip_header_mode_decodes_invalid_header_and_ignores_crc() {
+        let mut fit = write_fake_fit(&one_u32_record());
+        fit[..14].fill(0); // wipe header
+        let last = fit.len() - 1;
+        fit[last] ^= 0xFF; // corrupt CRC
+
+        assert!(matches!(
+            Decoder::new(&fit).read_all().1.as_slice(),
+            [FitError::InvalidHeaderSize(0)]
+        ));
+
+        let (msgs, errs) = Decoder::with_mode(&fit, DecodeMode::SkipHeader).read_all();
+        assert!(errs.is_empty(), "got errors: {errs:?}");
+        assert_eq!(msgs.len(), 1);
+        assert_eq!(msgs[0].fields[0].value.as_u32(), Some(995749880));
+    }
+
+    #[test]
+    fn data_only_mode_decodes_headerless_records_and_rejects_header_bytes() {
+        let fit = write_fake_fit(&one_u32_record());
+        let data_only = &fit[14..];
+
+        assert!(!Decoder::new(data_only).read_all().1.is_empty());
+
+        let (msgs, errs) = Decoder::with_mode(data_only, DecodeMode::DataOnly).read_all();
+        assert!(errs.is_empty(), "got errors: {errs:?}");
+        assert_eq!(msgs.len(), 1);
+        assert_eq!(msgs[0].fields[0].value.as_u32(), Some(995749880));
+
+        // Passing a file WITH a 14-byte header in DataOnly interprets 0x0E as a Data record.
+        let (_, errs) = Decoder::with_mode(&fit, DecodeMode::DataOnly).read_all();
+        assert_eq!(errs.len(), 1);
+        assert!(matches!(errs[0], FitError::UndefinedLocalMesgNum(14)));
     }
 }

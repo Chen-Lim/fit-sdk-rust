@@ -10,10 +10,9 @@
 //!   └─────┴─────────────┴──────────────┘
 //! ```
 //!
-//! - **EE**: endian flag — set when multi-byte values are big-endian. In
-//!   practice the architecture byte (offset 2 of the Definition) is the
-//!   source of truth for endianness; `EE` is largely redundant and we don't
-//!   honor it at runtime.
+//! - **EE**: endian ability flag — set on multi-byte base types (and cleared on
+//!   1-byte types, `String`, and `Byte`); actual record byte order is controlled
+//!   by the Definition's architecture byte.
 //! - **type code**: one of 17 values (`0x00..=0x10`).
 //!
 //! Reference: `guide/fit_binary_learning_notes.md` §3.1.
@@ -145,6 +144,51 @@ impl BaseType {
     pub fn type_code(&self) -> u8 {
         *self as u8
     }
+
+    /// Raw field-definition base-type byte with bit 7 ([`Self::ENDIAN_FLAG`])
+    /// set for multi-byte types per the FIT binary protocol.
+    pub fn wire_byte(&self) -> u8 {
+        if self.element_size() > 1 {
+            self.type_code() | Self::ENDIAN_FLAG
+        } else {
+            self.type_code()
+        }
+    }
+
+    /// Resolve a Profile primitive type name (e.g. `"uint16"`, `"sint8"`,
+    /// `"string"`, `"byte"`, `"bool"`, `"date_time"`) to a [`BaseType`].
+    pub(crate) fn from_name(type_name: &str) -> Option<Self> {
+        match type_name {
+            "enum" => Some(Self::Enum),
+            "sint8" => Some(Self::SInt8),
+            "uint8" => Some(Self::UInt8),
+            "sint16" => Some(Self::SInt16),
+            "uint16" => Some(Self::UInt16),
+            "sint32" => Some(Self::SInt32),
+            "uint32" => Some(Self::UInt32),
+            "sint64" => Some(Self::SInt64),
+            "uint64" => Some(Self::UInt64),
+            "float32" => Some(Self::Float32),
+            "float64" => Some(Self::Float64),
+            "uint8z" => Some(Self::UInt8z),
+            "uint16z" => Some(Self::UInt16z),
+            "uint32z" => Some(Self::UInt32z),
+            "uint64z" => Some(Self::UInt64z),
+            "string" => Some(Self::String),
+            "byte" => Some(Self::Byte),
+            "bool" => Some(Self::UInt8),
+            "date_time" | "local_date_time" => Some(Self::UInt32),
+            _ => None,
+        }
+    }
+
+    /// Resolve any Profile `type_name` (either an enum/typedef from the
+    /// generated Types table or a primitive base type name) to its underlying
+    /// [`BaseType`].
+    pub(crate) fn from_profile_type(type_name: &str) -> Option<Self> {
+        crate::transforms::enum_strings::base_type_for_type_name(type_name)
+            .or_else(|| Self::from_name(type_name))
+    }
 }
 
 #[cfg(test)]
@@ -207,5 +251,51 @@ mod tests {
     fn uint64z_is_present_at_0x10() {
         // Regression check for the gap originally identified in the learning notes.
         assert_eq!(BaseType::from_byte(0x10).unwrap(), BaseType::UInt64z);
+    }
+
+    #[test]
+    fn from_name_and_from_profile_type_resolve_primitives_and_enums() {
+        assert_eq!(BaseType::from_name("uint16"), Some(BaseType::UInt16));
+        assert_eq!(BaseType::from_name("sint8"), Some(BaseType::SInt8));
+        assert_eq!(BaseType::from_name("bool"), Some(BaseType::UInt8));
+        assert_eq!(BaseType::from_name("date_time"), Some(BaseType::UInt32));
+        assert_eq!(
+            BaseType::from_name("local_date_time"),
+            Some(BaseType::UInt32)
+        );
+        assert_eq!(BaseType::from_name("sport"), None);
+
+        assert_eq!(BaseType::from_profile_type("sport"), Some(BaseType::Enum));
+        assert_eq!(
+            BaseType::from_profile_type("mesg_num"),
+            Some(BaseType::UInt16)
+        );
+        assert_eq!(
+            BaseType::from_profile_type("uint32"),
+            Some(BaseType::UInt32)
+        );
+        assert_eq!(BaseType::from_profile_type("unknown_custom_type"), None);
+    }
+
+    #[test]
+    fn wire_byte_sets_endian_flag_for_multibyte_types_only() {
+        assert_eq!(BaseType::Enum.wire_byte(), 0x00);
+        assert_eq!(BaseType::SInt8.wire_byte(), 0x01);
+        assert_eq!(BaseType::UInt8.wire_byte(), 0x02);
+        assert_eq!(BaseType::String.wire_byte(), 0x07);
+        assert_eq!(BaseType::UInt8z.wire_byte(), 0x0A);
+        assert_eq!(BaseType::Byte.wire_byte(), 0x0D);
+
+        assert_eq!(BaseType::SInt16.wire_byte(), 0x83);
+        assert_eq!(BaseType::UInt16.wire_byte(), 0x84);
+        assert_eq!(BaseType::SInt32.wire_byte(), 0x85);
+        assert_eq!(BaseType::UInt32.wire_byte(), 0x86);
+        assert_eq!(BaseType::Float32.wire_byte(), 0x88);
+        assert_eq!(BaseType::Float64.wire_byte(), 0x89);
+        assert_eq!(BaseType::UInt16z.wire_byte(), 0x8B);
+        assert_eq!(BaseType::UInt32z.wire_byte(), 0x8C);
+        assert_eq!(BaseType::SInt64.wire_byte(), 0x8E);
+        assert_eq!(BaseType::UInt64.wire_byte(), 0x8F);
+        assert_eq!(BaseType::UInt64z.wire_byte(), 0x90);
     }
 }

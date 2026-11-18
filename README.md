@@ -159,7 +159,7 @@ if is_fit(&bytes) {
 
 ## MSRV
 
-Rust 1.75 or later.
+Rust 1.77 or later.
 
 ## License
 

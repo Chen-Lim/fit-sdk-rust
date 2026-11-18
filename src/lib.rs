@@ -58,7 +58,7 @@ mod typed_decoder;
 mod value;
 
 pub use base_type::BaseType;
-pub use decoder::{Decoder, RawDevField, RawField, RawMessage};
+pub use decoder::{DecodeMode, Decoder, RawDevField, RawField, RawMessage};
 pub use definition::{
     DeveloperFieldDefinition, FieldDefinition, LocalDefinitions, MessageDefinition,
     LOCAL_DEFINITION_SLOTS,

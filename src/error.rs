@@ -101,6 +101,19 @@ pub enum FitError {
         /// The actual (oversized) value.
         size: usize,
     },
+
+    /// Conflicting or invalid decoder options were supplied.
+    #[error("invalid decoder options: {0}")]
+    InvalidOptions(&'static str),
+
+    /// An encoded `Value::String` contained an embedded NUL (`0x00`) byte,
+    /// which would prematurely terminate the FIT wire string.
+    #[error("encoder: string field cannot contain embedded NUL byte")]
+    EmbeddedNullInString,
+
+    /// An encoded FIT segment's data section exceeded the header's 32-bit length limit.
+    #[error("encoder: segment data size {0} exceeds u32::MAX bytes")]
+    SegmentTooLarge(usize),
 }
 
 /// Tag identifying which protocol field exceeded its 255-byte u8 cap. Kept
