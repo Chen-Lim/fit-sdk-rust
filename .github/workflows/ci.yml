@@ -31,15 +31,24 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
       - uses: Swatinem/rust-cache@v2
+      - name: Strip dev-dependencies for MSRV 1.75 (transitive dev-deps require edition2024)
+        if: matrix.rust == '1.75'
+        run: sed -i '/^\[dev-dependencies\]/,$d' Cargo.toml
       - name: Build (default features)
+        if: matrix.rust != '1.75'
         run: cargo build --all-targets --verbose
       - name: Test (default features)
+        if: matrix.rust != '1.75'
         run: cargo test --all-targets --verbose
       - name: Build (no default features)
+        if: matrix.rust != '1.75'
         run: cargo build --no-default-features --verbose
       - name: Test (no default features)
         # `--lib` because some integration tests assume the chrono feature.
         run: cargo test --lib --no-default-features --verbose
+      - name: Test lib (MSRV 1.75, default features)
+        if: matrix.rust == '1.75'
+        run: cargo test --lib --verbose
 
   clippy:
     name: Clippy
