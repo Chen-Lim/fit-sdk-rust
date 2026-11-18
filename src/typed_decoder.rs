@@ -89,8 +89,7 @@ fn validate_options(options: TransformOptions) -> Result<(), FitError> {
         ));
     }
     #[cfg(feature = "chrono")]
-    if options.merge_heart_rates
-        && (!options.apply_scale_and_offset || !options.expand_components)
+    if options.merge_heart_rates && (!options.apply_scale_and_offset || !options.expand_components)
     {
         return Err(FitError::InvalidOptions(
             "merge_heart_rates requires apply_scale_and_offset and expand_components",
@@ -460,27 +459,23 @@ fn transform_message(
                     let target_fi = mesg.field_by_name(comp.target_name);
                     let target_fdn = target_fi.map_or(0, |tf| tf.field_def_num);
                     let target_type = target_fi.map_or("uint64", |tf| tf.type_name);
-                    let target_bt = target_fi.and_then(|tf| BaseType::from_profile_type(tf.type_name));
+                    let target_bt =
+                        target_fi.and_then(|tf| BaseType::from_profile_type(tf.type_name));
                     let target_scale = target_fi.and_then(|tf| tf.scale);
                     let target_offset = target_fi.and_then(|tf| tf.offset);
                     let target_units = target_fi.and_then(|tf| tf.units).or(comp.units);
 
-                    let is_acc = target_fi.map_or(comp.accumulate, |tf| {
-                        tf.accumulate || comp.accumulate
-                    });
+                    let is_acc =
+                        target_fi.map_or(comp.accumulate, |tf| tf.accumulate || comp.accumulate);
                     let comp_acc = if is_acc {
-                        acc.accumulate(
-                            raw.global_mesg_num,
-                            target_fdn,
-                            comp.raw,
-                            comp.bits as u32,
-                        )
+                        acc.accumulate(raw.global_mesg_num, target_fdn, comp.raw, comp.bits as u32)
                     } else {
                         comp.raw
                     };
 
                     let physical = scale_offset::apply(comp_acc as f64, comp.scale, comp.offset);
-                    let target_raw_f64 = scale_offset::unapply(physical, target_scale, target_offset);
+                    let target_raw_f64 =
+                        scale_offset::unapply(physical, target_scale, target_offset);
 
                     let cv = if is_target_invalid(target_raw_f64, target_bt) {
                         Value::Invalid
@@ -704,7 +699,8 @@ fn expanded_component_value(
     target_offset: Option<f64>,
     options: TransformOptions,
 ) -> Value {
-    if options.convert_datetime && (target_type == "date_time" || target_type == "local_date_time") {
+    if options.convert_datetime && (target_type == "date_time" || target_type == "local_date_time")
+    {
         let secs_f = target_raw_f64.round();
         if (0.0..=u32::MAX as f64).contains(&secs_f) {
             let secs = secs_f as u32;
@@ -779,15 +775,12 @@ fn resolve_dev_field(
     endian: Endian,
     options: TransformOptions,
 ) -> Value {
-    let raw = match crate::raw_value::decode_value(
-        info.base_type,
-        &dev.bytes,
-        endian,
-        dev.field_def_num,
-    ) {
-        Ok(v) => v,
-        Err(_) => return Value::Bytes(dev.bytes.clone().into_owned()),
-    };
+    let raw =
+        match crate::raw_value::decode_value(info.base_type, &dev.bytes, endian, dev.field_def_num)
+        {
+            Ok(v) => v,
+            Err(_) => return Value::Bytes(dev.bytes.clone().into_owned()),
+        };
 
     let type_name = dev_fields::base_type_to_type_name(info.base_type);
     transform_value(&raw, type_name, info.scale, info.offset, options)
@@ -1186,7 +1179,10 @@ mod tests {
         let fit = build_fit_segments(&recs);
         let (msgs, errs) = Decoder::builder(&fit).build().read_all();
         assert!(errs.is_empty(), "errors: {errs:?}");
-        assert_eq!(msgs[0].field("channel_number").unwrap().value, Value::UInt(1));
+        assert_eq!(
+            msgs[0].field("channel_number").unwrap().value,
+            Value::UInt(1)
+        );
         assert_eq!(msgs[0].field("data").unwrap().value, Value::Invalid);
     }
 }

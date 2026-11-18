@@ -74,10 +74,12 @@ fn accumulator_resets_at_chained_fit_boundary() {
         .collect();
     let total_cycles: Vec<u64> = messages
         .iter()
-        .map(|m| match &m.field("total_cycles").expect("total_cycles field").value {
-            Value::UInt(v) => *v,
-            other => panic!("expected UInt, got {other:?}"),
-        })
+        .map(
+            |m| match &m.field("total_cycles").expect("total_cycles field").value {
+                Value::UInt(v) => *v,
+                other => panic!("expected UInt, got {other:?}"),
+            },
+        )
         .collect();
 
     assert_eq!(cycles[0], 100, "seg1 first record");
@@ -105,10 +107,12 @@ fn total_cycles_accumulates_within_segment_and_resets_across_chain() {
     assert!(errors.is_empty(), "decode errors: {errors:?}");
     let total_cycles: Vec<u64> = messages
         .iter()
-        .map(|m| match &m.field("total_cycles").expect("total_cycles").value {
-            Value::UInt(v) => *v,
-            other => panic!("expected UInt, got {other:?}"),
-        })
+        .map(
+            |m| match &m.field("total_cycles").expect("total_cycles").value {
+                Value::UInt(v) => *v,
+                other => panic!("expected UInt, got {other:?}"),
+            },
+        )
         .collect();
     assert_eq!(total_cycles, vec![254, 256, 257, 10]);
 }

@@ -259,12 +259,21 @@ mod tests {
         assert_eq!(BaseType::from_name("sint8"), Some(BaseType::SInt8));
         assert_eq!(BaseType::from_name("bool"), Some(BaseType::UInt8));
         assert_eq!(BaseType::from_name("date_time"), Some(BaseType::UInt32));
-        assert_eq!(BaseType::from_name("local_date_time"), Some(BaseType::UInt32));
+        assert_eq!(
+            BaseType::from_name("local_date_time"),
+            Some(BaseType::UInt32)
+        );
         assert_eq!(BaseType::from_name("sport"), None);
 
         assert_eq!(BaseType::from_profile_type("sport"), Some(BaseType::Enum));
-        assert_eq!(BaseType::from_profile_type("mesg_num"), Some(BaseType::UInt16));
-        assert_eq!(BaseType::from_profile_type("uint32"), Some(BaseType::UInt32));
+        assert_eq!(
+            BaseType::from_profile_type("mesg_num"),
+            Some(BaseType::UInt16)
+        );
+        assert_eq!(
+            BaseType::from_profile_type("uint32"),
+            Some(BaseType::UInt32)
+        );
         assert_eq!(BaseType::from_profile_type("unknown_custom_type"), None);
     }
 

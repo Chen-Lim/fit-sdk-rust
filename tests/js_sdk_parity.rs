@@ -384,7 +384,10 @@ fn short_file_flags_and_options_match_js_sdk() {
     assert!(errs.is_empty(), "{errs:?}");
     assert_eq!(msgs.len(), 1);
     assert_eq!(msgs[0].name, "file_id");
-    assert_eq!(msgs[0].field("type").unwrap().value, Value::Enum("activity".into()));
+    assert_eq!(
+        msgs[0].field("type").unwrap().value,
+        Value::Enum("activity".into())
+    );
     assert_eq!(timestamp_fit_secs(&msgs[0], "time_created"), 1_000_000_000);
     assert_eq!(
         msgs[0].field("product_name").unwrap().value,
@@ -432,7 +435,10 @@ fn decode_modes_skip_header_data_only_and_crc_errors_match_js_sdk() {
         .build()
         .read_all();
     assert_eq!(msgs.len(), 1);
-    assert!(matches!(errs.as_slice(), [FitError::FileCrcMismatch { .. }]));
+    assert!(matches!(
+        errs.as_slice(),
+        [FitError::FileCrcMismatch { .. }]
+    ));
 
     let (msgs, errs) = Decoder::builder(FIT_FILE_SHORT_INVALID_CRC)
         .skip_header(true)
@@ -500,10 +506,7 @@ fn developer_data_edge_cases_and_activity_parity() {
         .build()
         .read_all();
     assert!(errs.is_empty(), "{errs:?}");
-    assert_eq!(
-        msgs.iter().filter(|m| m.name == "activity").count(),
-        1
-    );
+    assert_eq!(msgs.iter().filter(|m| m.name == "activity").count(), 1);
 
     // Multi-byte dev data (UINT16 = 1234 in session.developerFields).
     let (msgs, errs) = Decoder::builder(FIT_FILE_SHORT_MULTIBYTE_DEV_DATA)
@@ -533,13 +536,19 @@ fn developer_data_edge_cases_and_activity_parity() {
     let (msgs, errs) = Decoder::builder(&bytes).build().read_all();
     assert!(errs.is_empty(), "{errs:?}");
 
-    let field_descs: Vec<_> = msgs.iter().filter(|m| m.name == "field_description").collect();
+    let field_descs: Vec<_> = msgs
+        .iter()
+        .filter(|m| m.name == "field_description")
+        .collect();
     assert_eq!(
         field_descs[0].field("field_name").unwrap().value,
         Value::String("Doughnuts Earned".into())
     );
 
-    let dev_ids: Vec<_> = msgs.iter().filter(|m| m.name == "developer_data_id").collect();
+    let dev_ids: Vec<_> = msgs
+        .iter()
+        .filter(|m| m.name == "developer_data_id")
+        .collect();
     assert_eq!(
         dev_ids[0].field("application_id").unwrap().value,
         Value::Bytes(vec![3, 2, 1, 0, 5, 4, 7, 6, 8, 9, 10, 11, 12, 13, 14, 15])
@@ -549,7 +558,15 @@ fn developer_data_edge_cases_and_activity_parity() {
     let doughnuts = sessions[0]
         .fields
         .iter()
-        .find(|f| matches!(f.kind, FieldKind::Developer { field_def_num: 0, .. }))
+        .find(|f| {
+            matches!(
+                f.kind,
+                FieldKind::Developer {
+                    field_def_num: 0,
+                    ..
+                }
+            )
+        })
         .expect("session dev field 0 (Doughnuts Earned)");
     assert!((doughnuts.value.as_f64().unwrap() - 3.0).abs() < 0.5);
 
@@ -560,7 +577,15 @@ fn developer_data_edge_cases_and_activity_parity() {
         let dev_hr = rec
             .fields
             .iter()
-            .find(|f| matches!(f.kind, FieldKind::Developer { field_def_num: 1, .. }))
+            .find(|f| {
+                matches!(
+                    f.kind,
+                    FieldKind::Developer {
+                        field_def_num: 1,
+                        ..
+                    }
+                )
+            })
             .expect("record dev Heart Rate field");
         assert_eq!(std_hr.value, dev_hr.value);
     }
@@ -619,9 +644,18 @@ fn scale_offset_scalars_and_arrays_match_js_sdk() {
         }
     };
     assert_f64_array("left_power_phase", &[337.5000052734376, 199.68750312011724]);
-    assert_f64_array("left_power_phase_peak", &[75.93750118652346, 104.0625016259766]);
-    assert_f64_array("right_power_phase", &[7.031250109863283, 205.31250320800785]);
-    assert_f64_array("right_power_phase_peak", &[70.31250109863284, 106.8750016699219]);
+    assert_f64_array(
+        "left_power_phase_peak",
+        &[75.93750118652346, 104.0625016259766],
+    );
+    assert_f64_array(
+        "right_power_phase",
+        &[7.031250109863283, 205.31250320800785],
+    );
+    assert_f64_array(
+        "right_power_phase_peak",
+        &[70.31250109863284, 106.8750016699219],
+    );
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -637,15 +671,24 @@ fn component_expansion_monitoring_compressed_and_accumulators() {
     let mon: Vec<_> = msgs.iter().filter(|m| m.name == "monitoring").collect();
     assert_eq!(mon.len(), 4);
 
-    assert_eq!(mon[0].field("activity_type").unwrap().value, Value::Enum("running".into()));
+    assert_eq!(
+        mon[0].field("activity_type").unwrap().value,
+        Value::Enum("running".into())
+    );
     assert_eq!(mon[0].field("intensity").unwrap().value, Value::UInt(3));
     assert!((field_f64(mon[0], "cycles") - 10.0).abs() < 1e-12);
 
-    assert_eq!(mon[1].field("activity_type").unwrap().value, Value::Enum("walking".into()));
+    assert_eq!(
+        mon[1].field("activity_type").unwrap().value,
+        Value::Enum("walking".into())
+    );
     assert_eq!(mon[1].field("intensity").unwrap().value, Value::UInt(0));
     assert!((field_f64(mon[1], "cycles") - 30.0).abs() < 1e-12);
 
-    assert_eq!(mon[2].field("activity_type").unwrap().value, Value::UInt(30));
+    assert_eq!(
+        mon[2].field("activity_type").unwrap().value,
+        Value::UInt(30)
+    );
     assert_eq!(mon[2].field("intensity").unwrap().value, Value::UInt(0));
     assert!((field_f64(mon[2], "cycles") - 15.0).abs() < 1e-12);
 
@@ -675,9 +718,10 @@ fn component_expansion_monitoring_compressed_and_accumulators() {
     assert!((field_f64(recs[1], "enhanced_speed") - 2.49).abs() < 1e-12);
 
     // Initial explicit distance seeds the distance accumulator for subsequent compressed records.
-    let (msgs, errs) = Decoder::builder(FIT_FILE_COMPRESSED_SPEED_AND_DISTANCE_WITH_INITIAL_DISTANCE)
-        .build()
-        .read_all();
+    let (msgs, errs) =
+        Decoder::builder(FIT_FILE_COMPRESSED_SPEED_AND_DISTANCE_WITH_INITIAL_DISTANCE)
+            .build()
+            .read_all();
     assert!(errs.is_empty(), "{errs:?}");
     let recs: Vec<_> = msgs.iter().filter(|m| m.name == "record").collect();
     assert_eq!(recs.len(), 3);
@@ -693,11 +737,20 @@ fn component_expansion_monitoring_compressed_and_accumulators() {
     let recs: Vec<_> = msgs.iter().filter(|m| m.name == "record").collect();
     assert_eq!(recs.len(), 3);
     assert_eq!(recs[0].field("cycles").unwrap().value, Value::UInt(254));
-    assert_eq!(recs[0].field("total_cycles").unwrap().value, Value::UInt(254));
+    assert_eq!(
+        recs[0].field("total_cycles").unwrap().value,
+        Value::UInt(254)
+    );
     assert_eq!(recs[1].field("cycles").unwrap().value, Value::UInt(0));
-    assert_eq!(recs[1].field("total_cycles").unwrap().value, Value::UInt(256));
+    assert_eq!(
+        recs[1].field("total_cycles").unwrap().value,
+        Value::UInt(256)
+    );
     assert_eq!(recs[2].field("cycles").unwrap().value, Value::UInt(1));
-    assert_eq!(recs[2].field("total_cycles").unwrap().value, Value::UInt(257));
+    assert_eq!(
+        recs[2].field("total_cycles").unwrap().value,
+        Value::UInt(257)
+    );
 }
 
 #[test]
@@ -929,13 +982,7 @@ const JAPANESE_MULTIBYTE: &str = "\"第１条 すべての人間は、生まれ�
 #[test]
 fn memo_glob_integration_vectors_match_js_sdk() {
     let cases: &[(&str, &[u8], u16, &str, &str)] = &[
-        (
-            "simple",
-            FIT_FILE_MEMO_GLOB_SIMPLE,
-            27,
-            "notes",
-            "string",
-        ),
+        ("simple", FIT_FILE_MEMO_GLOB_SIMPLE, 27, "notes", "string"),
         (
             "lorem_ipsum",
             FIT_FILE_MEMO_GLOB_LOREM_IPSUM,

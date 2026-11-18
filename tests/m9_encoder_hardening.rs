@@ -557,9 +557,15 @@ fn out_of_range_integer_encodes_as_invalid_sentinel_instead_of_wrapping() {
     fit::check_integrity(&bytes).unwrap();
     let (decoded, errs) = Decoder::builder(&bytes).build().read_all();
     assert!(errs.is_empty(), "{errs:?}");
-    assert_eq!(decoded[0].field("heart_rate").unwrap().value, Value::Invalid);
+    assert_eq!(
+        decoded[0].field("heart_rate").unwrap().value,
+        Value::Invalid
+    );
     assert_eq!(decoded[0].field("cadence").unwrap().value, Value::Invalid);
-    assert_eq!(decoded[0].field("temperature").unwrap().value, Value::Invalid);
+    assert_eq!(
+        decoded[0].field("temperature").unwrap().value,
+        Value::Invalid
+    );
 }
 
 #[test]
@@ -579,4 +585,3 @@ fn embedded_null_in_string_returns_explicit_error() {
         FitError::EmbeddedNullInString
     );
 }
-

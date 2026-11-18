@@ -463,10 +463,12 @@ fn compute_wire_size(base_type: BaseType, value: &Value) -> Result<u8, FitError>
                 Value::Array(a) => a.len().max(1),
                 _ => 1,
             };
-            let total_bytes = element_size.checked_mul(count).ok_or(FitError::FieldTooLarge {
-                kind: FieldTooLargeKind::Array,
-                size: usize::MAX,
-            })?;
+            let total_bytes = element_size
+                .checked_mul(count)
+                .ok_or(FitError::FieldTooLarge {
+                    kind: FieldTooLargeKind::Array,
+                    size: usize::MAX,
+                })?;
             u8::try_from(total_bytes).map_err(|_| FitError::FieldTooLarge {
                 kind: FieldTooLargeKind::Array,
                 size: total_bytes,
@@ -1186,11 +1188,7 @@ mod tests {
         for (val, bt, expected) in cases {
             let mut out = OutputStream::new();
             encode_int(&mut out, val, bt);
-            assert_eq!(
-                out.as_slice(),
-                expected.as_slice(),
-                "val={val} bt={bt:?}"
-            );
+            assert_eq!(out.as_slice(), expected.as_slice(), "val={val} bt={bt:?}");
         }
     }
 
